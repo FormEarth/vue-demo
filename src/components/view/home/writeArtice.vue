@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-appbar color="white" title="写文章" textColor="black" z-depth="1">
+    <mu-appbar color="white" title="写文章(Markdown长文)" textColor="black" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
@@ -16,6 +16,7 @@
         :codeStyle="form.codeStyle"
         :subfield="false"
         :boxShadow="false"
+        
       />
       <mu-form-item prop="switch" label="设为私密" help-text="设置为私密的文章发布后只有你能看到">
         <mu-switch v-model="form.personal"></mu-switch>
@@ -63,7 +64,7 @@
 </template>
 <script>
 import ArticeContent from "@/components/public/ArticeContent.vue";
-import API from '@/axios/api'
+import API from "@/axios/api";
 
 export default {
   name: "writeArtice",
@@ -71,6 +72,41 @@ export default {
     return {
       preview: false, //预览是否打开
       defaultData: "preview",
+      toolbars: {
+        bold: true, // 粗体
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        strikethrough: true, // 中划线
+        mark: true, // 标记
+        superscript: true, // 上角标
+        subscript: true, // 下角标
+        quote: true, // 引用
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: true, // code
+        table: true, // 表格
+        fullscreen: true, // 全屏编辑
+        readmodel: true, // 沉浸式阅读
+        // htmlcode: true, // 展示html源码
+        help: true, // 帮助
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        save: true, // 保存（触发events中的save事件）
+        /* 1.4.2 */
+        navigation: true, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        // subfield: true, // 单双栏模式
+        preview: true // 预览
+      },
       selectStyles: [
         "github",
         "tomorrow",
@@ -85,7 +121,7 @@ export default {
         content: "",
         personal: false,
         anonymous: false,
-        comment:true,
+        comment: true,
         codeStyle: "github",
         tag: ""
       }
@@ -106,9 +142,9 @@ export default {
       }
       alert(description);
       return;
-      API.craeatArtice(this.form).then((result)=>{
-
-      }).catch((error)=>{});
+      API.craeatArtice(this.form)
+        .then(result => {})
+        .catch(error => {});
     }
   },
   components: {
@@ -121,6 +157,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
+  min-width: 350px;
 }
 .mu-form-item-label {
   padding-right: 0px;

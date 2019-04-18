@@ -4,7 +4,7 @@
       <mu-row gutter>
         <mu-col span="12" sm="11" md="5" lg="6" xl="6">
           <mu-paper class="demo-paper" :z-depth="5">
-            <mu-appbar color="white" z-depth="0" textColor="black">
+            <mu-appbar color="white" z-depth="0" textColor="black" title="登录">
               <mu-button icon slot="left" @click="$router.back(-1)">
                 <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
               </mu-button>
@@ -40,7 +40,7 @@
               <!-- <mu-button flat color="primary" to="/register">没有账号？</mu-button> -->
               <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>
               <br>
-              <mu-button flat color="primary" to="/home">首页</mu-button>
+              <!-- <mu-button flat color="primary" to="/home">首页</mu-button> -->
             </mu-expansion-panel>
           </mu-paper>
         </mu-col>
@@ -66,7 +66,7 @@ export default {
       backgroundDiv: {
         backgroundImage: "url(" + require("@/assets/background.jpg") + ")",
         backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
+        backgroundSize: "cover",
       },
       usernameRules: [
         { validate: val => !!val, message: "必须填写用户名" },
@@ -132,7 +132,7 @@ export default {
   margin-bottom: 18px;
 }
 .demo-paper {
-  margin-top: 22%;
+  margin-top: 4%;
 }
 .mu-input {
   margin-bottom: 2px;

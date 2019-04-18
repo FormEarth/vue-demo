@@ -53,11 +53,11 @@
       </div>
       <div class="img-container" v-else>
         <div class="img-item" v-for="(image, index) in picturesArray" :key="index">
-          <img :src="image" @click="showImagePreview(index)">
+          <img :src="image" @click="showImagePreview(index)" :onerror="defaultImg">
         </div>
       </div>
       <div style="padding:5px 10px 5px 10px;">
-        <mu-chip class="demo-chip" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
+        <mu-chip class="demo-chip" color="blue100" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
       </div>
       <mu-card-text>{{artice.content}}</mu-card-text>
       <div style="padding-left:10px;font-size:12px;">
@@ -77,7 +77,7 @@
         </mu-badge>
         <mu-badge content="1" circle class="demo-icon-badge">
           <mu-button icon>
-            <mu-icon value="share"></mu-icon>
+            <mu-icon value="favorite"></mu-icon>
           </mu-button>
         </mu-badge>
       </div>
@@ -149,6 +149,10 @@ export default {
     // 将图片地址字符串切割成数组
     picturesArray: function() {
       return this.artice.pictures.split("|");
+    },
+    //默认加载的图片
+    defaultImg () {
+      return 'this.src="'+ require('@/assets/broken_image.jpg') +'"'
     }
   },
   methods: {

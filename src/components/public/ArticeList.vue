@@ -33,13 +33,13 @@
     <div class="atlas" v-if="type=='atlas'" @click="goPictures(artice.id)">
       <div class="flag flag-left">图集</div>
       <div class="atlas-item">
-        <div class="atlas-item-header">
-          <div class="van-ellipsis">{{artice.content}}</div>
-        </div>
         <div class="atlas-item-content">
           <div class="atlas-item-img" v-for="(image,index) in pictureArray" :key="index">
             <img :src="image">
           </div>
+        </div>
+        <div class="atlas-item-header">
+          <div class="van-ellipsis">{{artice.content}}</div>
         </div>
         <div class="atlas-item-footer">
           <mu-chip color="green300" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
@@ -204,6 +204,9 @@ export default {
   object-fit: cover;
 }
 .atlas-item .atlas-item-footer {
-  margin-left: 10px;
+  padding-left: 8px;
+}
+.atlas-item .atlas-item-header{
+  padding-left: 8px;
 }
 </style>

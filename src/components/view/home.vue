@@ -12,11 +12,7 @@
       <mu-list textline="three-line" dense style="background-color: rgb(207, 207, 218);">
         <mu-sub-header style="background-color: white">热门推荐</mu-sub-header>
         <div v-for="artice in artices" :key="artice.id">
-          <artice-list
-            style="margin-bottom:3px;"
-            :artice="artice"
-            :type="artice.type"
-          ></artice-list>
+          <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
         </div>
       </mu-list>
       <!-- <mu-button fab class="writeArtice" color="redA700" to="/home/artice/add">
@@ -24,7 +20,7 @@
       </mu-button>-->
       <div class="addButton">
         <mu-slide-left-transition>
-          <mu-button v-show="this.open" style="margin-bottom:8px;">
+          <mu-button v-show="this.open" to="/home/atlas/add" style="margin-bottom:8px;">
             发布图集
             <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
           </mu-button>
@@ -38,14 +34,12 @@
         <mu-slide-bottom-transition>
           <mu-button v-show="this.open" style="margin-bottom:8px;">写短文</mu-button>
         </mu-slide-bottom-transition>
-        <mu-scale-transition>
-        <mu-button fab color="redA700" v-if="!open" @click="change">
+        <mu-button fab color="redA700" :ripple="false" v-if="!open" @click="change">
           <mu-icon value="add" size="38"></mu-icon>
         </mu-button>
         <mu-button fab color="redA700" v-else @click="change">
           <mu-icon value="close" size="38"></mu-icon>
         </mu-button>
-        </mu-scale-transition>
       </div>
     </mu-paper>
     <app-footer param="home"></app-footer>
@@ -72,7 +66,7 @@ export default {
           content:
             "“您太天真了，所有死物的命运不过是受活人需要来驱动罢了，您认为能够流传的，不过是它们还有被需要和利用的价值而已，所以说永恒才是最虚假的玄幻啊。”西装笔挺的秘书长摘掉了他的眼镜，文质彬彬的气息一下子从他身上流走了。取而代之的是一种不可见底的深不可测。",
           sendTime: "2019-04-08 20:33:14",
-          tags:"原创|历史"
+          tags: "原创|历史"
         },
         {
           id: "124",
@@ -84,18 +78,20 @@ export default {
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
           sendTime: "2019-04-08 20:33:14",
-          tags:"日记"
+          tags: "日记"
         },
         {
           id: "130",
-          type:"atlas",//类型为图集
+          type: "atlas", //类型为图集
           title: "这是个图集",
-          picture:"http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
+          picture:
+            "http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
           author: "高天原",
           url: "/home/artice",
-          content:"今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩",
+          content:
+            "今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩",
           sendTime: "2019-04-08 20:33:14",
-          tags:"原创|图集"
+          tags: "原创|图集"
         },
         {
           id: "125",
@@ -107,7 +103,7 @@ export default {
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
           sendTime: "2019-04-08 20:33:14",
-          tags:"读书笔记|西游记"
+          tags: "读书笔记|西游记"
         },
         {
           id: "126",
@@ -118,7 +114,7 @@ export default {
           url: "/home/artice",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
-          tags:"原创|历史"
+          tags: "原创|历史"
         },
         {
           id: "127",
@@ -129,7 +125,7 @@ export default {
           url: "/home/artice",
           content:
             "“您太天真了，所有死物的命运不过是受活人需要来驱动罢了，您认为能够流传的，不过是它们还有被需要和利用的价值而已，所以说永恒才是最虚假的玄幻啊。”西装笔挺的秘书长摘掉了他的眼镜，文质彬彬的气息一下子从他身上流走了。取而代之的是一种不可见底的深不可测。",
-          tags:"原创|历史"
+          tags: "原创|历史"
         },
         {
           id: "128",
@@ -140,7 +136,7 @@ export default {
           url: "/home/artice",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
-          tags:"原创|历史"
+          tags: "原创|历史"
         },
         {
           id: "129",
@@ -181,7 +177,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
-  min-width:350px;
+  min-width: 350px;
 }
 .home-paper {
   padding-top: 58px;
@@ -193,7 +189,7 @@ export default {
 }
 .mu-appbar {
   max-width: 500px;
-  min-width:350px;
+  min-width: 350px;
   width: 100%;
   position: fixed;
   top: 0px;
@@ -205,10 +201,11 @@ export default {
 .addButton {
   width: 20%;
   position: fixed;
-  right: 12px;
+  right: 5px;
   bottom: 60px;
   display: flex;
   flex-direction: column;
+  margin-left: 5px;
 }
 </style>
 

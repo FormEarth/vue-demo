@@ -43,16 +43,13 @@
         </div>
         <div style="width:30%;margin-top:5px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
-      <mu-card-actions style="padding-top:0px;">
-        <mu-chip class="demo-chip">#原创</mu-chip>
-        <mu-chip class="demo-chip">#文学</mu-chip>
-        <mu-chip class="demo-chip">#读书笔记</mu-chip>
-        <!-- <div style="margin-top:9px;float:right">
-          <span>123 阅读</span>
-        </div>-->
-      </mu-card-actions>
+      <div style="padding:5px 10px 5px 10px;">
+        <mu-chip class="demo-chip" color="blue100" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
+      </div>
       <mu-card-text>
-        <artice-content :content="value" :artice-style="artice.style"></artice-content>
+        <!-- <artice-content :content="value" :artice-style="artice.style"></artice-content> -->
+        <mavon-editor v-model="value1" :toolbarsFlag="false" :boxShadow="false" 
+          :codeStyle="artice.codeStyle" :subfield="false" :defaultOpen="defaultOpen" />
       </mu-card-text>
       <!-- <mu-divider></mu-divider> -->
       <mu-card-actions style="white-space: nowrap">
@@ -116,12 +113,14 @@ export default {
       star: false,
       open: false,
       toTopIsShow: false,
+      defaultOpen: "preview",
       artice: {
-        style: "googlecode",
+        codeStyle: "googlecode",
         title: "午后时光",
         comment: false,
         datatime: "2019-3-17 16:03",
         author: "花间舞",
+        tags:"原创|文学|读书笔记",
         content:
           "散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！"
       },
@@ -136,8 +135,17 @@ export default {
         </blockquote>
         <p>“那时候最大的梦想是一辈子和好友住在一起，大锅煮鸡，大屋同居。我想象那间大屋的外墙上爬满爬山虎，盛夏时是墨绿的，秋来是金黄的，我在下午的阳光里醒来推开窗，嘲笑那个刻苦的损友在院子里死读书。”——江南《此间的少年》</p>
         “那时候最大的梦想是一辈子和好友住在一起，大锅煮鸡，大屋同居。我想象那间大屋的外墙上爬满爬山虎，盛夏时是墨绿的，秋来是金黄的，我在下午的阳光里醒来推开窗，嘲笑那个刻苦的损友在院子里死读书。”——江南《此间的少年》`,
-      defaultData: "preview"
+      value1: "> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = \"Hello World!\" \n\nSystem.out.println(str);\n```\n\n**文字加粗了**"
     };
+  },
+  computed:{
+    //切割标签为数组
+    tagArray:function(){
+      if(this.artice.tags==''){
+        return;
+      }
+      return this.artice.tags.split("|");
+    }
   },
   methods: {
     starArtice(star) {
@@ -196,6 +204,7 @@ a {
 }
 .demo-chip {
   line-height: 22px;
+  margin-right: 5px;
 }
 .mu-card-text {
   padding: 0px;

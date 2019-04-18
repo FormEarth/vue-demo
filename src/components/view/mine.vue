@@ -95,7 +95,7 @@
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
-        <mu-list-item button :ripple="false">
+        <mu-list-item button :ripple="false" to="/mine/setting">
           <mu-list-item-action>
             <mu-icon value="settings" color="black"></mu-icon>
           </mu-list-item-action>
