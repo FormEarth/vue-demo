@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-appbar color="white" textColor="black" :title="artice.title">
+    <mu-appbar color="white" textColor="black" title="文章详情">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
@@ -8,20 +8,32 @@
         <mu-button icon>
           <mu-icon value="more_vert"></mu-icon>
         </mu-button>
-        <mu-list slot="content" style="font-size:15px;width:150px">
-          <mu-list-item button>
-            <mu-list-item-content v-if="star" @click="starArtice(star)">
-              <mu-icon value="turned_in" color="green" size="16"></mu-icon>已收藏
+        <mu-list slot="content">
+          <mu-list-item button @click="starArtice">
+            <mu-list-item-content v-if="star" style="display:flex;">
+              <mu-slide-top-transition>
+                <mu-icon value="turned_in" color="green" size="24"></mu-icon>
+              </mu-slide-top-transition>
+              <div style="margin-top:3px;margin-left:5px;">已收藏</div>
             </mu-list-item-content>
-            <mu-list-item-content v-else @click="starArtice(star)">
-              <mu-icon value="turned_in_not" color="black" size="16"></mu-icon>收藏
+            <mu-list-item-content v-else style="display:flex;">
+              <mu-slide-top-transition>
+                <mu-icon value="turned_in_not" color="black" size="24"></mu-icon>
+              </mu-slide-top-transition>
+              <div style="margin-top:3px;margin-left:5px;">收藏</div>
             </mu-list-item-content>
           </mu-list-item>
           <mu-list-item button>
-            <mu-list-item-content>不感兴趣</mu-list-item-content>
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="sentiment_very_dissatisfied" color="black" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">不感兴趣</div>
+            </mu-list-item-content>
           </mu-list-item>
           <mu-list-item button @click="openBotttomSheet">
-            <mu-list-item-content>举报</mu-list-item-content>
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="warning" color="redA700" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">举报</div>
+            </mu-list-item-content>
           </mu-list-item>
         </mu-list>
       </mu-menu>
@@ -30,6 +42,7 @@
       <mu-card-media>
         <img :src="picture">
       </mu-card-media>
+      <div class="title">{{artice.title}}</div>
       <div style="display:flex;height:30px;margin:5px 0 9px 0">
         <div style="display:flex;width:70%;padding-left:10px;">
           <div>
@@ -44,13 +57,13 @@
         <div style="width:30%;margin-top:5px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
       <div style="padding:5px 10px 5px 10px;">
-        <mu-chip class="demo-chip" color="blue100" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
+        <mu-chip class="demo-chip" color="blue100" text-color="black" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
       </div>
-      <mu-card-text>
+      <!-- <mu-card-text> -->
         <!-- <artice-content :content="value" :artice-style="artice.style"></artice-content> -->
-        <mavon-editor v-model="value1" :toolbarsFlag="false" :boxShadow="false" 
+        <mavon-editor class="editor" v-model="value1" :toolbarsFlag="false" :boxShadow="false" 
           :codeStyle="artice.codeStyle" :subfield="false" :defaultOpen="defaultOpen" />
-      </mu-card-text>
+      <!-- </mu-card-text> -->
       <!-- <mu-divider></mu-divider> -->
       <mu-card-actions style="white-space: nowrap">
         <mu-badge content="12" circle class="demo-icon-badge">
@@ -148,8 +161,16 @@ export default {
     }
   },
   methods: {
-    starArtice(star) {
-      star ? (this.star = false) : (this.star = true);
+    starArtice() {
+      console.log(this.star);
+      if (this.star) {
+        this.star = false;
+        this.$toast.success("取消收藏成功");
+        //Toast.success('取消收藏成功');
+      } else {
+        this.star = true;
+        this.$toast.success("收藏成功");
+      }
     },
     closeBottomSheet() {
       this.open = false;
@@ -197,6 +218,13 @@ a {
   /* left:0px;
   bottom:0px; */
 }
+.title{
+  padding-top: 3px;
+  padding-left: 10px;
+  /* font-size: 18px; */
+  font-size: larger;
+  font-weight: bold;
+}
 .mu-card {
   /* padding-top: 58px; */
   padding-left: 0px;
@@ -238,5 +266,10 @@ a {
   z-index: 2;
   right: 16px;
   bottom: 60px;
+}
+</style>
+<style>
+.editor >>> .scroll-style{
+  padding:8px 15px 15px 15px;
 }
 </style>

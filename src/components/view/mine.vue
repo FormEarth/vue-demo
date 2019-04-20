@@ -63,6 +63,17 @@
         </mu-list-item> -->
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
+            <mu-icon value="contacts" color="indigo400"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>个人信息</mu-list-item-title>
+          <mu-list-item-action>
+            <mu-button icon>
+              <mu-icon value="arrow_forward_ios"></mu-icon>
+            </mu-button>
+          </mu-list-item-action>
+        </mu-list-item>
+        <mu-list-item button :ripple="false">
+          <mu-list-item-action>
             <mu-icon value="dashboard" color="primary"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>动态</mu-list-item-title>
@@ -76,7 +87,7 @@
           <mu-list-item-action>
             <mu-icon value="inbox" color="redA700"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>草稿</mu-list-item-title>
+          <mu-list-item-title>草稿箱</mu-list-item-title>
           <mu-list-item-action>
             <mu-badge content="100+" color="redA700"></mu-badge>
             <!-- <mu-button icon>
@@ -106,7 +117,7 @@
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
-        <mu-list-item button :ripple="false">
+        <mu-list-item button :ripple="false" @click="openAlertDialog">
           <mu-list-item-action>
             <mu-icon value="exit_to_app" color="black"></mu-icon>
           </mu-list-item-action>
@@ -127,6 +138,11 @@
         </mu-list-item>
       </mu-list>
     </mu-paper>
+    <mu-dialog title="退出登录" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
+    该操作将清除您当前的登录状态
+    <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">取消</mu-button>
+    <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">确认</mu-button>
+  </mu-dialog>
     <app-footer param="mine"></app-footer>
   </mu-container>
 </template>
@@ -137,11 +153,20 @@ export default {
     return {
       open: "send",
       isLogin:false,
+      openAlert: false,
       user:{
         name:"花间舞",
         sign:"曾经沧海难为水，除却巫山不是云"
       }
     };
+  },
+  methods:{
+     openAlertDialog () {
+      this.openAlert = true;
+    },
+    closeAlertDialog () {
+      this.openAlert = false;
+    }
   }
 };
 </script>

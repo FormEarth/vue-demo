@@ -8,20 +8,32 @@
         <mu-button icon>
           <mu-icon value="more_vert"></mu-icon>
         </mu-button>
-        <mu-list slot="content" style="font-size:15px;width:150px">
-          <mu-list-item button>
-            <mu-list-item-content v-if="star" @click="starArtice(star)">
-              <mu-icon value="turned_in" color="green" size="16"></mu-icon>已收藏
+        <mu-list slot="content">
+          <mu-list-item button @click="starArtice">
+            <mu-list-item-content v-if="star" style="display:flex;">
+              <mu-slide-top-transition>
+                <mu-icon value="turned_in" color="green" size="24"></mu-icon>
+              </mu-slide-top-transition>
+              <div style="margin-top:3px;margin-left:5px;">已收藏</div>
             </mu-list-item-content>
-            <mu-list-item-content v-else @click="starArtice(star)">
-              <mu-icon value="turned_in_not" color="black" size="16"></mu-icon>收藏
+            <mu-list-item-content v-else style="display:flex;">
+              <mu-slide-top-transition>
+                <mu-icon value="turned_in_not" color="black" size="24"></mu-icon>
+              </mu-slide-top-transition>
+              <div style="margin-top:3px;margin-left:5px;">收藏</div>
             </mu-list-item-content>
           </mu-list-item>
           <mu-list-item button>
-            <mu-list-item-content>不感兴趣</mu-list-item-content>
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="sentiment_very_dissatisfied" color="black" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">不感兴趣</div>
+            </mu-list-item-content>
           </mu-list-item>
           <mu-list-item button @click="openBotttomSheet">
-            <mu-list-item-content>举报</mu-list-item-content>
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="warning" color="redA700" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">举报</div>
+            </mu-list-item-content>
           </mu-list-item>
         </mu-list>
       </mu-menu>
@@ -42,13 +54,11 @@
         <div style="width:30%;margin-top:6px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
       <div v-if="artice.proportion">
-        <van-swipe @change="onChange">
+        <van-swipe @change="onChange" :loop="false">
           <van-swipe-item v-for="(image, index) in picturesArray" :key="index">
-            <img :src="image">
+            <img :src="image" :onerror="defaultImg">
           </van-swipe-item>
-          <div class="custom-indicator" slot="indicator">
-            {{ current + 1 }}/{{picturesArray.length}}
-          </div>
+          <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{picturesArray.length}}</div>
         </van-swipe>
       </div>
       <div class="img-container" v-else>
@@ -57,12 +67,19 @@
         </div>
       </div>
       <div style="padding:5px 10px 5px 10px;">
-        <mu-chip class="demo-chip" color="blue100" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
+        <mu-chip
+          class="demo-chip"
+          color="blue100"
+          text-color="black"
+          v-for="tag in tagArray"
+          :key="tag"
+        >#{{tag}}</mu-chip>
       </div>
       <mu-card-text>{{artice.content}}</mu-card-text>
       <div style="padding-left:10px;font-size:12px;">
-        发布于&nbsp;{{artice.datatime}}&nbsp; 
-        <mu-icon value="place" size="16"></mu-icon>{{artice.place}}
+        发布于&nbsp;{{artice.datatime}}&nbsp;
+        <mu-icon value="place" size="16"></mu-icon>
+        {{artice.place}}
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
         <mu-badge content="12" circle class="demo-icon-badge">
@@ -87,9 +104,7 @@
         <br>评论已被作者关闭
       </div>
       <!-- <mu-divider></mu-divider> -->
-      <div style="text-align:center;padding-top:5px;">
-        作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员
-      </div>
+      <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>
     </mu-card>
     <!-- <app-footer param="home"></app-footer> -->
     <mu-bottom-sheet :open.sync="open">
@@ -102,7 +117,7 @@
           <mu-list-item-title>侵权</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button>
-          <mu-list-item-title>广告、不健康信息信息</mu-list-item-title>
+          <mu-list-item-title>广告、不健康信息</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button>
           <mu-list-item-title>其他</mu-list-item-title>
@@ -113,7 +128,7 @@
 </template>
 <script>
 import ArticeContent from "@/components/public/ArticeContent.vue";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 export default {
   name: "artice",
   data() {
@@ -121,25 +136,26 @@ export default {
       current: 0,
       picture: require("@/assets/images/carousel1.jpg"),
       picture1: require("@/assets/images/404.jpg"),
-      star: false,
+      star: true,
       open: false,
       artice: {
-        proportion:false,//这个字段用来判断图文中图片是否是等比例的，true则使用轮播图，false则使用预览
+        proportion: false, //这个字段用来判断图文中图片是否是等比例的，true则使用轮播图，false则使用预览
         style: "googlecode",
         title: "午后时光",
-        comment: false,//评论
-        datatime: "2019-3-17 16:03",//发布时间
+        comment: false, //评论
+        datatime: "2019-3-17 16:03", //发布时间
         author: "花间舞",
-        place:"上海 浦东",
+        place: "上海 浦东",
         tags: "原创|王者荣耀|云淡风轻",
-        pictures:"http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
+        pictures:
+          "http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
         content:
           " 散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！"
       }
     };
   },
-  mounted(){//这里必须是mouted钩子
-
+  mounted() {
+    //这里必须是mouted钩子
   },
   computed: {
     // 将标签字符串切割成数组
@@ -151,13 +167,25 @@ export default {
       return this.artice.pictures.split("|");
     },
     //默认加载的图片
-    defaultImg () {
-      return 'this.src="'+ require('@/assets/broken_image.jpg') +'"'
+    defaultImg() {
+      return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
     }
   },
   methods: {
-    starArtice(star) {
-      star ? (this.star = false) : (this.star = true);
+    starArtice() {
+      console.log(this.star);
+      if (this.star) {
+        this.star = false;
+        this.$toast.success("取消收藏成功");
+        //Toast.success('取消收藏成功');
+      } else {
+        this.star = true;
+        this.$toast.success("收藏成功");
+      }
+    },
+    opeanToast() {
+      console.log("looooogggggggggggggggggg");
+      Toast.success("收藏成功");
     },
     closeBottomSheet() {
       this.open = false;
@@ -175,7 +203,7 @@ export default {
       const images = this.picturesArray;
       const instance = ImagePreview({
         images,
-        startPosition: typeof position === 'number' ? position : 0
+        startPosition: typeof position === "number" ? position : 0
       });
     }
   },
@@ -183,14 +211,12 @@ export default {
     "artice-content": ArticeContent
   },
   filters: {
-    formateDate(value){
-
-    }
+    formateDate(value) {}
   }
 };
 </script>
 <style scoped>
-.van-swipe-item img{
+.van-swipe-item img {
   max-width: 100%;
   max-height: 100%;
 }
@@ -242,29 +268,29 @@ export default {
   padding: 2px 5px;
   font-size: 12px;
   color: white;
-  background: rgba(0, 0, 0, .1);
+  background: rgba(0, 0, 0, 0.1);
 }
-.img-container{
-  display:flex; /* 弹性布局 */
-  flex-wrap:wrap;/* 换行 */
+.img-container {
+  display: flex; /* 弹性布局 */
+  flex-wrap: wrap; /* 换行 */
   /* border:solid 1px black; */
   /* margin-left:3%; */
-  padding-left:6%;
+  padding-left: 6%;
 }
 .img-container .img-item {
-  width:30%;
-  height:28vw;
+  width: 30%;
+  height: 28vw;
   /* border:solid 1px black; */
-  margin:0px 5px 5px 0px;
-  max-height:143px;
-  min-height:100px;
+  margin: 0px 5px 5px 0px;
+  max-height: 143px;
+  min-height: 100px;
   /* text-align: center; */
   overflow: hidden;
 }
-.img-container .img-item img{
-  height:100%;
-  width:100%;
-  object-fit:cover;
+.img-container .img-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 /* 1 3 1 1 3 1 1 3 1 */
 /* 1 2 2 1 */

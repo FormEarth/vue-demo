@@ -3,12 +3,12 @@
     <div class="long-artice" v-if="type=='long-artice'" @click="goArticle(artice.id)">
       <div class="header">
         <span style="font-size:15px;font-weight:bold;">{{artice.title}}</span>
-        <mu-chip color="blue100" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
+        <mu-chip color="blue100" text-color="black" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
         <!-- <mu-icon value="close" sixe="12" style="float:right;"></mu-icon> -->
       </div>
       <div class="list-item" v-if="hasPicture">
         <div class="left">
-          <img :src="artice.picture">
+          <img :src="artice.picture" :onerror="defaultImg">
         </div>
         <div class="right">
           <div class="right-top" style="height: 73%;">{{artice.content}}</div>
@@ -35,14 +35,14 @@
       <div class="atlas-item">
         <div class="atlas-item-content">
           <div class="atlas-item-img" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image">
+            <img :src="image" :onerror="defaultImg">
           </div>
         </div>
         <div class="atlas-item-header">
           <div class="van-ellipsis">{{artice.content}}</div>
         </div>
         <div class="atlas-item-footer">
-          <mu-chip color="green300" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
+          <mu-chip color="green300" text-color="black" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
           <span>{{artice.author}}</span>
           &nbsp;{{artice.sendTime}}
           <!-- <span style="float:right">123 阅读 &nbsp;</span> -->
@@ -98,17 +98,21 @@ export default {
       }
       const temp = pictures.split("|");
       return temp.slice(0, 4);
+    },
+    //默认加载的图片
+    defaultImg () {
+      return 'this.src="'+ require('@/assets/broken_image.jpg') +'"'
     }
   },
   filters: {
   },
   methods: {
     goArticle(id) {
-      var url = "/home/artice/get/" + id;
+      var url = "/home/artice/detail/" + id;
       this.$router.push(url);
     },
     goPictures(id) {
-      var url = "/home/pictures/" + id;
+      var url = "/home/atlas/detail/" + id;
       this.$router.push(url);
     }
   }

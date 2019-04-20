@@ -17,7 +17,7 @@
     <mu-list>
       <mu-sub-header>声音开启设置</mu-sub-header>
       <mu-list-item button :ripple="false" @click="events = !events">
-        <mu-list-item-title>事件和提醒</mu-list-item-title>
+        <mu-list-item-title>全部预览模式</mu-list-item-title>
         <mu-list-item-action>
           <mu-switch v-model="events" :ripple="false" readonly></mu-switch>
         </mu-list-item-action>

@@ -9,7 +9,7 @@
       </mu-button>
     </mu-appbar>
     <div class="dynamic-imgs">
-      <p class="img-title">添加图片</p>
+      <p class="img-title">添加图片({{dynamicPics.length}}/9)</p>
       <div class="table-list">
         <!-- 显示图片 -->
         <div class="img-div" v-for="(img,index) in dynamicPics" :key="index">
@@ -39,7 +39,21 @@
         placeholder="文字描述"
         rows="3"
         :autosize="autosize"
+        maxlength="255"
       />
+      <span v-if="content.length>=255" style="float:right;color:red;">字数已达上限</span>
+      <span v-else style="float:right;">{{content.length}}/255字</span>
+    </div>
+    <div>
+      <van-cell-group>
+        <van-switch-cell v-model="proportion" title="使用预览模式"/>
+      </van-cell-group>
+    </div>
+    <div class="dynamic-imgs">
+      <p class="img-title">
+        若您的图片尺寸一致(各图片的宽高比误差小于0.1),将启用轮播图模式，否则将使用预览模式，了解更多请点击
+        <a href>这里</a>
+      </p>
     </div>
   </mu-container>
 </template>
@@ -53,7 +67,8 @@ export default {
       dynamicPics: [], //存放添加图片
       isSelectImg: false, //开启弹窗标志
       autosize: { minheight: 50 },
-      content:""
+      content: "",
+      proportion: false,
     };
   },
   computed: {
@@ -115,7 +130,7 @@ export default {
   min-height: 152px;
   width: 100%;
   background-color: #ffffff;
-  padding: 12px;
+  padding: 5px 15px 15px 15px;
   margin-bottom: 6.5px;
 }
 .img-title {
@@ -156,6 +171,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0px;
+}
+a {
+  color: #2979ff;
 }
 </style>
 
