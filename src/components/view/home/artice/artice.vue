@@ -54,31 +54,31 @@
             <!-- <van-button type="danger" size="mini">已关注</van-button> -->
           </div>
         </div>
-        <div style="width:30%;margin-top:5px;text-align:right;padding-right:10px;">123 阅读</div>
+        <div style="width:30%;margin-top:5px;text-align:right;padding-right:10px;">{{artice.readerNum}} 阅读</div>
       </div>
       <div style="padding:5px 10px 5px 10px;">
         <mu-chip class="demo-chip" color="blue100" text-color="black" v-for="tag in tagArray" :key="tag">#{{tag}}</mu-chip>
       </div>
       <!-- <mu-card-text> -->
         <!-- <artice-content :content="value" :artice-style="artice.style"></artice-content> -->
-        <mavon-editor class="editor" v-model="value1" :toolbarsFlag="false" :boxShadow="false" 
+        <mavon-editor class="editor" v-model="artice.content" :toolbarsFlag="false" :boxShadow="false" 
           :codeStyle="artice.codeStyle" :subfield="false" :defaultOpen="defaultOpen" />
       <!-- </mu-card-text> -->
       <!-- <mu-divider></mu-divider> -->
       <mu-card-actions style="white-space: nowrap">
-        <mu-badge content="12" circle class="demo-icon-badge">
+        <mu-badge :content="artice.approval" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_up"></mu-icon>
           </mu-button>
         </mu-badge>
-        <mu-badge content="999+" circle class="demo-icon-badge">
+        <mu-badge :content="artice.oppose" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_down"></mu-icon>
           </mu-button>
         </mu-badge>
-        <mu-badge content="1" circle class="demo-icon-badge">
+        <mu-badge :content="artice.favorite" circle class="demo-icon-badge">
           <mu-button icon>
-            <mu-icon value="share"></mu-icon>
+            <mu-icon value="favorite"></mu-icon>
           </mu-button>
         </mu-badge>
       </mu-card-actions>
@@ -116,7 +116,7 @@
   </mu-container>
 </template>
 <script>
-import ArticeContent from "@/components/public/ArticeContent.vue";
+import { articeDetail } from "@/axios/api";
 
 export default {
   name: "artice",
@@ -127,16 +127,7 @@ export default {
       open: false,
       toTopIsShow: false,
       defaultOpen: "preview",
-      artice: {
-        codeStyle: "googlecode",
-        title: "午后时光",
-        comment: false,
-        datatime: "2019-3-17 16:03",
-        author: "花间舞",
-        tags:"原创|文学|读书笔记",
-        content:
-          "散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！"
-      },
+      artice: {},
       value: `<blockquote><p>引言</p></blockquote>
             散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
             <code>
@@ -150,6 +141,20 @@ export default {
         “那时候最大的梦想是一辈子和好友住在一起，大锅煮鸡，大屋同居。我想象那间大屋的外墙上爬满爬山虎，盛夏时是墨绿的，秋来是金黄的，我在下午的阳光里醒来推开窗，嘲笑那个刻苦的损友在院子里死读书。”——江南《此间的少年》`,
       value1: "> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = \"Hello World!\" \n\nSystem.out.println(str);\n```\n\n**文字加粗了**"
     };
+  },
+  created() {
+    var _this = this;
+    window.onscroll = function() {
+      //鼠标滚轮滚动距离超过10像素时，回到顶部按钮才显示
+      if (document.documentElement.scrollTop > 10) {
+        _this.toTopIsShow = true
+      } else {
+        _this.toTopIsShow = false
+      }
+    };
+    articeDetail().then(response=>{
+      this.artice = response.data.data
+    })
   },
   computed:{
     //切割标签为数组
@@ -187,20 +192,6 @@ export default {
       this.$router.push("/mine/info");
     }
   },
-  created() {
-    var _this = this;
-    window.onscroll = function() {
-      //鼠标滚轮滚动距离超过10像素时，回到顶部按钮才显示
-      if (document.documentElement.scrollTop > 10) {
-        _this.toTopIsShow = true;
-      } else {
-        _this.toTopIsShow = false;
-      }
-    };
-  },
-  components: {
-    "artice-content": ArticeContent
-  }
 };
 </script>
 <style scoped>

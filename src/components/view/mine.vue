@@ -11,7 +11,11 @@
           <mu-list-item-content>
             <mu-list-item-title>
               {{user.name}}
-              <mu-chip color="redA700" text-color="white" style="line-height: 20px;font-size:10px">vip 8</mu-chip>
+              <mu-chip
+                color="redA700"
+                text-color="white"
+                style="line-height: 20px;font-size:10px"
+              >vip 8</mu-chip>
             </mu-list-item-title>
             <mu-list-item-sub-title>{{user.sign}}</mu-list-item-sub-title>
           </mu-list-item-content>
@@ -60,7 +64,7 @@
           <mu-list-item button :ripple="false" slot="nested">
             <mu-list-item-title>List Item 3</mu-list-item-title>
           </mu-list-item>
-        </mu-list-item> -->
+        </mu-list-item>-->
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
             <mu-icon value="contacts" color="indigo400"></mu-icon>
@@ -92,7 +96,7 @@
             <mu-badge content="100+" color="redA700"></mu-badge>
             <!-- <mu-button icon>
               <mu-icon value="arrow_forward_ios"></mu-icon>
-            </mu-button> -->
+            </mu-button>-->
           </mu-list-item-action>
         </mu-list-item>
         <mu-list-item button :ripple="false">
@@ -117,7 +121,7 @@
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
-        <mu-list-item button :ripple="false" @click="openAlertDialog">
+        <mu-list-item button :ripple="false" @click="openAlertDialog" v-show="isLogin">
           <mu-list-item-action>
             <mu-icon value="exit_to_app" color="black"></mu-icon>
           </mu-list-item-action>
@@ -138,11 +142,19 @@
         </mu-list-item>
       </mu-list>
     </mu-paper>
-    <mu-dialog title="退出登录" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
-    该操作将清除您当前的登录状态
-    <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">取消</mu-button>
-    <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">确认</mu-button>
-  </mu-dialog>
+    <mu-dialog
+      title="退出登录"
+      width="600"
+      max-width="80%"
+      transition="slide-left"
+      :esc-press-close="false"
+      :overlay-close="false"
+      :open.sync="openAlert"
+    >
+      该操作将清除您当前的登录状态
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">取消</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="userLogout">确认</mu-button>
+    </mu-dialog>
     <app-footer param="mine"></app-footer>
   </mu-container>
 </template>
@@ -152,20 +164,36 @@ export default {
   data() {
     return {
       open: "send",
-      isLogin:false,
       openAlert: false,
-      user:{
-        name:"花间舞",
-        sign:"曾经沧海难为水，除却巫山不是云"
-      }
     };
   },
-  methods:{
-     openAlertDialog () {
+  computed: {
+    isLogin: function() {
+      return this.$store.getters.isLogin;
+    },
+    user: function(){
+      return this.$store.state.current_user;
+    }
+  },
+  methods: {
+    openAlertDialog() {
       this.openAlert = true;
     },
-    closeAlertDialog () {
+    closeAlertDialog() {
       this.openAlert = false;
+    },
+    userLogout() {
+      //移除sessionStorge中的用户数据
+      sessionStorage.removeItem("current_user");
+      //移除vuex中的用户数据
+      this.$store.commit('remove_user');
+      //TODO 发后台登出api
+      this.openAlert = false;
+      this.$notify({
+        message: '登出成功',
+        duration: 1000,
+        background: '#2196f3'
+      });
     }
   }
 };
@@ -175,9 +203,10 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
+  min-width: 350px;
 }
-.demo-list{
-  width:100%;
+.demo-list {
+  width: 100%;
 }
 .demo-list-wrap {
   width: 100%;

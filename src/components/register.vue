@@ -5,7 +5,7 @@
       <mu-col span="12" sm="11" md="5" lg="6" xl="6">
         <mu-paper class="demo-paper" :z-depth="5">
           <mu-form ref="form" :model="validateForm">
-            <mu-appbar title="用户注册" color="white" z-depth="0" textColor="black">
+            <mu-appbar title="用户注册" color="rgba(244, 243, 250, 0.8)" z-depth="0" textColor="black">
               <mu-button icon slot="left" @click="$router.back(-1)">
                 <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
               </mu-button>
@@ -149,6 +149,7 @@ export default {
 }
 .mu-paper {
   margin-top: 12%;
+  background-color: rgba(244, 243, 250, 0.8);
 }
 .mu-appbar {
   width: 100%;

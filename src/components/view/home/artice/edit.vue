@@ -47,10 +47,10 @@
         <mu-button flat color="#1565c0" @click="openPreview">
           <mu-icon value="visibility"></mu-icon>预览
         </mu-button>
-        <mu-button flat color="#1565c0" @click="craeatArtice">
+        <mu-button flat color="#1565c0" @click="craeatArtice" :disabled="disabled">
           <mu-icon value="send"></mu-icon>发布
         </mu-button>
-        <mu-button flat color="#1565c0">
+        <mu-button flat color="#1565c0" :disabled="disabled">
           <mu-icon value="inbox"></mu-icon>暂存
         </mu-button>
       </mu-paper>
@@ -78,7 +78,6 @@
 </template>
 <script>
 import ArticeContent from "@/components/public/ArticeContent.vue";
-import API from "@/axios/api";
 
 export default {
   name: "writeArtice",
@@ -106,6 +105,11 @@ export default {
       }
     };
   },
+  computed:{
+    disabled:function(){
+      return this.form.content==''?true:false;
+    }
+  },
   methods: {
     openPreview() {
       this.preview = true;
@@ -121,9 +125,6 @@ export default {
       }
       alert(description);
       return;
-      API.craeatArtice(this.form)
-        .then(result => {})
-        .catch(error => {});
     }
   },
   components: {

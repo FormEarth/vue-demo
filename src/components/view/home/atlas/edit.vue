@@ -9,14 +9,14 @@
       </mu-button>
     </mu-appbar>
     <div class="dynamic-imgs">
-      <p class="img-title">添加图片({{dynamicPics.length}}/9)</p>
+      <p class="img-title">添加图片({{altas.images.length}}/9)</p>
       <div class="table-list">
         <!-- 显示图片 -->
-        <div class="img-div" v-for="(img,index) in dynamicPics" :key="index">
+        <div class="img-div" v-for="(img,index) in altas.images" :key="index">
           <div class="delete">
             <mu-icon value="clear" color="white" size="20" @click="deleteImg(index)"></mu-icon>
           </div>
-          <img class="img-add" :src="img">
+          <img class="img-content" :src="img">
         </div>
         <!-- 这里就是那个加号图片，isAddImg控制是否显示，上传图片用van-uploader -->
         <div class="add-div" v-show="isAddImg">
@@ -34,19 +34,19 @@
     <div class="dynamic-imgs">
       <p class="img-title">添加描述</p>
       <van-field
-        v-model="content"
+        v-model="altas.content"
         type="textarea"
         placeholder="文字描述"
         rows="3"
         :autosize="autosize"
         maxlength="255"
       />
-      <span v-if="content.length>=255" style="float:right;color:red;">字数已达上限</span>
-      <span v-else style="float:right;">{{content.length}}/255字</span>
+      <span v-if="altas.content.length>=255" style="float:right;color:red;">字数已达上限</span>
+      <span v-else style="float:right;">{{altas.content.length}}/255字</span>
     </div>
     <div>
       <van-cell-group>
-        <van-switch-cell v-model="proportion" title="使用预览模式"/>
+        <van-switch-cell v-model="altas.proportion" title="使用预览模式"/>
       </van-cell-group>
     </div>
     <div class="dynamic-imgs">
@@ -64,17 +64,19 @@ export default {
   name: "atlas-add",
   data() {
     return {
-      dynamicPics: [], //存放添加图片
       isSelectImg: false, //开启弹窗标志
       autosize: { minheight: 50 },
-      content: "",
-      proportion: false,
+      altas:{
+        images:[],//存放添加图片
+        content:"",
+        proportion:false,//使用预览模式
+      }
     };
   },
   computed: {
     isAddImg() {
       //如果已经9张了，isAddImg为false，隐藏加号
-      if (this.dynamicPics.length >= 9) {
+      if (this.altas.images.length >= 9) {
         return false;
       } else {
         return true;
@@ -84,7 +86,7 @@ export default {
   methods: {
     //判断是否已经达到选图上限
     isMax(files) {
-      let imgNum = this.dynamicPics.length + files.length;
+      let imgNum = this.altas.images.length + files.length;
       if (imgNum > 9) {
         return false;
       } else {
@@ -95,15 +97,15 @@ export default {
       //添加图片，这里需要注意，当上传一张照片时files是一个file对象而不是数组，因此先判断一下
       if (files instanceof Array) {
         for (let i = 0; i < files.length; i++) {
-          this.dynamicPics.push(files[i].content);
+          this.altas.images.push(files[i].content);
         }
       } else {
-        this.dynamicPics.push(files.content);
+        this.altas.images.push(files.content);
       }
     },
     //删除图片
     deleteImg(index) {
-      this.dynamicPics.splice(index, 1); //删除起始下标为index，长度为1的一个值
+      this.altas.images.splice(index, 1); //删除起始下标为index，长度为1的一个值
     }
   }
 };
@@ -145,11 +147,12 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-.img-add {
-  width: 96px;
-  height: 96px;
-  margin-left: 5px;
-  margin-bottom: 5px;
+.img-content {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  /* margin-left: 5px;
+  margin-bottom: 5px; */
 }
 .add-div {
   width: 96px;
@@ -159,8 +162,10 @@ export default {
   border: 3px dashed rgb(172, 172, 171);
 }
 .img-div {
-  width: 101px;
-  height: 101px;
+  width: 96px;
+  height: 96px;
+  margin-left: 5px;
+  margin-bottom: 5px;
   position: relative;
 }
 .img-div .delete {

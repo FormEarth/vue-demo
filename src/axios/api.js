@@ -1,14 +1,25 @@
-import {get, post,deletes,put} from './axios.js' ;//导入axios实例文件中方法
-let bsae_api = "127.0.0.1:9092" //服务端请求地址
-//根据id获取用户信息
-export const getUserInfoById=(id)=>{
-    return get(`${bsae_api}/web/user/${id}`); //resfulapi风格
+import request from '@/axios/axios.js' ;//导入axios实例文件中方法
+//用户登陆
+export function userLogin(data){
+    return request({
+        url: '/demo/api/user/login',
+        method: 'post',
+        params: data
+    });
 }
-//新增文章
-export const createArtice=(form)=>{
-    return put(`${bsae_api}/demo/api/artice`);
+//首页数据加载
+export function artices(data){
+    return request({
+        url: '/demo/api/artices',
+        method: 'get',
+        params: data
+    });
 }
-
-export default{
-    
+//文章详情数据加载
+export function articeDetail(data){
+    return request({
+        url: '/demo/api/artice/detail/123',
+        method: 'get',
+        params: data
+    });
 }
