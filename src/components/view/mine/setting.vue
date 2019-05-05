@@ -41,7 +41,7 @@
         <mu-list-item-action>
           <mu-checkbox v-model="notifications" readonly></mu-checkbox>
         </mu-list-item-action>
-        <mu-list-item-title>通知</mu-list-item-title>
+        <mu-list-item-title>允许通过邮箱联系我</mu-list-item-title>
       </mu-list-item>
       <mu-list-item button :ripple="false" @click="sounds = !sounds">
         <mu-list-item-action>

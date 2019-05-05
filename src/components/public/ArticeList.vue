@@ -150,7 +150,6 @@ export default {
 }
 .right-top {
   overflow: hidden;
-  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;

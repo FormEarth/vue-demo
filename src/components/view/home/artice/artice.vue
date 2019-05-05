@@ -159,7 +159,7 @@ export default {
   computed:{
     //切割标签为数组
     tagArray:function(){
-      if(this.artice.tags==''){
+      if(typeof(this.artice.tags) == "undefined"){
         return;
       }
       return this.artice.tags.split("|");
