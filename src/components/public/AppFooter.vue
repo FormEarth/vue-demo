@@ -1,7 +1,7 @@
 <template>
     <mu-bottom-nav :value.sync="param" color="primary">
       <mu-bottom-nav-item value="home" title="首页" icon="home" to="/"></mu-bottom-nav-item>
-      <mu-bottom-nav-item value="star" title="关注" icon="star_rate" to="/star"></mu-bottom-nav-item>
+      <mu-bottom-nav-item value="star" title="关注" icon="add" to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" to="/mine"></mu-bottom-nav-item>
     </mu-bottom-nav>
 </template>

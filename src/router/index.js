@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login'
 import register from '@/components/register'
+import test from '@/components/test'
 
 import home from '@/components/view/home'
 import artice from '@/components/view/home/artice/artice'
@@ -29,6 +30,7 @@ const router = new Router({
       children: [
       ]
     },
+    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false }, component: test },
     { path: '/home/artice/detail/:id', name: 'artice', meta: { title: "文章详情", requireLogin: false }, component: artice },
     { path: '/home/artice/add', name: 'articeAdd', meta: { title: "发布长文", requireLogin: true }, component: articeAdd },
     { path: '/home/atlas/detail/:id', name: 'atlas', meta: { title: "图集详情", requireLogin: false }, component: atlas },

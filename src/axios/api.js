@@ -7,10 +7,18 @@ export function userLogin(data){
         params: data
     });
 }
-//首页数据加载
+//首页文章数据加载
 export function artices(data){
     return request({
         url: '/demo/api/artices',
+        method: 'get',
+        params: data
+    });
+}
+//首页图集数据加载
+export function atlases(data){
+    return request({
+        url: '/demo/api/atlases',
         method: 'get',
         params: data
     });

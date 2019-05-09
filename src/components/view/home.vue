@@ -1,71 +1,87 @@
 <template>
   <mu-container>
-    <mu-paper :z-depth="0" class="home-paper">
-      <mu-appbar color="redA700">
-        <mu-button icon slot="left">
-          <mu-icon value="whatshot"></mu-icon>
-        </mu-button>
-        <mu-button icon slot="right">
-          <mu-icon value="search"></mu-icon>
-        </mu-button>
-      </mu-appbar>
-      <mu-list textline="three-line" dense style="background-color: rgb(207, 207, 218);">
-        <mu-sub-header style="background-color: white">热门推荐</mu-sub-header>
-        <div v-for="artice in artices" :key="artice.id">
-          <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
-        </div>
-      </mu-list>
-      <!-- <mu-button fab class="writeArtice" color="redA700" to="/home/artice/add">
-      <mu-icon value="add" size="36"></mu-icon>
-      </mu-button>-->
-      <div class="addButton">
-        <mu-slide-left-transition>
-          <mu-button v-show="this.open" to="/home/atlas/add" style="margin-bottom:8px;">
-            发布图集
-            <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
-          </mu-button>
-        </mu-slide-left-transition>
-        <mu-slide-right-transition>
-          <mu-button v-show="this.open" to="/home/artice/add" style="margin-bottom:8px;">
-            写长文
-            <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
-          </mu-button>
-        </mu-slide-right-transition>
-        <mu-slide-bottom-transition>
-          <mu-button v-show="this.open" style="margin-bottom:8px;">写短文</mu-button>
-        </mu-slide-bottom-transition>
-        <mu-button fab color="redA700" :ripple="false" v-if="!open" @click="change">
-          <mu-icon value="add" size="38"></mu-icon>
-        </mu-button>
-        <mu-button fab color="redA700" v-else @click="change">
-          <mu-icon value="close" size="38"></mu-icon>
-        </mu-button>
-      </div>
-    </mu-paper>
+    <van-tabs v-model="active" swipeable sticky>
+      <van-tab title="文章">
+        <mu-paper :z-depth="0" class="home-paper">
+          <mu-list textline="three-line" dense style="background-color: rgb(207, 207, 218);">
+            <mu-sub-header style="background-color: white">热门推荐</mu-sub-header>
+            <!-- <transition-group> -->
+              <div v-for="artice in artices" :key="artice.id">
+                <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
+              </div>
+            <!-- </transition-group> -->
+          </mu-list>
+          <div class="addButton">
+            <mu-slide-left-transition>
+              <mu-button v-show="this.open" to="/home/atlas/add" style="margin-bottom:8px;">
+                发布图集
+                <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
+              </mu-button>
+            </mu-slide-left-transition>
+            <mu-slide-right-transition>
+              <mu-button v-show="this.open" to="/home/artice/add" style="margin-bottom:8px;">
+                写长文
+                <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
+              </mu-button>
+            </mu-slide-right-transition>
+            <mu-slide-bottom-transition>
+              <mu-button v-show="this.open" style="margin-bottom:8px;">写短文</mu-button>
+            </mu-slide-bottom-transition>
+            <mu-button fab color="redA700" :ripple="false" v-if="!open" @click="change">
+              <mu-icon value="add" size="38"></mu-icon>
+            </mu-button>
+            <mu-button fab color="redA700" v-else @click="change">
+              <mu-icon value="close" size="38"></mu-icon>
+            </mu-button>
+          </div>
+        </mu-paper>
+      </van-tab>
+      <van-tab title="图集">
+        <mu-paper :z-depth="0" class="home-paper">
+          <mu-list textline="three-line" dense style="background-color: rgb(201, 223, 218);">
+            <mu-sub-header style="background-color: white">图集推荐</mu-sub-header>
+            <div v-for="atlas in atlases" :key="atlas.id">
+              <atlas-list style="margin-bottom:3px;" :atlas="atlas"></atlas-list>
+            </div>
+          </mu-list>
+        </mu-paper>
+      </van-tab>
+      <!-- <van-tab title="其它">
+        暂时什么都没有哦^-^
+      </van-tab> -->
+    </van-tabs>
+
     <app-footer param="home"></app-footer>
     <!-- <router-view></router-view> -->
   </mu-container>
 </template>
 <script>
 import ArticeList from "@/components/public/ArticeList.vue";
-import { artices } from "@/axios/api";
+import AtlasList from "@/components/public/AtlasList.vue";
+import { artices, atlases } from "@/axios/api";
 
 export default {
   name: "home",
   data() {
     return {
+      active: 0,
       open: false, //写文章按钮是否展开,
       selects: [],
       picture: require("@/assets/images/carousel1.jpg"),
-      artices: []
+      artices: [], //文章列表数据
+      atlases: [] //图集列表数据
     };
   },
   //created()是一个函数
-  created(){
+  created() {
     artices().then(response => {
-          const artices = response.data.data
-          this.artices = artices
-        });
+      const artices = response.data.data;
+      this.artices = artices;
+    });
+    atlases().then(response => {
+      const atlases = response.data.data;
+      this.atlases = atlases;
+    });
   },
   methods: {
     changeUrl(url) {
@@ -83,7 +99,8 @@ export default {
     }
   },
   components: {
-    "artice-list": ArticeList
+    "artice-list": ArticeList,
+    "atlas-list": AtlasList
   }
 };
 </script>
@@ -96,14 +113,14 @@ export default {
   min-width: 350px;
 }
 .home-paper {
-  padding-top: 58px;
+  /* padding-top: 58px; */
   padding-bottom: 56px;
   width: 100%;
   /* max-width可能会导致大屏幕填充不满的情况 */
   max-width: 500px;
   overflow: hidden;
 }
-.mu-list{
+.mu-list {
   padding: 0px;
 }
 .mu-appbar {

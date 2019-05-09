@@ -37,12 +37,12 @@
         </div>
         <div v-else-if="pictureArray.length==2" style="display:flex;">
           <div class="atlas-item-img-2" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg">
+            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)">
           </div>
         </div>
         <div v-else style="display:flex;flex-wrap:wrap;">
           <div class="atlas-item-img-3" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg">
+            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)">
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@
     </mu-dialog>
     <mu-bottom-sheet :open.sync="open">
       <mu-list @item-click="closeBottomSheet">
-        <mu-sub-header>举报原因：</mu-sub-header>
+        <mu-sub-header>您正在举报{{atlas.author}}，举报原因：</mu-sub-header>
         <mu-list-item button>
           <mu-list-item-title>政治有害类</mu-list-item-title>
         </mu-list-item>
@@ -149,6 +149,8 @@
 7.其它，30%宽度展示，等高度，文字展示同上
 */
 import util from "@/util/util";
+import { ImagePreview } from "vant";
+
 export default {
   name: "AtlasList", //图集列表组件
   props: {
@@ -216,6 +218,7 @@ export default {
       this.open = false;
     },
     openBotttomSheet() {
+      this.openAlert = false;
       this.open = true;
     },
     handleFold() {
@@ -223,6 +226,13 @@ export default {
     },
     onChange(index) {
       this.current = index;
+    },
+    showImagePreview(position) {
+      const images = this.pictureArray;
+      const instance = ImagePreview({
+        images,
+        startPosition: typeof position === "number" ? position : 0
+      });
     }
   }
 };

@@ -1,4 +1,5 @@
 <template>
+<mu-slide-left-transition>
   <mu-paper :z-depth="0">
     <div class="long-artice" v-if="type=='long-artice'" @click="goArticle(artice.id)">
       <div class="header">
@@ -50,6 +51,7 @@
       </div>
     </div>
   </mu-paper>
+</mu-slide-left-transition>
 </template>
 <script>
 export default {

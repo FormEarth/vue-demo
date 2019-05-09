@@ -1,21 +1,12 @@
 <template>
   <mu-container>
-    <mu-appbar color="indigoA200" textColor="black" title="设置" z-depth="1">
+    <mu-appbar color="white" textColor="black" title="设置" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
     </mu-appbar>
-    <mu-list textline="two-line">
-      <mu-list-item>
-        <mu-list-item-content>
-          <mu-list-item-title>通知与信息设置</mu-list-item-title>
-          <mu-list-item-sub-title>总是中断</mu-list-item-sub-title>
-        </mu-list-item-content>
-      </mu-list-item>
-    </mu-list>
-    <mu-divider></mu-divider>
     <mu-list>
-      <mu-sub-header>声音开启设置</mu-sub-header>
+      <mu-sub-header>图集&文章设置</mu-sub-header>
       <mu-list-item button :ripple="false" @click="events = !events">
         <mu-list-item-title>全部预览模式</mu-list-item-title>
         <mu-list-item-action>
@@ -34,6 +25,31 @@
           <mu-switch v-model="messages" :ripple="false" readonly></mu-switch>
         </mu-list-item-action>
       </mu-list-item>
+    </mu-list>
+    <mu-list>
+      <mu-sub-header>屏蔽设置</mu-sub-header>
+      <mu-list-item button :ripple="false">
+          <mu-list-item-action>
+            <mu-icon value="dashboard" color="primary"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>我屏蔽的作者</mu-list-item-title>
+          <mu-list-item-action>
+            <mu-button icon>
+              <mu-icon value="arrow_forward_ios"></mu-icon>
+            </mu-button>
+          </mu-list-item-action>
+        </mu-list-item>
+        <mu-list-item button :ripple="false">
+          <mu-list-item-action>
+            <mu-icon value="dashboard" color="primary"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>我屏蔽的标签</mu-list-item-title>
+          <mu-list-item-action>
+            <mu-button icon>
+              <mu-icon value="arrow_forward_ios"></mu-icon>
+            </mu-button>
+          </mu-list-item-action>
+        </mu-list-item>
     </mu-list>
     <mu-list>
       <mu-sub-header>通知设置</mu-sub-header>
