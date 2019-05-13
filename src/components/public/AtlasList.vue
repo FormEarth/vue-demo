@@ -72,15 +72,12 @@
       </div>
     </div>123条评论
     <mu-dialog
-      width="90%"
+      width="100%"
+      max-width="90%"
       :esc-press-close="false"
+      :overlay-opacity=0.6
       :open.sync="openAlert"
-      dialog-class="dialog-style"
     >
-      <!-- <div class="menu-item"> <mu-icon value="star"></mu-icon>关注 {{atlas.author}}</div>
-    <div class="menu-item">联系 {{atlas.author}}</div>
-    <div class="menu-item">不看</div>
-      <div class="menu-item">举报 </div>-->
       <mu-list>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
@@ -92,7 +89,7 @@
           <mu-list-item-action>
             <mu-icon value="mail_outline"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>mailto {{atlas.author}}</mu-list-item-title>
+          <mu-list-item-title>发邮件给 {{atlas.author}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
@@ -111,6 +108,18 @@
             <mu-icon value="warning"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>举报</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.id==this.atlas.authorId">
+          <mu-list-item-action>
+            <mu-icon value="edit"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>重新编辑</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.id==this.atlas.authorId">
+          <mu-list-item-action>
+            <mu-icon value="delete"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>删除</mu-list-item-title>
         </mu-list-item>
       </mu-list>
     </mu-dialog>
@@ -209,6 +218,8 @@ export default {
       this.$router.push("/mine/info");
     },
     openAlertDialog() {
+      console.log(this.$store.state.current_user.id)
+      console.log(this.atlas.authorId)
       this.openAlert = true;
     },
     closeAlertDialog() {
@@ -328,7 +339,9 @@ export default {
   /* text-align:center; */
   /* border-bottom: 1px solid black; */
 }
-
+.mu-dialog-wrapper >>> .mu-dialog-body{
+  padding: 0;
+}
 .atlas-content {
   display: -webkit-box;
   -webkit-box-orient: vertical;

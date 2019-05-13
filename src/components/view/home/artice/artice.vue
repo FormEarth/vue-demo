@@ -35,6 +35,18 @@
               <div style="margin-top:3px;margin-left:5px;">举报</div>
             </mu-list-item-content>
           </mu-list-item>
+          <mu-list-item button to="/home/artice/edit/123" v-show="this.$store.state.current_user.id==this.artice.authorId">
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="edit" color="info" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">重新编辑</div>
+            </mu-list-item-content>
+          </mu-list-item>
+          <mu-list-item button v-show="this.$store.state.current_user.id==this.artice.authorId">
+            <mu-list-item-content style="display:flex;">
+              <mu-icon value="delete" color="redA700" size="24"></mu-icon>
+              <div style="margin-top:3px;margin-left:5px;">删除</div>
+            </mu-list-item-content>
+          </mu-list-item>
         </mu-list>
       </mu-menu>
     </mu-appbar>
@@ -152,18 +164,6 @@ export default {
       artice: {},
       content:
         '# 一级标题\n## 二级标题\n### 三级标题\n#### 四级标题\n> 没有什么是永恒的,散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影\n\n[一个链接](www.baidu.com)散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。`强调`我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\nString str = "Hello World!" \nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n1. 1.第一\n2. 2.第二\n3. 3.第三\n\n- 1\n- 2\n- 3\n\n**文字加粗了**\n==标记==',
-      converter: null,
-      value: `<blockquote><p>引言</p></blockquote>
-            散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
-            <code>
-            jdesktop.browse(new URI("http://www.baidu.com"));
-				    desktop.edit(new File("F:/1.txt"));
-				    desktop.open(new File("F:/1.txt"));
-            desktop.print(new File("F:/1.txt"));</code>
-        <blockquote>"散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！"
-        </blockquote>
-        <p>“那时候最大的梦想是一辈子和好友住在一起，大锅煮鸡，大屋同居。我想象那间大屋的外墙上爬满爬山虎，盛夏时是墨绿的，秋来是金黄的，我在下午的阳光里醒来推开窗，嘲笑那个刻苦的损友在院子里死读书。”——江南《此间的少年》</p>
-        “那时候最大的梦想是一辈子和好友住在一起，大锅煮鸡，大屋同居。我想象那间大屋的外墙上爬满爬山虎，盛夏时是墨绿的，秋来是金黄的，我在下午的阳光里醒来推开窗，嘲笑那个刻苦的损友在院子里死读书。”——江南《此间的少年》`,
       value1:
         '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n\n**文字加粗了**'
     };

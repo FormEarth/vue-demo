@@ -33,6 +33,7 @@ const router = new Router({
     { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false }, component: test },
     { path: '/home/artice/detail/:id', name: 'artice', meta: { title: "文章详情", requireLogin: false }, component: artice },
     { path: '/home/artice/add', name: 'articeAdd', meta: { title: "发布长文", requireLogin: true }, component: articeAdd },
+    { path: '/home/artice/edit/:id', name: 'articeEdit', meta: { title: "编辑文章", requireLogin: true }, component: articeAdd },
     { path: '/home/atlas/detail/:id', name: 'atlas', meta: { title: "图集详情", requireLogin: false }, component: atlas },
     { path: '/home/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true }, component: atlasAdd },
     { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false }, component: star },

@@ -101,6 +101,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
       picture:
         "http://image.9game.cn/2017/11/13/18553901.jpg",
       avatar: require("@/assets/images/carousel1.jpg"),
+      authorId:"1001",
       author: "高天原",
       content1: "今天好高兴出来玩",
       content:
@@ -116,6 +117,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
       picture:
         "http://image.9game.cn/2017/11/13/18553901.jpg|http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg",
       avatar: require("@/assets/images/carousel1.jpg"),
+      authorId:"1001",
       author: "花间舞",
       content: "王者荣耀好好玩",
       sendTime: "2019/05/04 15:33:14",
@@ -129,6 +131,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
       picture:
         "http://image.9game.cn/2017/11/13/18553901.jpg|http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg",
       avatar: require("@/assets/images/carousel1.jpg"),
+      authorId:"1001",
       author: "花间舞",
       content: "王者荣耀好好玩",
       sendTime: "2019/05/04 19:33:14",
@@ -142,6 +145,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
       picture:
         "http://image.9game.cn/2017/11/13/18553901.jpg|http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://image.9game.cn/2017/11/13/18553901.jpg",
       avatar: require("@/assets/images/carousel1.jpg"),
+      authorId:"1001",
       author: "李白",
       content: "大河之剑天上来",
       sendTime: "2019/05/04 20:33:14",
@@ -155,6 +159,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
       picture:
         "http://image.9game.cn/2017/11/13/18553901.jpg|http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://image.9game.cn/2017/11/13/18553901.jpg|http://image.9game.cn/2017/11/13/18553901.jpg",
       avatar: require("@/assets/images/carousel1.jpg"),
+      authorId:"1001",
       author: "李信",
       content: "大河之剑天上来",
       sendTime: "2019/05/03 20:33:14",
@@ -170,8 +175,11 @@ Mock.mock('http://192.168.0.110:8080/demo/api/artice/detail/123', 'get', {
   data: {
     codeStyle: "googlecode",
     title: "午后时光",
+    personal: false,
+    anonymous: false,
     comment: false,//允许评论
     datatime: "2019-3-17 16:03",
+    authorId: "1001",
     author: "花间舞",
     tags: "原创|文学|读书笔记",
     content: "> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = \"Hello World!\" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了**",

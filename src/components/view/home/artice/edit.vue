@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-appbar color="white" title="写文章(Markdown长文)" textColor="black" z-depth="1">
+    <mu-appbar color="white" :title="pageTitle" textColor="black" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
@@ -39,9 +39,13 @@
         <mu-select v-model="form.tag" chips multiple tags filerable>
           <mu-option v-for="style in tags" :key="style" :label="style" :value="style"></mu-option>
         </mu-select>
-      </mu-form-item> -->
-      <mu-form-item label="选择标签" help-text="允许多个标签，多个标签请用“，”间隔" style="padding-left:15px;padding-right:15px;">
-      <mu-auto-complete :data="tags" :max-search-results="5"  v-model="form.tag" open-on-focus></mu-auto-complete>
+      </mu-form-item>-->
+      <mu-form-item
+        label="选择标签"
+        help-text="允许多个标签，多个标签请用“，”间隔"
+        style="padding-left:15px;padding-right:15px;"
+      >
+        <mu-auto-complete :data="tags" :max-search-results="5" v-model="form.tags" open-on-focus></mu-auto-complete>
       </mu-form-item>
       <mu-paper style="text-align:center">
         <mu-button flat color="#1565c0" @click="openPreview">
@@ -63,26 +67,28 @@
       </mu-appbar>
       <div v-if="form.content.length<1" style="text-align:center;margin-top:15px;">您还什么都没有写哦O_O</div>
       <div v-else>
-       <mavon-editor
-        v-model="form.content"
-        :codeStyle="form.codeStyle"
-        :subfield="false"
-        :boxShadow="false"
-        :autofocus="false"
-        :toolbarsFlag="false"
-        :defaultOpen="defaultData"
-      />
+        <mavon-editor
+          v-model="form.content"
+          :codeStyle="form.codeStyle"
+          :subfield="false"
+          :boxShadow="false"
+          :autofocus="false"
+          :toolbarsFlag="false"
+          :defaultOpen="defaultData"
+        />
       </div>
     </mu-dialog>
   </mu-container>
 </template>
 <script>
 import ArticeContent from "@/components/public/ArticeContent.vue";
+import { articeDetail } from "@/axios/api";
 
 export default {
   name: "writeArtice",
   data() {
     return {
+      type: "add", //当前页面是新增还是修改，默认为新增
       preview: false, //预览是否打开
       defaultData: "preview",
       selectStyles: [
@@ -101,13 +107,30 @@ export default {
         anonymous: false,
         comment: true,
         codeStyle: "github",
-        tag: ""
+        tags: ""
       }
     };
   },
-  computed:{
-    disabled:function(){
-      return this.form.content==''?true:false;
+  created() {
+    console.log("this.$route.name"+this.$route.name)
+    if (this.$route.name == "articeEdit") {
+      this.type = "edit";
+      articeDetail().then(response => {
+        console.log(response.data.data)
+        this.form = response.data.data;
+      });
+    }
+  },
+  computed: {
+    disabled: function() {
+      return this.form.content == "" ? true : false;
+    },
+    pageTitle:function(){
+      if(this.type=="add"){
+        return "写文章(Markdown长文)"
+      }else{
+        return "编辑文章"
+      }
     }
   },
   methods: {
@@ -142,8 +165,8 @@ export default {
 .mu-form-item-label {
   padding-right: 0px;
 }
-.help-font{
-  color:rgba(0,0,0,.54);
+.help-font {
+  color: rgba(0, 0, 0, 0.54);
   font-size: 12px;
   padding-left: 15px;
 }
