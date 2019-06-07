@@ -15,7 +15,7 @@ module.exports = {
     // Various Dev Server settings
     host: '192.168.0.110', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: true,//启动项目时是否打开浏览器
+    autoOpenBrowser: false,//启动项目时是否打开浏览器
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

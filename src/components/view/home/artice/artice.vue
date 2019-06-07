@@ -163,7 +163,7 @@ export default {
       defaultOpen: "preview",
       artice: {},
       content:
-        '# 一级标题\n## 二级标题\n### 三级标题\n#### 四级标题\n> 没有什么是永恒的,散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影\n\n[一个链接](www.baidu.com)散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。`强调`我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\nString str = "Hello World!" \nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n1. 1.第一\n2. 2.第二\n3. 3.第三\n\n- 1\n- 2\n- 3\n\n**文字加粗了**\n==标记==',
+        '# 一级标题\n## 二级标题\n### 三级标题\n#### 四级标题\n> 没有什么是永恒的,散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影\n\n![图片](http://image.9game.cn/2017/11/13/18553901.jpg)\n\n[一个链接](www.baidu.com)散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。`强调`我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\nString str = "Hello World!" \nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n1. 1.第一\n2. 2.第二\n3. 3.第三\n\n- 1\n- 2\n- 3\n\n**文字加粗了**\n==标记==',
       value1:
         '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n\n**文字加粗了**'
     };
@@ -326,11 +326,7 @@ a {
   padding: 0 2px;
   text-decoration: none;
 }
-.artice-content >>> h1,
-h2,
-h3,
-h4,
-h5 {
+.artice-content >>> h1,h2,h3,h4,h5 {
   position: relative;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -360,8 +356,7 @@ h5 {
 .artice-content >>> h5 {
   font-size: 1rem;
 }
-.artice-content >>> code,
-tt {
+.artice-content >>> code,tt {
   margin: 0 2px;
   padding: 2px 4px;
   border-radius: 2px;
@@ -377,13 +372,8 @@ tt {
 .artice-content >>> ol:first-child {
   margin-top: 30px;
 }
-.artice-content >>> p,
-blockquote,
-ul,
-ol,
-dl,
-table {
-  margin: 0.8em 0;
+.artice-content >>> p,blockquote,ul,ol,dl,table {
+  margin: 0.8em 5px;
 }
 .artice-content >>> li{
   list-style:square;
@@ -406,6 +396,9 @@ ol:first-child {
 .artice-content >>> ul:last-child,
 ol:last-child {
   margin-bottom: 0;
+}
+.artice-content >>> img{
+  width: 100%;
 }
 </style>
 

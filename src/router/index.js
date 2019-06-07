@@ -13,6 +13,7 @@ import atlasAdd from '@/components/view/home/atlas/edit'
 import star from '@/components/view/star'
 
 import mine from '@/components/view/mine'
+import personal from '@/components/view/mine/personal'
 import info from '@/components/view/mine/info'
 import setting from '@/components/view/mine/setting'
 import notfound from '@/components/view/error/404'
@@ -38,6 +39,7 @@ const router = new Router({
     { path: '/home/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true }, component: atlasAdd },
     { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false }, component: star },
     { path: '/mine', name: 'mine', meta: { title: "我的", requireLogin: false }, component: mine },
+    { path: '/mine/personal', name: 'personal', meta: { title: "个人信息", requireLogin: true }, component: personal },
     { path: '/mine/info', name: 'info', meta: { title: "个人主页", requireLogin: false }, component: info },
     { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true }, component: setting },
     // 404页面在最下面

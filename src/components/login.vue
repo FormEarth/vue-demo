@@ -28,23 +28,23 @@
             登录
             <mu-icon right value="send"></mu-icon>
           </mu-button>
-          <mu-divider></mu-divider>
+          <!-- <mu-divider></mu-divider> -->
           <!-- <mu-form-item style="text-align: center;color:black">
                 <label style="margin-left: 35%">更多登录方式</label>
           </mu-form-item>-->
         </mu-form>
-        <mu-button flat color="primary">忘记密码？</mu-button>
+        <!-- <mu-button flat color="primary">忘记密码？</mu-button>
         <br>
-        <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>
-        <!-- <mu-expansion-panel :zDepth="0" :expand="panel" @change="toggle()">
-        <div slot="header"></div>
-        <mu-button flat color="primary">忘记密码？</mu-button>
-        <br>
-        <mu-button flat color="primary" to="/register">没有账号？</mu-button>
-        <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>
-        <br>
-        <mu-button flat color="primary" to="/home">首页</mu-button>
-        </mu-expansion-panel>-->
+        <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>-->
+        <mu-expansion-panel :zDepth="0" :expand="panel" @change="toggle()">
+          <!-- <div slot="header">123</div> -->
+          <mu-button flat color="primary">忘记密码？</mu-button>
+          <br>
+          <!-- <mu-button flat color="primary" to="/register">没有账号？</mu-button> -->
+          <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>
+          <br>
+          <mu-button flat color="primary" to="/home">首页</mu-button>
+        </mu-expansion-panel>
       </mu-paper>
     </div>
     <mu-dialog width="360" transition="slide-left" :open.sync="openDialog">
@@ -64,7 +64,7 @@ export default {
     return {
       openDialog: false,
       visibility: false,
-      panel: true,
+      panel: false,
       active: 0,
       backgroundDiv: {
         backgroundImage:
@@ -106,6 +106,7 @@ export default {
     //登录点击事件
     submit() {
       this.$refs.form.validate().then(result => {
+        if (!result) return;
         userLogin().then(response => {
           const user = response.data.data;
           //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
@@ -118,7 +119,6 @@ export default {
           } else {
             this.$router.replace("/mine"); //否则跳转至我的首页
           }
-          //this.$router.push('/mine')
           //取值的时候也要注意字符串转对象
           console.log(JSON.parse(sessionStorage.getItem("current_user")));
         });
@@ -153,7 +153,7 @@ export default {
   padding-right: 0px;
   max-width: 500px;
   min-width: 350px;
-  height: 100%;
+  height: 120%;
 }
 .mu-appbar {
   width: 100%;
@@ -171,5 +171,8 @@ export default {
 }
 .mu-demo-form {
   text-align: center;
+}
+.mu-expansion-panel {
+  background: rgba(244, 243, 250, 0.5);
 }
 </style>
