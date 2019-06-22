@@ -1,13 +1,13 @@
 <template>
-  <mu-container>
-    <mu-appbar color="white" textColor="black" title="设置" z-depth="1">
+  <mu-container style="color:black;">
+    <mu-appbar :color="this.$store.state.current_theme_color" textColor="black" title="设置" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
     </mu-appbar>
     <mu-list>
-      <mu-sub-header>图集&文章设置</mu-sub-header>
-      <mu-list-item button :ripple="false" @click="events = !events">
+      <mu-sub-header color="black">图集&文章设置</mu-sub-header>
+      <mu-list-item button :ripple="false" @click="events = !events" color="primary">
         <mu-list-item-title>全部预览模式</mu-list-item-title>
         <mu-list-item-action>
           <mu-switch v-model="events" :ripple="false" readonly></mu-switch>
@@ -23,6 +23,12 @@
         <mu-list-item-title>图片压缩</mu-list-item-title>
         <mu-list-item-action>
           <mu-switch v-model="messages" :ripple="false" readonly></mu-switch>
+        </mu-list-item-action>
+      </mu-list-item>
+      <mu-list-item button :ripple="false" @click="themeToggle">
+        <mu-list-item-title>夜间模式</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-switch v-model="dark" :ripple="false" readonly></mu-switch>
         </mu-list-item-action>
       </mu-list-item>
     </mu-list>
@@ -75,7 +81,7 @@
   </mu-container>
 </template>
 <script>
-import ArticeContent from "@/components/public/ArticeContent.vue";
+import theme from 'muse-ui/lib/theme';
 
 export default {
   name: "setting",
@@ -86,12 +92,28 @@ export default {
       messages: true,
       notifications: false,
       sounds: false,
-      videoSounds: false
+      videoSounds: false,
+      dark:false
     };
+  },
+  created(){
+    this.$store.state.current_theme=="dark"?this.dark=true:this.dark=false
   },
   methods: {
     starArtice(star) {
       star ? (this.star = false) : (this.star = true);
+    },
+    //切换夜间模式
+    themeToggle(){
+      this.dark = !this.dark
+      if(this.dark){
+        this.$store.commit("theme_toggle", "dark");
+        theme.use('dark');
+      }else{
+        this.$store.commit("theme_toggle", "light");
+        theme.use('light');
+      }
+      console.log("this.$store.state.current_theme:"+this.$store.state.current_theme)
     }
   }
 };

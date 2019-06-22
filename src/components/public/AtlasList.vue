@@ -57,8 +57,14 @@
           style="text-align:right;margin-top:3px;margin-right:3px;"
         >123&nbsp;次喜欢</div>
       </div>
-      <mu-chip style="line-height: 22px;margin-right: 5px;">#王者荣耀</mu-chip>
-      <mu-chip style="line-height: 22px;margin-right: 5px;">#王者荣耀</mu-chip>
+      <mu-chip style="line-height: 22px;margin-right: 5px;">
+        <mu-icon value="local_offer" size="13"></mu-icon>
+        王者荣耀
+      </mu-chip>
+      <mu-chip style="line-height: 22px;margin-right: 5px;">
+        <mu-icon value="local_offer" size="13"></mu-icon>
+        王者荣耀
+      </mu-chip>
       <br>
       <div class="atlas-content" :class="fold ? 'fold' : 'unfold'">
         <div>

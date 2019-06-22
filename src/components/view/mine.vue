@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-paper :z-depth="0" class="demo-list-wrap">
+    <!-- <mu-paper :z-depth="1" class="demo-list-wrap"> -->
       <mu-list toggle-nested>
         <mu-list-item v-if="isLogin" avatar button to="/mine/info">
           <mu-list-item-action>
@@ -89,7 +89,7 @@
         </mu-list-item>
         <mu-list-item button :ripple="false" to="/mine/setting">
           <mu-list-item-action>
-            <mu-icon value="settings" color="black"></mu-icon>
+            <mu-icon value="settings" color="blueGrey500"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>设置</mu-list-item-title>
           <mu-list-item-action>
@@ -118,7 +118,7 @@
           </mu-list-item-action>
         </mu-list-item>
       </mu-list>
-    </mu-paper>
+    <!-- </mu-paper> -->
     <mu-dialog
       title="退出登录"
       width="600"
@@ -132,7 +132,7 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">取消</mu-button>
       <mu-button slot="actions" flat color="primary" @click="userLogout">确认</mu-button>
     </mu-dialog>
-    <app-footer param="mine"></app-footer>
+    <!-- <app-footer param="mine"></app-footer> -->
   </mu-container>
 </template>
 <script>
@@ -180,7 +180,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
-  min-width: 350px;
+  /* min-width: 350px; */
 }
 .demo-list {
   width: 100%;
@@ -189,5 +189,8 @@ export default {
   width: 100%;
   max-width: 500px;
   overflow: hidden;
+}
+.mu-item{
+  color:#22334444;
 }
 </style>

@@ -77,7 +77,10 @@
           text-color="black"
           v-for="tag in tagArray"
           :key="tag"
-        >#{{tag}}</mu-chip>
+        >
+          <mu-icon value="local_offer" size="13"></mu-icon>
+          {{tag}}
+        </mu-chip>
       </div>
       <!-- <mu-card-text> -->
       <!-- <artice-content :content="value" :artice-style="artice.style"></artice-content> -->

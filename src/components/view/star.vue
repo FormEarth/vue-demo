@@ -29,7 +29,6 @@
         <mu-button v-show="this.open" to="/home/artice/add" style="margin-bottom:8px;">写短文</mu-button>
       </mu-slide-bottom-transition>
     </div>
-    <app-footer param="star"></app-footer>
   </mu-container>
 </template>
 <script>
@@ -65,7 +64,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
-  min-width: 350px;
+  /* min-width: 350px; */
 }
 
 </style>

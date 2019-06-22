@@ -12,7 +12,6 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 //import ElementUI from 'element-ui';
 //import 'element-ui/lib/theme-chalk/index.css';
-import AppFooter from "./components/public/AppFooter.vue";
 import axios from 'axios'
 //import "@/mock/mock.js"; //引入mock
 // 引入mockjs
@@ -22,11 +21,8 @@ Vue.use(MuseUI);
 //Vue.use(ElementUI);
 Vue.use(mavonEditor);
 Vue.use(Vant);
-
 Vue.prototype.$http=axios
 Vue.config.productionTip = false
-// 将底部导航栏注册为全局组件
-Vue.component('app-footer', AppFooter)
 
 new Vue({
   el: '#app',

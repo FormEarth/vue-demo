@@ -50,8 +50,6 @@
         暂时什么都没有哦^-^
       </van-tab> -->
     </van-tabs>
-
-    <app-footer param="home"></app-footer>
     <!-- <router-view></router-view> -->
   </mu-container>
 </template>
@@ -110,7 +108,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   max-width: 500px;
-  min-width: 350px;
+  /* min-width: 350px; */
 }
 .home-paper {
   /* padding-top: 58px; */

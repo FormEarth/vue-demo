@@ -5,8 +5,8 @@
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
     </mu-appbar>-->
-    <mu-paper :z-depth="1" class="demo-list-wrap">
-      <mu-appbar color="lightBlue">
+    <!-- <mu-paper :z-depth="1" class="demo-list-wrap"> -->
+      <mu-appbar :color="this.$store.state.current_theme_color">
         <mu-button icon slot="left" @click="$router.back(-1)">
           <mu-icon value="arrow_back"></mu-icon>
         </mu-button>个人信息
@@ -44,7 +44,7 @@
           </mu-list-item-content>
           <mu-list-item-action>
             <mu-button icon @click="openSimpleDialog">
-              <mu-icon value="edit" color="primary"></mu-icon>
+              <mu-icon value="edit" :color="this.$store.state.current_theme_color"></mu-icon>
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
@@ -60,7 +60,7 @@
           </mu-list-item-content>
           <mu-list-item-action>
             <mu-button icon>
-              <mu-icon value="edit" color="redA700"></mu-icon>
+              <mu-icon value="edit" :color="this.$store.state.current_theme_color"></mu-icon>
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
@@ -76,7 +76,7 @@
           </mu-list-item-content>
           <mu-list-item-action>
             <mu-button icon>
-              <mu-icon value="edit" color="green"></mu-icon>
+              <mu-icon value="edit" :color="this.$store.state.current_theme_color"></mu-icon>
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
@@ -87,7 +87,7 @@
           </mu-list-item-content>
           <mu-list-item-action>
             <mu-button icon>
-              <mu-icon value="edit" color="yellow"></mu-icon>
+              <mu-icon value="edit" :color="this.$store.state.current_theme_color"></mu-icon>
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
@@ -135,11 +135,11 @@
         <mu-button slot="actions" flat color="primary" @click="modifyName">确认</mu-button>
         <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">取消</mu-button>
       </mu-dialog>
-    </mu-paper>
+    <!-- </mu-paper> -->
   </mu-container>
 </template>
 <script>
-import ArticeContent from "@/components/public/ArticeContent.vue";
+import theme from 'muse-ui/lib/theme';
 
 export default {
   name: "setting",
@@ -154,6 +154,10 @@ export default {
       newName:"",
       errorMessage:""
     };
+  },
+  created(){
+    console.log("this.$store.state.current_theme:"+this.$store.state.current_theme)
+    theme.use(this.$store.state.current_theme);
   },
   methods: {
     starArtice(star) {

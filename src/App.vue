@@ -1,11 +1,17 @@
 <template>
   <div id="app">
     <router-view/>
+    <mu-bottom-nav v-show="showBottomNav" :value.sync="this.$route.name" color="primary">
+      <mu-bottom-nav-item value="home" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
+      <mu-bottom-nav-item value="star" title="关注" icon="add" replace to="/star"></mu-bottom-nav-item>
+      <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
+    </mu-bottom-nav>
   </div>
 </template>
 
 <script>
 import util from "@/util/util";
+import theme from 'muse-ui/lib/theme';
 
 export default {
   name: "App",
@@ -25,18 +31,32 @@ export default {
         this.$store.commit("save_user", current_user);
       }
     }
+    // console.log("this.$store.state.current_theme:"+this.$store.state.current_theme)
+    // theme.use(this.$store.state.current_theme);
+  },
+  computed:{
+    //是否显示底部导航栏
+    showBottomNav(){
+      const name = this.$route.name
+      console.log("name:"+name)
+      if(name=="home"||name=="star"||name=="mine"){
+        return true
+      }else{
+        return false
+      }
+    }
   }
 };
 </script>
 
 <style>
 #app {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+  /* font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
   /* text-align: center; */
-  color: #2c3e50;
+  /* color: #2c3e50; */
   margin-top: 0px;
 }
 html,
@@ -44,5 +64,13 @@ body,
 #app {
   height: 100%;
   width: 100%;
+  min-width: 300px;
+}
+.mu-bottom-nav {
+  width: 100%;
+  /* max-width: 500px; */
+  /* min-width:300px; */
+  position:fixed; 
+  bottom:0px;
 }
 </style>
