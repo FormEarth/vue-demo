@@ -57,13 +57,15 @@
           style="text-align:right;margin-top:3px;margin-right:3px;"
         >123&nbsp;次喜欢</div>
       </div>
-      <mu-chip style="line-height: 22px;margin-right: 5px;">
-        <mu-icon value="local_offer" size="13"></mu-icon>
-        王者荣耀
-      </mu-chip>
-      <mu-chip style="line-height: 22px;margin-right: 5px;">
-        <mu-icon value="local_offer" size="13"></mu-icon>
-        王者荣耀
+      <mu-chip
+          class="demo-chip"
+          color="blue100"
+          text-color="black"
+          v-for="tag in tagArray"
+          :key="tag"
+        >
+          <mu-icon value="local_offer" size="13"></mu-icon>
+          {{tag}}
       </mu-chip>
       <br>
       <div class="atlas-content" :class="fold ? 'fold' : 'unfold'">
@@ -204,6 +206,13 @@ export default {
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
+    },
+    //切割标签为数组
+    tagArray: function() {
+      if (typeof this.atlas.tags == "undefined") {
+        return;
+      }
+      return this.atlas.tags.split("|");
     }
   },
   filters: {
@@ -374,5 +383,9 @@ export default {
   font-size: 12px;
   color: white;
   background: rgba(0, 0, 0, 0.1);
+}
+.demo-chip {
+  line-height: 22px;
+  margin-right: 5px;
 }
 </style>

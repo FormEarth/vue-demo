@@ -64,7 +64,7 @@
             </mu-button>
           </mu-list-item-action>
         </mu-list-item>
-        <mu-list-item button :ripple="false">
+        <mu-list-item button :ripple="false" to="/mine/inbox">
           <mu-list-item-action>
             <mu-icon value="inbox" color="redA700"></mu-icon>
           </mu-list-item-action>

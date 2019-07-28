@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <van-tabs v-model="active" swipeable sticky>
+    <van-tabs v-model="active" swipeable sticky style="max-width:500px;">
       <van-tab title="文章">
         <mu-paper :z-depth="0" class="home-paper">
           <mu-list textline="three-line" dense style="background-color: rgb(207, 207, 218);">
