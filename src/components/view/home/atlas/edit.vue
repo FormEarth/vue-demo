@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-appbar title="发布图集" textColor="black" z-depth="1">
+    <mu-appbar :title="this.$route.meta.title" textColor="black" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)" :ripple="false">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
@@ -9,7 +9,11 @@
       </mu-button>
     </mu-appbar>
     <div class="dynamic-imgs">
-      <p class="img-title">添加图片({{altas.images.length}}/9)</p>
+      <div>
+        <div style="display:inline-block;"><p class="img-title">添加图片({{altas.images.length}}/9)</p></div>
+        <div v-show="altas.images.length>1" style="display:inline-block;float:right;"><p class="delete-text" @click="deleteAll">全部删除</p></div>
+      </div>
+      <div style="clear: both;"></div><!-- 清除浮动，否则float会对之后的布局产生影响 -->
       <div class="table-list">
         <!-- 显示图片 -->
         <div class="img-div" v-for="(img,index) in altas.images" :key="index">
@@ -88,6 +92,7 @@ export default {
     isMax(files) {
       let imgNum = this.altas.images.length + files.length;
       if (imgNum > 9) {
+        this.$toast("最多只能选9张图哦");
         return false;
       } else {
         return true;
@@ -106,6 +111,10 @@ export default {
     //删除图片
     deleteImg(index) {
       this.altas.images.splice(index, 1); //删除起始下标为index，长度为1的一个值
+    },
+    //删除全部
+    deleteAll(){
+      this.altas.images = [];
     }
   }
 };
@@ -138,7 +147,7 @@ export default {
 .img-title {
   margin-bottom: 12px;
   font-size: 14px;
-  color: #666666;
+  /* color: #666666; */
   letter-spacing: 0.16px;
 }
 .table-list {
@@ -179,6 +188,10 @@ export default {
 }
 a {
   color: #2979ff;
+}
+.delete-text{
+  color:#ff0000;
+  cursor: pointer;
 }
 </style>
 

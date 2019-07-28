@@ -2,7 +2,7 @@
 
 > A Vue.js project
 
-一个使用vuejs构建的SPA，有点模仿微博或今日头条，感谢
+一个使用vuejs构建的SPA，本来想做个个人博客，但是做着做着不知道做成什么了……，感谢
 
 - [muse-ui](https://github.com/museui/muse-ui),基本上大部分的页面元素都来源于它。
 - [vant](https://github.com/youzan/vant),部分组件，如图片预览。

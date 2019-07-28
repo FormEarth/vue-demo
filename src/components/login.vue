@@ -1,58 +1,68 @@
 <template>
-  <!-- <div class="login"> -->
-  <mu-container class="demo-container is-stripe" :style="backgroundDiv">
-    <div style="padding-top:20px;">
-      <mu-paper class="demo-paper" :z-depth="5" round>
-        <mu-appbar color="rgba(244, 243, 250, 0.7)" z-depth="0" textColor="black" title="登录">
-          <mu-button icon slot="left" @click="$router.back(-1)">
+  <mu-container class="demo-container" fluid :style="backgroundDiv">
+    <div class="login-box">
+      <mu-appbar title="用户登录" color="white" z-depth="0" textColor="black">
+          <mu-button icon slot="left" @click="$router.back(-1)" class="back-button">
             <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
           </mu-button>
         </mu-appbar>
-        <mu-form ref="form" :model="validateForm" class="mu-demo-form">
-          <mu-form-item prop="name" :rules="usernameRules" icon="perm_identity">
-            <mu-text-field v-model="validateForm.name" placeholder="您的账号"></mu-text-field>
-          </mu-form-item>
-          <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
-            <mu-text-field
-              placeholder="您的密码"
-              v-model="validateForm.password"
-              :action-icon="visibility ? 'visibility_off' : 'visibility'"
-              :action-click="() => (visibility = !visibility)"
-              :type="visibility ? 'text' : 'password'"
-            ></mu-text-field>
-          </mu-form-item>
-          <mu-form-item prop="remberMe" help-text="请勿在公用电脑勾选此选项" style="padding-left:16px;">
-            <mu-checkbox label="记住我" v-model="validateForm.remberMe"></mu-checkbox>
-          </mu-form-item>
-          <mu-button flat @click="submit">
+      <mu-form ref="form" :model="validateForm" class="mu-demo-form">
+        <mu-form-item prop="name" :rules="usernameRules" icon="perm_identity">
+          <mu-text-field v-model="validateForm.name" placeholder="您的账号"></mu-text-field>
+        </mu-form-item>
+        <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
+          <mu-text-field
+            placeholder="您的密码"
+            v-model="validateForm.password"
+            :action-icon="visibility ? 'visibility_off' : 'visibility'"
+            :action-click="() => (visibility = !visibility)"
+            :type="visibility ? 'text' : 'password'"
+          ></mu-text-field>
+        </mu-form-item>
+        <mu-form-item prop="remberMe" help-text="请勿在公用电脑勾选此选项" style="padding-left:16px;">
+          <mu-checkbox label="记住我" v-model="validateForm.remberMe"></mu-checkbox>
+        </mu-form-item>
+        <div style="padding:0 15px;">
+          <mu-button full-width color="green500" @click="submit">
             登录
             <mu-icon right value="send"></mu-icon>
           </mu-button>
-          <!-- <mu-divider></mu-divider> -->
-          <!-- <mu-form-item style="text-align: center;color:black">
-                <label style="margin-left: 35%">更多登录方式</label>
-          </mu-form-item>-->
-        </mu-form>
-        <!-- <mu-button flat color="primary">忘记密码？</mu-button>
-        <br>
-        <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>-->
-        <mu-expansion-panel :zDepth="0" :expand="panel" @change="toggle()">
-          <!-- <div slot="header">123</div> -->
-          <mu-button flat color="primary">忘记密码？</mu-button>
-          <br>
-          <!-- <mu-button flat color="primary" to="/register">没有账号？</mu-button> -->
-          <mu-button flat color="primary" @click="openSimpleDialog">没有账号？</mu-button>
-          <br>
-          <mu-button flat color="primary" to="/home">首页</mu-button>
-        </mu-expansion-panel>
-      </mu-paper>
+        </div>
+        <!-- <mu-button flat @click="submit">
+          登录
+          <mu-icon right value="send"></mu-icon>
+        </mu-button>-->
+        <hr />
+        <div style="text-align: center;color: grey;">——更多登录方式——</div>
+        <div class="login-otherway">
+          <div class="otherway-item">
+            <img :src="wechat_png" alt />
+          </div>
+          <div class="otherway-item">
+            <img :src="qq_png" alt />
+          </div>
+          <div class="otherway-item">
+            <img :src="weibo_png" alt />
+          </div>
+        </div>
+        <div style="padding:0 15px;">
+          <mu-button full-width color="blueGrey100" textColor="black" to="/register">
+            注册新账号
+            <!-- <mu-icon right value="send"></mu-icon> -->
+          </mu-button>
+        </div>
+        <div style="text-align:center;margin-top:10px;">
+          登录即表示同意
+          <a href>《服务条款》</a>和
+          <a href>《隐私政策》</a>
+        </div>
+      </mu-form>
     </div>
     <mu-dialog width="360" transition="slide-left" :open.sync="openDialog">
       暂未开放注册哦^_^
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">好吧</mu-button>
     </mu-dialog>
   </mu-container>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -67,8 +77,7 @@ export default {
       panel: false,
       active: 0,
       backgroundDiv: {
-        backgroundImage:
-          "url(" + require("@/assets/images/login_background.jpg") + ")",
+        backgroundImage: "url(" + require("@/assets/background.jpg") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
       },
@@ -87,7 +96,10 @@ export default {
         name: "",
         password: "",
         remberMe: false
-      }
+      },
+      wechat_png: require("@/assets/images/wechat.png"),
+      qq_png: require("@/assets/images/instagram.png"),
+      weibo_png: require("@/assets/images/sina_weibo.png")
     };
   },
   methods: {
@@ -146,23 +158,13 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-  padding-left: 0px;
-  padding-right: 0px;
-  max-width: 500px;
-  min-width: 350px;
-  height: 120%;
+a {
+  color: blue;
 }
-.mu-appbar {
+.demo-container {
   width: 100%;
-  margin-bottom: 18px;
-}
-.demo-paper {
-  margin-left: 7px;
-  margin-right: 7px;
-  background: rgba(244, 243, 250, 0.7);
+  height: 100%;
 }
 .mu-input {
   margin-bottom: 2px;
@@ -174,5 +176,53 @@ export default {
 }
 .mu-expansion-panel {
   background: rgba(244, 243, 250, 0.5);
+}
+.login-box {
+  background-color: white;
+  padding-bottom: 15px;
+}
+.login-otherway {
+  display: flex;
+  justify-content: center;
+}
+.otherway-item {
+  margin-right: 10px;
+}
+.otherway-item img {
+  width: 25px;
+  height: 25px;
+}
+/* 宽度在800px以上应用的css */
+@media screen and (min-width: 800px) {
+  .demo-container {
+  padding-top: 50px;
+}
+  .login-box {
+    width: 40%;
+    margin-left: 40px;
+  }
+  .back-button{
+    display: none;
+  }
+}
+/* 宽度在600px~800px应用的css */
+@media screen and (min-width: 600px) and (max-width: 800px) {
+  .demo-container {
+  padding-top: 50px;
+}
+  .login-box {
+    width: 90%;
+    margin: 0 5%;
+  }
+}
+/* 宽度在300px~640px应用的css */
+@media screen and (min-width: 300px) and (max-width: 600px) {
+  .demo-container {
+  padding-top: 20px;
+}
+  .login-box {
+    width: 100%;
+    /* margin: 0 5%; */
+  }
 }
 </style>
