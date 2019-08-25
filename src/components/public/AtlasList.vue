@@ -117,13 +117,13 @@
           </mu-list-item-action>
           <mu-list-item-title>举报</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.id==this.atlas.authorId">
+        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.userId==this.atlas.author">
           <mu-list-item-action>
             <mu-icon value="edit"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>重新编辑</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.id==this.atlas.authorId">
+        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.userId==this.atlas.author">
           <mu-list-item-action>
             <mu-icon value="delete"></mu-icon>
           </mu-list-item-action>
@@ -233,8 +233,8 @@ export default {
       this.$router.push("/mine/info");
     },
     openAlertDialog() {
-      console.log(this.$store.state.current_user.id)
-      console.log(this.atlas.authorId)
+      console.log(this.$store.state.current_user.userId)
+      console.log(this.atlas.author)
       this.openAlert = true;
     },
     closeAlertDialog() {

@@ -174,7 +174,7 @@ a {
   }
   .register-box {
     width: 40%;
-    margin-left: 40px;
+    margin-left: 30%;
   }
   .back-button{
     display: none;

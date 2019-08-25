@@ -1,11 +1,11 @@
 <template>
-  <div class="artice-item">
+  <div class="artice-item" @click="$router.push('/home/artice/detail/'+ artice.articeId)">
     <div class="artice-img">
-      <img :src="artice.image" alt="图片" />
+      <img :src="image_access_url+artice.frontCover" alt="图片" />
     </div>
     <div class="artice-content">
       <div class="content-header">{{artice.title}}</div>
-      <div class="content">{{artice.content}}</div>
+      <div class="content">{{artice.summary}}</div>
       <div class="content-footer">
         <span>{{artice.sendTime|time}}</span>
         <!-- <span>123<mu-icon size="18" value="local_offer" color="primary" style="margin-top:5px;"></mu-icon></span> -->
@@ -29,18 +29,11 @@ import util from "@/util/util"
 export default {
   name: "ArticeItem",
   props: {
-    artices: {}
+    artice: {}
   },
   data() {
     return {
-      artice: {
-        image: require("@/assets/images/carousel1.jpg"),
-        title: "这个是题目",
-        content:
-          "Windows 10 上一项功能 Windows 聚焦 ，它会自动随机下载并更换锁屏界面的壁纸 ，让你每次打开电脑都有不一样的视觉享受。这些高清锁屏壁纸往往都很精美，很多视觉冲击力十足，非常值得收藏，如果你遇到了非常喜欢的壁纸，不妨参考这个保存 Win10 锁屏壁纸的教程将其提取出来……",
-        sendTime: "2019/05/01 15:33:14",
-        tags:"Java|Springboot|restful"
-      }
+      image_access_url : 'http://127.0.0.1:9090'
     };
   },
   filters:{

@@ -1,10 +1,10 @@
 import axios from 'axios';
-import router from '../router';
+
 // vant的toast提示框组件，大家可根据自己的ui组件更改。
 import { Toast } from 'vant';
 
 const service = axios.create({
-    baseURL: 'http://192.168.0.110:8080', // api 的 base_url
+    baseURL: 'http://192.168.149.110:9092', // api 的 base_url
     timeout: 3000, // request timeout
     headers: {'Content-Type':'application/json;charset=UTF-8'} //请求头
   })
@@ -55,26 +55,26 @@ axios.interceptors.response.use(
         }
     }
 );
-//get 请求
-// export function get(url, data) {
-// 	return new Promise((resolve, reject) => {
-// 		axios.get(url, {data}).then(response => {
-// 			resolve(response.data)
-// 		}).catch(error => {
-// 			reject(error.data)
-// 		})
-// 	})
-// }
+// get 请求
+export function get(url, data) {
+	return new Promise((resolve, reject) => {
+		axios.get(url, {data}).then(response => {
+			resolve(response.data)
+		}).catch(error => {
+			reject(error.data)
+		})
+	})
+}
 // post 请求
-// export function post(url, data = {}) {
-// 	return new Promise((resolve, reject) => {
-// 		axios.post(url, data).then(response => {
-// 			resolve(response.data)
-// 		}).catch(error => {
-// 			reject(error.data)
-// 		})
-// 	})
-// }
+export function post(url, data = {}) {
+	return new Promise((resolve, reject) => {
+		axios.post(url, data).then(response => {
+			resolve(response.data)
+		}).catch(error => {
+			reject(error.data)
+		})
+	})
+}
 //put 请求
 // export function put(url,data = {}){
 //     return new Promise((resolve,reject) => {

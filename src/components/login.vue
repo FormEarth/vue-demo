@@ -2,13 +2,13 @@
   <mu-container class="demo-container" fluid :style="backgroundDiv">
     <div class="login-box">
       <mu-appbar title="用户登录" color="white" z-depth="0" textColor="black">
-          <mu-button icon slot="left" @click="$router.back(-1)" class="back-button">
-            <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
-          </mu-button>
-        </mu-appbar>
+        <mu-button icon slot="left" @click="$router.back(-1)" class="back-button">
+          <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
+        </mu-button>
+      </mu-appbar>
       <mu-form ref="form" :model="validateForm" class="mu-demo-form">
-        <mu-form-item prop="name" :rules="usernameRules" icon="perm_identity">
-          <mu-text-field v-model="validateForm.name" placeholder="您的账号"></mu-text-field>
+        <mu-form-item prop="account" :rules="accountRules" icon="perm_identity">
+          <mu-text-field v-model="validateForm.account" placeholder="您的账号"></mu-text-field>
         </mu-form-item>
         <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
           <mu-text-field
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { userLogin } from "@/axios/api"; //引入axios接口
+import { userLogin } from "@/axios/api"; //引入api接口
 
 export default {
   name: "login",
@@ -81,7 +81,7 @@ export default {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
       },
-      usernameRules: [
+      accountRules: [
         { validate: val => !!val, message: "必须填写用户名" },
         { validate: val => val.length >= 3, message: "用户名长度大于3" }
       ],
@@ -93,7 +93,7 @@ export default {
         }
       ],
       validateForm: {
-        name: "",
+        account: "",
         password: "",
         remberMe: false
       },
@@ -119,9 +119,10 @@ export default {
     submit() {
       this.$refs.form.validate().then(result => {
         if (!result) return;
-        userLogin().then(response => {
-          const user = response.data.data;
+        userLogin(this.validateForm).then(response => {
+          const user = response.data.data.current_user_data;
           //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
+          console.log("current_user", JSON.stringify(user));
           sessionStorage.setItem("current_user", JSON.stringify(user));
           this.$store.commit("save_user", user);
           if (this.$route.query.redirect) {
@@ -134,16 +135,12 @@ export default {
           //取值的时候也要注意字符串转对象
           console.log(JSON.parse(sessionStorage.getItem("current_user")));
         });
-        // axios.post("http://192.168.0.110:8080/demo/api/user/login")
-        //   .then(response => {
-        //     console.log(response.data.data);
-        //   });
       });
     },
     clear() {
       this.$refs.form.clear();
       this.validateForm = {
-        name: "",
+        account: "",
         password: "",
         remberMeffalse: false
       };
@@ -195,21 +192,21 @@ a {
 /* 宽度在800px以上应用的css */
 @media screen and (min-width: 800px) {
   .demo-container {
-  padding-top: 50px;
-}
+    padding-top: 50px;
+  }
   .login-box {
     width: 40%;
-    margin-left: 40px;
+    margin-left: 30%;
   }
-  .back-button{
+  .back-button {
     display: none;
   }
 }
 /* 宽度在600px~800px应用的css */
 @media screen and (min-width: 600px) and (max-width: 800px) {
   .demo-container {
-  padding-top: 50px;
-}
+    padding-top: 50px;
+  }
   .login-box {
     width: 90%;
     margin: 0 5%;
@@ -218,8 +215,8 @@ a {
 /* 宽度在300px~640px应用的css */
 @media screen and (min-width: 300px) and (max-width: 600px) {
   .demo-container {
-  padding-top: 20px;
-}
+    padding-top: 20px;
+  }
   .login-box {
     width: 100%;
     /* margin: 0 5%; */

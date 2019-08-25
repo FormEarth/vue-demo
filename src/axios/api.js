@@ -1,12 +1,21 @@
 import request from '@/axios/axios.js' ;//导入axios实例文件中方法
+
 //用户登陆
 export function userLogin(data){
-    return request({
-        url: '/demo/api/user/login',
-        method: 'post',
-        params: data
-    });
+    return request.post(
+        '/demo/api/user/login',
+        data
+    );
 }
+
+//获取一个用户的文章列表
+export function getArticesByUserId(userId,currentPage){
+    return request.get(
+        '/demo/api/'+userId+'/artices/'+currentPage,
+        {}
+    );
+}
+
 //首页文章数据加载
 export function artices(data){
     return request({

@@ -49,7 +49,7 @@ const store = new Vuex.Store({
         //判断是否已登录
         isLogin(state){
             //判空
-            return typeof(state.current_user.id) == "undefined"?false:true;
+            return typeof(state.current_user.userId) == "undefined"?false:true;
         }
     }
 })

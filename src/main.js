@@ -15,7 +15,7 @@ import 'vant/lib/index.css';
 import axios from 'axios'
 //import "@/mock/mock.js"; //引入mock
 // 引入mockjs
-require('@/mock/mock.js')
+//require('@/mock/mock.js')
 
 Vue.use(MuseUI);
 //Vue.use(ElementUI);

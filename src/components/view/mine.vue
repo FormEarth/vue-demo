@@ -10,7 +10,7 @@
           </mu-list-item-action>
           <mu-list-item-content>
             <mu-list-item-title>
-              {{user.name}}
+              {{user.userName}}
               <mu-chip
                 color="redA700"
                 text-color="white"

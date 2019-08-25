@@ -35,13 +35,13 @@
               <div style="margin-top:3px;margin-left:5px;">举报</div>
             </mu-list-item-content>
           </mu-list-item>
-          <mu-list-item button to="/home/artice/edit/123" v-show="this.$store.state.current_user.id==this.artice.authorId">
+          <mu-list-item button to="/home/artice/edit/123" v-show="this.$store.state.current_user.userId==this.artice.author">
             <mu-list-item-content style="display:flex;">
               <mu-icon value="edit" color="info" size="24"></mu-icon>
               <div style="margin-top:3px;margin-left:5px;">重新编辑</div>
             </mu-list-item-content>
           </mu-list-item>
-          <mu-list-item button v-show="this.$store.state.current_user.id==this.artice.authorId">
+          <mu-list-item button v-show="this.$store.state.current_user.userId==this.artice.author">
             <mu-list-item-content style="display:flex;">
               <mu-icon value="delete" color="redA700" size="24"></mu-icon>
               <div style="margin-top:3px;margin-left:5px;">删除</div>
