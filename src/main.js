@@ -10,19 +10,18 @@ import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
 import Vant from 'vant';
 import 'vant/lib/index.css';
-//import ElementUI from 'element-ui';
-//import 'element-ui/lib/theme-chalk/index.css';
-import axios from 'axios'
+import api from './axios/api'
 //import "@/mock/mock.js"; //引入mock
 // 引入mockjs
 //require('@/mock/mock.js')
 
 Vue.use(MuseUI);
-//Vue.use(ElementUI);
 Vue.use(mavonEditor);
 Vue.use(Vant);
-Vue.prototype.$http=axios
+Vue.prototype.$http=api
 Vue.config.productionTip = false
+//是否启用debug
+Vue.config.devtools = true
 
 new Vue({
   el: '#app',

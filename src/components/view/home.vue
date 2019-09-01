@@ -72,7 +72,7 @@ export default {
   },
   //created()是一个函数
   created() {
-    artices().then(response => {
+    this.$http.artice.artices().then(response => {
       const artices = response.data.data;
       this.artices = artices;
     });

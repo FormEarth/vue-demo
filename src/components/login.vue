@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { userLogin } from "@/axios/api"; //引入api接口
+import axios from 'axios';
 
 export default {
   name: "login",
@@ -119,22 +119,28 @@ export default {
     submit() {
       this.$refs.form.validate().then(result => {
         if (!result) return;
-        userLogin(this.validateForm).then(response => {
-          const user = response.data.data.current_user_data;
-          //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
-          console.log("current_user", JSON.stringify(user));
-          sessionStorage.setItem("current_user", JSON.stringify(user));
-          this.$store.commit("save_user", user);
-          if (this.$route.query.redirect) {
-            //如果存在参数
-            let redirect = this.$route.query.redirect;
-            this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
-          } else {
-            this.$router.replace("/mine"); //否则跳转至我的首页
-          }
-          //取值的时候也要注意字符串转对象
-          console.log(JSON.parse(sessionStorage.getItem("current_user")));
-        });
+        this.$http.user.userLogin(this.validateForm)
+          .then(response => {
+            console.log("进入then");
+            const user = response.data.data.current_user_data;
+            //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
+            console.log("current_user", JSON.stringify(user));
+            sessionStorage.setItem("current_user", JSON.stringify(user));
+            this.$store.commit("save_user", user);
+            if (this.$route.query.redirect) {
+              //如果存在参数
+              let redirect = this.$route.query.redirect;
+              this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
+            } else {
+              this.$router.replace("/mine"); //否则跳转至我的首页
+            }
+            //取值的时候也要注意字符串转对象
+            console.log(JSON.parse(sessionStorage.getItem("current_user")));
+          })
+          .catch(error => {
+            console.log("出错了！");
+            console.log(error);
+          });
       });
     },
     clear() {
@@ -150,6 +156,32 @@ export default {
     },
     closeSimpleDialog() {
       this.openDialog = false;
+    },
+    login() {
+      axios
+        .post(
+          "http://192.168.149.110:9092/demo/api/user/login",
+          this.validateForm
+        )
+        .then(response => {
+          const user = response.data.data.current_user_data;
+            //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
+            console.log("current_user", JSON.stringify(user));
+            sessionStorage.setItem("current_user", JSON.stringify(user));
+            this.$store.commit("save_user", user);
+            if (this.$route.query.redirect) {
+              //如果存在参数
+              let redirect = this.$route.query.redirect;
+              this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
+            } else {
+              this.$router.replace("/mine"); //否则跳转至我的首页
+            }
+            //取值的时候也要注意字符串转对象
+            console.log(JSON.parse(sessionStorage.getItem("current_user")));
+        })
+        .catch(error => {
+          console.log("出错了！");
+        });
     }
   }
 };

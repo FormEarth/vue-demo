@@ -9,7 +9,7 @@
       <div class="nav-content">
         <div class="nav-item">文章</div>
         <div class="nav-item">图集</div>
-        <div class="nav-item">标签</div>
+        <div class="nav-item" @click="$router.push('/album')">相册</div>
         <div class="nav-item">关于</div>
         <div v-if="isLogin" class="nav-item" @click="$router.push('/mine')">{{user.userName}}</div>
         <div v-else class="nav-item" @click="login">登陆</div>
@@ -50,7 +50,7 @@ export default {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
       },
-      current: 1,
+      current: 1
       // user: {
       //   name: "raining_heavily",
       //   avatar: require("@/assets/images/test5.jpg"),
@@ -60,11 +60,11 @@ export default {
     };
   },
   created: function() {
-    getArticesByUserId(this.user.userId,1).then(response => {
+    this.$http.user.getArticesByUserId(this.user.userId, 1).then(response => {
       //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
-      console.log("current_user", this.user)
-      const artices = response.data.data.artices
-      this.artices = artices
+      console.log("current_user", this.user);
+      const artices = response.data.data.artices;
+      this.artices = artices;
     });
   },
   computed: {
@@ -75,7 +75,7 @@ export default {
     //是否已登录
     isLogin: function() {
       return this.$store.getters.isLogin;
-    },
+    }
   },
   components: {
     "artice-item": ArticeItem,
@@ -122,6 +122,7 @@ export default {
   width: 60px;
   text-align: center;
   padding-top: 35px;
+  transition: all 1s;
 }
 .footer {
   margin-top: 15px;
@@ -153,6 +154,7 @@ export default {
     color: rgb(255, 0, 0);
     border-bottom: 3px rgb(255, 0, 0) solid;
     cursor: pointer;
+    transition: all 1s;
   }
   .link img:hover {
     transform: scale(1.1); /* 元素放大1.4倍 */
@@ -185,6 +187,7 @@ export default {
     color: rgb(185, 10, 10);
     border-bottom: 3px rgb(185, 10, 10) solid;
     cursor: pointer;
+    transition: all 1s;
   }
 }
 /* 小屏幕，宽度在300px~640px */

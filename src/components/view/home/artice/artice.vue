@@ -60,7 +60,7 @@
           <div>
             <img :src="picture" style="width:30px;height:30px;border-radius:50%;">
           </div>
-          <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{artice.author}}</div>
+          <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{artice.authorName}}</div>
           <div style="margin-top:5px;margin-left:8px;">
             <van-button plain type="danger" size="mini">关注</van-button>
             <!-- <van-button type="danger" size="mini">已关注</van-button> -->
@@ -83,7 +83,7 @@
         </mu-chip>
       </div>
       <!-- <mu-card-text> -->
-      <!-- <artice-content :content="value" :artice-style="artice.style"></artice-content> -->
+      <artice-content :content="artice.content" :artice-style="artice.style"></artice-content>
       <!-- <mavon-editor
         class="editor"
         v-model="artice.content"
@@ -95,24 +95,25 @@
       />-->
       <!-- </mu-card-text> -->
       <!-- <mu-divider></mu-divider> -->
-      <vue-showdown
+      <!-- <vue-showdown
         class="artice-content"
-        :markdown="content"
+        :markdown="artice.content"
         flavor="vanilla"
         :options="{ emoji: true }"
-      ></vue-showdown>
+      ></vue-showdown> -->
+      <div>{{artice.content}}</div>
       <mu-card-actions style="white-space: nowrap">
-        <mu-badge :content="artice.approval" circle class="demo-icon-badge">
+        <mu-badge content="1" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_up"></mu-icon>
           </mu-button>
         </mu-badge>
-        <mu-badge :content="artice.oppose" circle class="demo-icon-badge">
+        <mu-badge content="1" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_down"></mu-icon>
           </mu-button>
         </mu-badge>
-        <mu-badge :content="artice.favorite" circle class="demo-icon-badge">
+        <mu-badge content="1" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="favorite"></mu-icon>
           </mu-button>
@@ -153,7 +154,7 @@
 </template>
 <script>
 import { VueShowdown } from "vue-showdown";
-import { articeDetail } from "@/axios/api";
+import ArticeContent from "@/components/public/ArticeContent";
 
 export default {
   name: "artice",
@@ -168,7 +169,7 @@ export default {
       content:
         '# 一级标题\n## 二级标题\n### 三级标题\n#### 四级标题\n> 没有什么是永恒的,散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影\n\n![图片](http://image.9game.cn/2017/11/13/18553901.jpg)\n\n[一个链接](www.baidu.com)散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。`强调`我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\nString str = "Hello World!" \nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n1. 1.第一\n2. 2.第二\n3. 3.第三\n\n- 1\n- 2\n- 3\n\n**文字加粗了**\n==标记==',
       value1:
-        '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n\n**文字加粗了**'
+        '> 没有什么是永恒的\n\n ![图片](http://image.9game.cn/2017/11/13/18553901.jpg)\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n\n```Java\n\nString str = \"Hello World!\" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了**'
     };
   },
   //created()在页面生成之前调用，一般是加载页面所需要的数据
@@ -182,8 +183,9 @@ export default {
         _this.toTopIsShow = false;
       }
     };
-    articeDetail().then(response => {
-      this.artice = response.data.data;
+    this.$http.artice.articeDetail(this.$route.params.id).then(response => {
+      this.artice = response.data.data.artice;
+      console.log("文章："+JSON.stringify(this.artice))
     });
   },
   //mounted()在页面生成之后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
@@ -205,7 +207,7 @@ export default {
       var showdown = require("showdown");
       var converter = new showdown.Converter();
       this.converter = converter;
-      var html = this.converter.makeHtml(this.content);
+      var html = this.converter.makeHtml(this.artice.content);
       document.getElementById("show-content").innerHTML = html;
     },
     starArtice() {
@@ -235,7 +237,8 @@ export default {
     }
   },
   components: {
-    "vue-showdown": VueShowdown
+    "vue-showdown": VueShowdown,
+    "artice-content": ArticeContent
   }
 };
 </script>
