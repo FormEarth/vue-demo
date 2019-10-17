@@ -180,10 +180,10 @@ export default {
     console.log(
       "this.$store.state.current_theme:" + this.$store.state.current_theme
     );
-    theme.use(this.$store.state.current_theme);
+    // theme.use(this.$store.state.current_theme);
   },
   methods: {
-    starArtice(star) {
+    starArticle(star) {
       star ? (this.star = false) : (this.star = true);
     },
     //显示底部弹出层

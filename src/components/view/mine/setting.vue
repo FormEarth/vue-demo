@@ -100,7 +100,7 @@ export default {
     this.$store.state.current_theme=="dark"?this.dark=true:this.dark=false
   },
   methods: {
-    starArtice(star) {
+    starArticle(star) {
       star ? (this.star = false) : (this.star = true);
     },
     //切换夜间模式

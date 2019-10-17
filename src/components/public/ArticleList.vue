@@ -1,37 +1,38 @@
 <template>
 <mu-slide-left-transition>
   <mu-paper :z-depth="0">
-    <div class="long-artice" v-if="type=='long-artice'" @click="goArticle(artice.id)">
+    <div class="long-article" v-if="type=='long-article'" @click="goArticle(article.articleId)">
       <div class="header">
-        <span style="font-size:15px;font-weight:bold;">{{artice.title}}</span>
+        <span style="font-size:15px;font-weight:bold;">{{article.title}}</span>
         <mu-chip color="blue100" text-color="black" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
         <!-- <mu-icon value="close" sixe="12" style="float:right;"></mu-icon> -->
       </div>
       <div class="list-item" v-if="hasPicture">
         <div class="left">
-          <img :src="artice.picture" :onerror="defaultImg">
+          <img :src="article.frontCover">
+          <!-- <img :src="article.frontCover" :onerror="defaultImg"> -->
         </div>
         <div class="right">
-          <div class="right-top" style="height: 73%;">{{artice.content}}</div>
+          <div class="right-top">{{article.summary}}</div>
           <div class="right-bottom">
-            <span style="position:absolute;bottom:0px; ">{{artice.author}}&nbsp;{{artice.sendTime}}</span>
+            <span style="position:absolute;bottom:0px; ">{{article.authorName}}&nbsp;{{article.sendTime}}</span>
             <!-- <span style="position:absolute;right:0px;bottom:0px;">123 阅读</span> -->
           </div>
         </div>
       </div>
       <div class="list-item" v-else>
         <div class="only-font">
-          <div class="right-top">{{artice.content}}</div>
+          <div class="right-top">{{article.summary}}</div>
           <div>
-            <span>{{artice.author}}</span>
-          &nbsp;{{artice.sendTime}}
+            <span>{{article.author}}</span>
+          &nbsp;{{article.sendTime}}
           <!-- <span style="float:right">123 阅读</span> -->
           </div>
         </div>
       </div>
     </div>
     <!-- 以下是图集 -->
-    <div class="atlas" v-if="type=='atlas'" @click="goPictures(artice.id)">
+    <div class="atlas" v-if="type=='atlas'" @click="goPictures(article.id)">
       <div class="flag flag-left">图集</div>
       <div class="atlas-item">
         <div class="atlas-item-content">
@@ -40,12 +41,12 @@
           </div>
         </div>
         <div class="atlas-item-header">
-          <div class="van-ellipsis">{{artice.content}}</div>
+          <div class="van-ellipsis">{{article.content}}</div>
         </div>
         <div class="atlas-item-footer">
           <mu-chip color="green300" text-color="black" v-show="getFirstTag!=''">#{{getFirstTag}}</mu-chip>
-          <span>{{artice.author}}</span>
-          &nbsp;{{artice.sendTime}}
+          <span>{{article.author}}</span>
+          &nbsp;{{article.sendTime}}
           <!-- <span style="float:right">123 阅读 &nbsp;</span> -->
         </div>
       </div>
@@ -55,16 +56,16 @@
 </template>
 <script>
 export default {
-  name: "ArticeList", //首页列表组件
+  name: "ArticleList", //首页列表组件
   props: {
-    artice: {
+    article: {
       //作品对象
       type: Object
     },
     type: {
       //类型，区分长文和图文
       type: String,
-      default: "long-artice"
+      default: "long-article"
     }
   },
   data() {
@@ -73,30 +74,30 @@ export default {
   computed: {
     // 计算属性，判断文章是否有图片
     hasPicture: function() {
-      return this.artice.picture == "" ? false : true;
+      return this.article.frontCover == "" ? false : true;
     },
     //将tags字符串转换为数组
     getFirstTag: function() {
       //若没有tags，将值转换成空字符串
       if (
-        !this.artice.tags ||
-        this.artice.tags == "undefined" ||
-        this.artice.tags == "null"
+        !this.article.tags ||
+        this.article.tags == "undefined" ||
+        this.article.tags == "null"
       )
-        this.artice.tags = "";
-      return this.artice.tags.split("|")[0];
+        this.article.tags = "";
+      return this.article.tags.split("|")[0];
     },
     //返回前三张图片数组
     pictureArray: function() {
       var pictures;
       if (
-        !this.artice.picture ||
-        this.artice.picture == "undefined" ||
-        this.artice.picture == "null"
+        !this.article.picture ||
+        this.article.picture == "undefined" ||
+        this.article.picture == "null"
       ) {
         pictures = "";
       } else {
-        pictures = this.artice.picture;
+        pictures = this.article.picture;
       }
       const temp = pictures.split("|");
       return temp.slice(0, 4);
@@ -110,7 +111,7 @@ export default {
   },
   methods: {
     goArticle(id) {
-      var url = "/home/artice/detail/" + id;
+      var url = "/article/detail/" + id;
       this.$router.push(url);
     },
     goPictures(id) {

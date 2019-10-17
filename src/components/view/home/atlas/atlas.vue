@@ -9,7 +9,7 @@
           <mu-icon value="more_vert"></mu-icon>
         </mu-button>
         <mu-list slot="content">
-          <mu-list-item button @click="starArtice">
+          <mu-list-item button @click="starArticle">
             <mu-list-item-content v-if="star" style="display:flex;">
               <mu-slide-top-transition>
                 <mu-icon value="turned_in" color="green" size="24"></mu-icon>
@@ -45,7 +45,7 @@
           <div>
             <img :src="picture" style="width:30px;height:30px;border-radius:50%;">
           </div>
-          <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{artice.author}}</div>
+          <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{article.author}}</div>
           <div style="margin-top:5px;margin-left:8px;">
             <van-button plain type="danger" size="mini">关注</van-button>
             <!-- <van-button type="danger" size="mini">已关注</van-button> -->
@@ -53,7 +53,7 @@
         </div>
         <div style="width:30%;margin-top:6px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
-      <div v-if="artice.proportion">
+      <div v-if="article.proportion">
         <van-swipe @change="onChange" :loop="false">
           <van-swipe-item v-for="(image, index) in picturesArray" :key="index">
             <img :src="image" :onerror="defaultImg">
@@ -75,11 +75,11 @@
           :key="tag"
         >#{{tag}}</mu-chip>
       </div>
-      <mu-card-text>{{artice.content}}</mu-card-text>
+      <mu-card-text>{{article.content}}</mu-card-text>
       <div style="padding-left:10px;font-size:12px;">
-        发布于&nbsp;{{artice.datatime}}&nbsp;
+        发布于&nbsp;{{article.datatime}}&nbsp;
         <mu-icon value="place" size="16"></mu-icon>
-        {{artice.place}}
+        {{article.place}}
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
         <mu-badge content="12" circle class="demo-icon-badge">
@@ -99,7 +99,7 @@
         </mu-badge>
       </div>
       <mu-divider></mu-divider>
-      <div v-if="!artice.comment" style="text-align:center;font-size:16px;padding-top:5px;">
+      <div v-if="!article.comment" style="text-align:center;font-size:16px;padding-top:5px;">
         <mu-icon value="speaker_notes_off"></mu-icon>
         <br>评论已被作者关闭
       </div>
@@ -127,10 +127,10 @@
   </mu-container>
 </template>
 <script>
-import ArticeContent from "@/components/public/ArticeContent.vue";
+import ArticleContent from "@/components/public/ArticleContent.vue";
 import { ImagePreview } from "vant";
 export default {
-  name: "artice",
+  name: "article",
   data() {
     return {
       current: 0,
@@ -138,7 +138,7 @@ export default {
       picture1: require("@/assets/images/404.jpg"),
       star: true,
       open: false,
-      artice: {
+      article: {
         proportion: false, //这个字段用来判断图文中图片是否是等比例的，true则使用轮播图，false则使用预览
         style: "googlecode",
         title: "午后时光",
@@ -160,11 +160,11 @@ export default {
   computed: {
     // 将标签字符串切割成数组
     tagArray: function() {
-      return this.artice.tags.split("|");
+      return this.article.tags.split("|");
     },
     // 将图片地址字符串切割成数组
     picturesArray: function() {
-      return this.artice.pictures.split("|");
+      return this.article.pictures.split("|");
     },
     //默认加载的图片
     defaultImg() {
@@ -172,7 +172,7 @@ export default {
     }
   },
   methods: {
-    starArtice() {
+    starArticle() {
       console.log(this.star);
       if (this.star) {
         this.star = false;
@@ -208,7 +208,7 @@ export default {
     }
   },
   components: {
-    "artice-content": ArticeContent
+    "article-content": ArticleContent
   },
   filters: {
     formateDate(value) {}

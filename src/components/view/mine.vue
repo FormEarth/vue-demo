@@ -2,7 +2,7 @@
   <mu-container>
     <!-- <mu-paper :z-depth="1" class="demo-list-wrap"> -->
       <mu-list toggle-nested>
-        <mu-list-item v-if="isLogin" avatar button to="/mine/info">
+        <mu-list-item v-if="isLogin" avatar button @click="goMyPage">
           <mu-list-item-action>
             <mu-avatar>
               <mu-icon value="person"></mu-icon>
@@ -171,6 +171,10 @@ export default {
         duration: 1000,
         background: '#2196f3'
       });
+    },
+    goMyPage(){
+      var url = '/'+this.user.userId + '/articles'
+      this.$router.replace(url)
     }
   }
 };

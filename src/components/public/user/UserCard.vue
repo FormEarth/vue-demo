@@ -1,22 +1,23 @@
 <template>
-  <div class="information-card">
+  <div class="information-card" :style="{backgroundImage: 'url(' + user.avatar + ')'}" style>
     <div class="user-avatar">
-      <img :src="image_access_url+user.avatar" alt="头像" />
+      <img :src="user.avatar" alt="头像" />
     </div>
-    <div class="information-card">
-      <div style="text-align:center;font-size: 16px;font-weight: bolder;">{{user.userName}}</div>
+    <div class="user-information">
+      <div class="information-username">{{user.userName}}</div>
       {{user.sign}}
-      <br />{{user.personalProfile}}
-      <br />你可以在这里找到我，未完待续...
+      <br />
+      {{user.personalProfile}}
+      <!-- <br />你可以在这里找到我，未完待续... -->
     </div>
-    <div class="other-information">
+    <!-- <div class="other-information">
       <div v-show="user.github!==null" class="link" @click="toLink(user.github)">
         <img :src="github" alt="tupian" />
       </div>
       <div v-show="user.github!==null" class="link" @click="toLink(user.weibo)">
         <img :src="weibo" alt="tupian" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -24,12 +25,20 @@ export default {
   name: "UserCard",
   props: {
     user: {
-      type: Object
+      type: Object,
+      //props default 数组／对象的默认值应当由一个工厂函数返回
+      default: () => {
+        return {
+          avatar: require("@/assets/images/background.jpg"),
+          userName: "不要成为你欲望的奴隶"
+        };
+      }
     }
   },
   data() {
     return {
-      image_access_url : 'http://127.0.0.1:9090',
+      backgroundImage:
+        "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg",
       github: require("@/assets/images/Github.png"),
       weibo: require("@/assets/images/sina_weibo.png")
     };
@@ -43,19 +52,31 @@ export default {
 </script>
 <style scoped>
 .information-card {
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
+  /* background-color: rgb(255, 255, 255); */
+  /* border-radius: 5px; */
   text-align: center;
-  padding-top: 15px;
+  background-size: cover;
+  background-color: pink;
 }
 .user-avatar img {
   width: 80px;
   height: 80px;
-  display: block;
   border-radius: 50%;
-  margin: 0 auto;
+  border: white 2px solid;
+  /* display: block;
+  margin: 0 auto;*/
   -o-object-fit: cover;
   object-fit: cover;
+}
+.information-card .user-information {
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.user-information .information-username {
+  text-align: center;
+  /* color: #2196f3; */
+  font-size: 20px;
+  /* font-weight: bolder; */
 }
 .information-card .other-information {
   margin-top: 10px;
@@ -71,11 +92,39 @@ export default {
   border-radius: 50%;
 }
 /* 大屏幕，宽度大于960px; */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 600px) {
+  .information-card {
+    position: fixed;
+    bottom: 0;
+    top: 75px;
+    width: 25%;
+  }
+  .user-avatar {
+    padding-top: 150px;
+  }
   .link img:hover {
     transform: scale(1.1); /* 元素放大1.4倍 */
     transition: all 1s; /* 元素在0.5s内完成动画 */
     cursor: pointer;
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 800px) {
+  .information-card {
+    position: fixed;
+    bottom: 0;
+    top: 75px;
+    width: 25%;
+  }
+  .user-avatar {
+    padding-top: 150px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .information-card {
+    margin-top: 10px;
+  }
+  .user-avatar {
+    padding-top: 15px;
   }
 }
 </style>

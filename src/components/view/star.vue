@@ -109,9 +109,9 @@ export default {
   },
   //created()是一个函数
   created() {
-    // artices().then(response => {
-    //       const artices = response.data.data
-    //       this.artices = artices
+    // articles().then(response => {
+    //       const articles = response.data.data
+    //       this.articles = articles
     //     });
   },
   methods: {

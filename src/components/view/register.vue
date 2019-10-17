@@ -81,7 +81,7 @@ export default {
         }
       ],
       repasswordRules: [
-        { validate: val => !!val, message: "必须填写您的密码" }
+        { validate: val => !!val, message: "必须填写您的验证码" }
       ],
       phoneRules: [{ validate: val => !!val, message: "必须填写手机号" }],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],

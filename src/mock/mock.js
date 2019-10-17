@@ -15,7 +15,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/user/login', 'post', {
   }
 });
 //首页文章数据加载
-Mock.mock('http://192.168.0.110:8080/demo/api/artices', 'get', {
+Mock.mock('http://192.168.0.110:8080/demo/api/articles', 'get', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",
@@ -168,7 +168,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
   ]
 });
 //文章详情数据
-Mock.mock('http://192.168.0.110:8080/demo/api/artice/detail/123', 'get', {
+Mock.mock('http://192.168.0.110:8080/demo/api/article/detail/123', 'get', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",

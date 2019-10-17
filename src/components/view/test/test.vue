@@ -1,6 +1,6 @@
 <template>
-  <div class="test-all">
-    <!-- <van-tabs v-model="active" swipeable>
+  <!-- <div class="test-all"> -->
+  <!-- <van-tabs v-model="active" swipeable>
       <van-tab v-for="index in 4" :title="'选项 ' + index" :key="index">内容 {{ index }}</van-tab>
     </van-tabs>
     <div>
@@ -34,8 +34,8 @@
     </transition-group>
     <div style="display:inline-block;width:100%;">
       <div id="show-content"></div>
-    </div>-->
-    <div class="box-container">
+  </div>-->
+  <!-- <div class="box-container">
       <transition-group class="box-container" name="box" tag="div">
         <div class="box" v-for="(num,index) in array" :key="index+2">
           <div style="width:100%;height:70%;background-color:pink;">图片</div>
@@ -52,6 +52,10 @@
         <mu-icon value="remove"></mu-icon>
       </mu-button>
     </div>
+  </div>-->
+  <div style="width:100%;display:flex;">
+    <div style="width:30%;position:fixed;" >123</div>
+    <div style="width:70%;position:fixed;right:0;top:75px;bottom:0;overflow-y: auto;">123</div>
   </div>
 </template>
 <script>
@@ -119,6 +123,9 @@ export default {
 };
 </script>
 <style scoped>
+div {
+  border: 1px red solid;
+}
 html,
 .box-container {
   width: 100%;
@@ -181,7 +188,8 @@ html,
   transform: translateY(-110px);
   transition: all 0.1s ease-in;
 }
-.box-leave,.box-leave-active {
+.box-leave,
+.box-leave-active {
   transform: scale(0.1);
   transition: all 0.5s linear;
 }

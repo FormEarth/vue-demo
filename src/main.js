@@ -6,6 +6,8 @@ import router from './router'
 import store from './store'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
+import 'muse-ui-loading/dist/muse-ui-loading.css'; // load css
+import Loading from 'muse-ui-loading';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
 import Vant from 'vant';
@@ -16,6 +18,8 @@ import api from './axios/api'
 //require('@/mock/mock.js')
 
 Vue.use(MuseUI);
+//加载状态组件
+Vue.use(Loading);
 Vue.use(mavonEditor);
 Vue.use(Vant);
 Vue.prototype.$http=api

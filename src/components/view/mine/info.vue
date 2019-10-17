@@ -40,8 +40,8 @@
     <van-tabs v-model="active" swipeable>
       <van-tab van-tab title="文章">
         <div class="demo-text" v-if="active === 0" style="background-color:rgb(207, 207, 218)">
-          <div v-for="artice in artices" :key="artice.id">
-            <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
+          <div v-for="article in articles" :key="article.id">
+            <article-list style="margin-bottom:3px;" :article="article" :type="article.type"></article-list>
           </div>
         </div>
       </van-tab>
@@ -49,8 +49,8 @@
         <div class="demo-text" v-if="active === 1">
           <div v-if="pictures==''" style="text-align:center;margin-top:4px;">还没有发布图集哦</div>
           <div v-else>
-            <div v-for="artice in pictures" :key="artice.id">
-              <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
+            <div v-for="article in pictures" :key="article.id">
+              <article-list style="margin-bottom:3px;" :article="article" :type="article.type"></article-list>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
   </mu-container>
 </template>
 <script>
-import ArticeList from "@/components/public/ArticeList.vue";
+import ArticleList from "@/components/public/ArticleList.vue";
 
 export default {
   name: "info",
@@ -84,14 +84,14 @@ export default {
         backgroundSize: "cover",
         height: "120px"
       },
-      artices: [
+      articles: [
         {
           id: "123",
           title: "盛名之下，其实难却",
           picture: require("@/assets/images/carousel1.jpg"),
           from: "历史之窗",
           author: "Nidhogg",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "“您太天真了，所有死物的命运不过是受活人需要来驱动罢了，您认为能够流传的，不过是它们还有被需要和利用的价值而已，所以说永恒才是最虚假的玄幻啊。”西装笔挺的秘书长摘掉了他的眼镜，文质彬彬的气息一下子从他身上流走了。取而代之的是一种不可见底的深不可测。",
           sendTime: "2019-04-08 20:33:14",
@@ -103,7 +103,7 @@ export default {
           picture: require("@/assets/images/carousel1.jpg"),
           from: "历史之窗",
           author: "Nidhogg",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
           sendTime: "2019-04-08 20:33:14",
@@ -115,7 +115,7 @@ export default {
           picture: require("@/assets/images/carousel1.jpg"),
           from: "历史之窗",
           author: "Nidhogg",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
           sendTime: "2019-04-08 20:33:14",
@@ -127,7 +127,7 @@ export default {
           picture: require("@/assets/images/carousel1.jpg"),
           from: "历史之窗",
           author: "Nidhogg",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？",
           sendTime: "2019-04-08 20:33:14",
@@ -139,7 +139,7 @@ export default {
           picture: require("@/assets/images/test2.jpg"),
           from: "历史之窗",
           author: "Nidhogg",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？"
         }
@@ -152,7 +152,7 @@ export default {
           picture:
             "http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
           author: "高天原",
-          url: "/home/artice",
+          url: "/home/article",
           content:
             "今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩",
           sendTime: "2019-04-08 20:33:14",
@@ -163,7 +163,7 @@ export default {
     };
   },
   components: {
-    "artice-list": ArticeList
+    "article-list": ArticleList
   }
 };
 </script>

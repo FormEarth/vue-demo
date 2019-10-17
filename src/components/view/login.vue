@@ -19,14 +19,16 @@
             :type="visibility ? 'text' : 'password'"
           ></mu-text-field>
         </mu-form-item>
-        <mu-form-item prop="remberMe" help-text="请勿在公用电脑勾选此选项" style="padding-left:16px;">
+        <mu-form-item prop="remberMe" help-text="请勿在公用设备上勾选此选项" style="padding-left:16px;">
           <mu-checkbox label="记住我" v-model="validateForm.remberMe"></mu-checkbox>
         </mu-form-item>
         <div style="padding:0 15px;">
-          <mu-button full-width color="green500" @click="submit">
+          <mu-button full-width color="green500" v-loading="loading" :disabled=loading @click="submit"
+            data-mu-loading-size="24" data-mu-loading-overlay-color="white" data-mu-loading-text="正在登录……">
             登录
             <mu-icon right value="send"></mu-icon>
           </mu-button>
+          <!-- <mu-button color="secondary" v-loading="loading" data-mu-loading-size="24" @click="test">按钮加载</mu-button> -->
         </div>
         <!-- <mu-button flat @click="submit">
           登录
@@ -66,12 +68,12 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: "login",
   data() {
     return {
+      //按钮是否加载状态
+      loading: false,
       openDialog: false,
       visibility: false,
       panel: false,
@@ -118,15 +120,15 @@ export default {
     //登录点击事件
     submit() {
       this.$refs.form.validate().then(result => {
-        if (!result) return;
+        if (!result) return
+        this.loading = true
         this.$http.user.userLogin(this.validateForm)
           .then(response => {
-            console.log("进入then");
             const user = response.data.data.current_user_data;
             //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
-            console.log("current_user", JSON.stringify(user));
             sessionStorage.setItem("current_user", JSON.stringify(user));
             this.$store.commit("save_user", user);
+             this.loading = false
             if (this.$route.query.redirect) {
               //如果存在参数
               let redirect = this.$route.query.redirect;
@@ -138,8 +140,9 @@ export default {
             console.log(JSON.parse(sessionStorage.getItem("current_user")));
           })
           .catch(error => {
+             this.loading = false
             console.log("出错了！");
-            console.log(error);
+            console.log(error.response);
           });
       });
     },
@@ -156,32 +159,6 @@ export default {
     },
     closeSimpleDialog() {
       this.openDialog = false;
-    },
-    login() {
-      axios
-        .post(
-          "http://192.168.149.110:9092/demo/api/user/login",
-          this.validateForm
-        )
-        .then(response => {
-          const user = response.data.data.current_user_data;
-            //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
-            console.log("current_user", JSON.stringify(user));
-            sessionStorage.setItem("current_user", JSON.stringify(user));
-            this.$store.commit("save_user", user);
-            if (this.$route.query.redirect) {
-              //如果存在参数
-              let redirect = this.$route.query.redirect;
-              this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
-            } else {
-              this.$router.replace("/mine"); //否则跳转至我的首页
-            }
-            //取值的时候也要注意字符串转对象
-            console.log(JSON.parse(sessionStorage.getItem("current_user")));
-        })
-        .catch(error => {
-          console.log("出错了！");
-        });
     }
   }
 };

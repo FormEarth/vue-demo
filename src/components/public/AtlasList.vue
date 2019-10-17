@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     // goArticle(id) {
-    //   var url = "/home/artice/detail/" + id;
+    //   var url = "/home/article/detail/" + id;
     //   this.$router.push(url);
     // },
     goPictures(id) {

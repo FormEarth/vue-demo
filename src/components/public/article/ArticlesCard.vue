@@ -1,5 +1,5 @@
 <template>
-  <div class="artices-card">
+  <div class="articles-card">
       <ul>
           <li>列表</li>
           <li>列表</li>
@@ -10,7 +10,7 @@
 
 <script>
 export default { 
-  name:"ArticesCard",
+  name:"ArticlesCard",
   props:{
 
   },
@@ -26,8 +26,8 @@ export default {
  li{
     list-style-type: circle;
 }
-.artices-card{
-  border-radius: 5px;
+.articles-card{
+  /* border-radius: 5px; */
   background-color: white;
   padding: 5px 20px;
 }

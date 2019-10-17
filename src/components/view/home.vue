@@ -6,8 +6,8 @@
           <mu-list textline="three-line" dense style="background-color: rgb(207, 207, 218);">
             <mu-sub-header style="background-color: white">热门推荐</mu-sub-header>
             <!-- <transition-group> -->
-              <div v-for="artice in artices" :key="artice.id">
-                <artice-list style="margin-bottom:3px;" :artice="artice" :type="artice.type"></artice-list>
+              <div v-for="article in articles" :key="article.id">
+                <article-list style="margin-bottom:3px;" :article="article" :type="article.type"></article-list>
               </div>
             <!-- </transition-group> -->
           </mu-list>
@@ -19,7 +19,7 @@
               </mu-button>
             </mu-slide-left-transition>
             <mu-slide-right-transition>
-              <mu-button v-show="this.open" to="/home/artice/add" style="margin-bottom:8px;">
+              <mu-button v-show="this.open" to="/home/article/add" style="margin-bottom:8px;">
                 写长文
                 <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
               </mu-button>
@@ -54,9 +54,8 @@
   </mu-container>
 </template>
 <script>
-import ArticeList from "@/components/public/ArticeList.vue";
+import ArticleList from "@/components/public/ArticleList.vue";
 import AtlasList from "@/components/public/AtlasList.vue";
-import { artices, atlases } from "@/axios/api";
 
 export default {
   name: "home",
@@ -66,19 +65,15 @@ export default {
       open: false, //写文章按钮是否展开,
       selects: [],
       picture: require("@/assets/images/carousel1.jpg"),
-      artices: [], //文章列表数据
+      articles: [], //文章列表数据
       atlases: [] //图集列表数据
     };
   },
   //created()是一个函数
   created() {
-    this.$http.artice.artices().then(response => {
-      const artices = response.data.data;
-      this.artices = artices;
-    });
-    atlases().then(response => {
-      const atlases = response.data.data;
-      this.atlases = atlases;
+    this.$http.article.getHomePageArticles().then(response => {
+      var articles = response.data.data.articles;
+      this.articles = articles;
     });
   },
   methods: {
@@ -86,7 +81,7 @@ export default {
       this.$router.push(url);
     },
     goArticle(id) {
-      var url = "/home/artice/get/" + id;
+      var url = "/home/article/get/" + id;
       this.$router.push(url);
     },
     goRegister() {
@@ -97,7 +92,7 @@ export default {
     }
   },
   components: {
-    "artice-list": ArticeList,
+    "article-list": ArticleList,
     "atlas-list": AtlasList
   }
 };

@@ -1,20 +1,21 @@
 <template>
   <mavon-editor class="editor"
     :value="content"
-    :codeStyle= "articeStyle"
+    :codeStyle= "articleStyle"
     :subfield="false"
     :defaultOpen="defaultData"
     :toolbarsFlag="false"
     :boxShadow="false"
+    :boxShadowStyle="boxShadowStyle"
   />
 </template>
 <script>
 // import mavonEditor from "mavon-editor";
 // import "mavon-editor/dist/css/index.css";
 export default {
-  name: "ArticeContent", //文章内容的组件
+  name: "ArticleContent", //文章内容的组件
   props:{
-    articeStyle:{
+    articleStyle:{
       type:String,
       default:'github'
     },
@@ -27,6 +28,7 @@ export default {
     return {
       defaultData: "preview",
       codeStyle: "rainbow",
+      boxShadowStyle:"0 2px 5px 0 rgba(0, 0, 0, 0.1)",
       value: `<code>String = "Hello World!"<code>`
     };
   },
@@ -35,8 +37,8 @@ export default {
 };
 </script>
 <style>
-.editor  v-show-content  scroll-style{
-  padding:8px 5px 15px 5px;
+.single-show >>> .v-show-content{
+  padding:8px 0px 15px 0px;
 }
 
 </style>
