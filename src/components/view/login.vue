@@ -128,14 +128,19 @@ export default {
             //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
             sessionStorage.setItem("current_user", JSON.stringify(user));
             this.$store.commit("save_user", user);
-             this.loading = false
-            if (this.$route.query.redirect) {
+            this.loading = false
+            if(this.$route.query.isRequest){
+              this.$router.go(-1)
+            }else{
+              if (this.$route.query.redirect) {
               //如果存在参数
               let redirect = this.$route.query.redirect;
               this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
             } else {
               this.$router.replace("/mine"); //否则跳转至我的首页
             }
+            }
+            
             //取值的时候也要注意字符串转对象
             console.log(JSON.parse(sessionStorage.getItem("current_user")));
           })

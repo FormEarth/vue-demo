@@ -4,11 +4,11 @@
     <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
     <!-- 内容区域 -->
     <router-view :key="$route.fullPath"></router-view>
-    <mu-bottom-nav v-show="showBottomNav" :value.sync="this.$route.name" color="primary">
+    <!-- <mu-bottom-nav v-show="showBottomNav" :value.sync="this.$route.name" color="primary">
       <mu-bottom-nav-item value="home" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="star" title="关注" icon="add" replace to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
-    </mu-bottom-nav>
+    </mu-bottom-nav> -->
   </div>
 </template>
 
@@ -21,15 +21,15 @@ export default {
   },
   computed:{
     //是否显示底部导航栏
-    showBottomNav(){
-      const name = this.$route.name
-      console.log("name:"+name,"nav:"+this.$route.meta.nav)
-      if(name=="home"||name=="star"||name=="mine"){
-        return true
-      }else{
-        return false
-      }
-    }
+    // showBottomNav(){
+    //   const name = this.$route.name
+    //   console.log("name:"+name,"nav:"+this.$route.meta.nav)
+    //   if(name=="home"||name=="star"||name=="mine"){
+    //     return true
+    //   }else{
+    //     return false
+    //   }
+    // }
   },
   components:{
     "demo-nav": DemoNav,

@@ -3,7 +3,7 @@
     <!-- 左侧部分 -->
     <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
     <div class="left-panel">
-      <slot name="user-card"></slot>
+      <slot name="demo-card"></slot>
     </div>
     <!-- 右侧部分 -->
     <div class="right-panel">
@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import UserCard from "@/components/public/user/UserCard";
-
 export default {
   name: "DemoContent",
   props: {
@@ -28,9 +26,6 @@ export default {
       backgroundImage:
         "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
     };
-  },
-  components: {
-    "user-card": UserCard
   }
 };
 </script>
@@ -93,7 +88,7 @@ export default {
 /* 小屏幕，宽度在300px~640px */
 @media screen and (min-width: 300px) and (max-width: 600px) {
   .content {
-    margin: 15px 2% 0 2%;
+    margin-top: 15px;
   }
   .content .right-panel {
     margin-bottom: 5px;

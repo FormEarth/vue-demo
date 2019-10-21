@@ -170,7 +170,7 @@ export default {
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/article/detail/" + newArticleId);
+      this.$router.replace("/article/detail/" + this.newArticleId);
     },
     // 图片上传
     // 绑定@imgAdd event

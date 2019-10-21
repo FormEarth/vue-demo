@@ -1,5 +1,12 @@
 <template>
-  <input :type="type" :placeholder="placeholder" v-model="inputValue" />
+  <input
+    :type="type"
+    :placeholder="placeholder"
+    ref="input"
+    :value="value"
+    @input="$emit('input', $event.target.value)"
+    maxlength="100"
+  />
 </template>
 
 <script>
@@ -21,15 +28,15 @@ export default {
   },
   data() {
     return {
-      inputValue: ""
+      // inputValue: this.value
     };
-  },
-  watch: {
-    inputValue(newVal, oldVal) {
-      // 在监听你使用update事件来更新word,而在父组件不需要调用该函数
-      this.$emit("update:value", newVal);
-    }
   }
+  // watch: {
+  //   inputValue(newVal, oldVal) {
+  //     // 在监听你使用update事件来更新word,而在父组件不需要调用该函数
+  //     this.$emit("update:value", newVal);
+  //   }
+  // }
 };
 </script>
 

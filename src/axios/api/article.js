@@ -2,9 +2,9 @@ import request from '@/axios/request.js';//导入axios实例文件中方法
 
 const article = {
     //首页文章数据加载
-    getHomePageArticles() {
+    getHomePageArticles(currentPage) {
         return request.get(
-            '/demo/api/articles/1',
+            '/demo/api/articles/' + currentPage,
             {}
         );
     },
@@ -45,9 +45,22 @@ const article = {
         );
     },
     //删除评论
-    dleteComment(articleId) {
+    deleteCommentById(commentId) {
         return request.delete(
-            '/demo/api/comment?articleId='+ articleId
+            '/demo/api/comment?commentId=' + commentId
+        );
+    },
+    //添加回复
+    addReply(data) {
+        return request.post(
+            '/demo/api/reply',
+            data
+        );
+    },
+    //删除回复
+    deleteReplyById(replyId) {
+        return request.delete(
+            '/demo/api/reply?replyId=' + replyId
         );
     },
 }

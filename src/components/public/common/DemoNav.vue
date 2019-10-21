@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="nav-content">
-      <div class="nav-item" :class="$route.meta.nav=='article'?'active-item':''" @click="$router.push('/')">文章</div>
+      <div class="nav-item" :class="$route.meta.nav=='article'?'active-item':''" @click="$router.push('/')">首页</div>
       <div class="nav-item" :class="$route.meta.nav=='atlas'?'active-item':''">图集</div>
       <div class="nav-item" :class="$route.meta.nav=='album'?'active-item':''" @click="$router.push('/album')">相册</div>
       <div v-if="isLogin" :class="$route.meta.nav=='mine'?'active-item':''" class="nav-item" @click="$router.push('/mine')">{{user.userName}}</div>

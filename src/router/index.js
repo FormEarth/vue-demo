@@ -30,9 +30,9 @@ const router = new Router({
   //去掉路径中的#
   mode: 'history',
   routes: [
-    { path: '/', name: 'home', meta: { title: "首页", requireLogin: false ,nav:"article"}, component: home },
-    { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false,nav:"article" }, component: articles },
-    { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"article" }, component: articles },
+    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false ,nav:"article"}, component: articles },
+    { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
+    { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false ,nav:"none"}, component: register ,nav:"none"},
     {
       path: '/login', name: 'login', meta: { title: "登录", requireLogin: false ,nav:"none"}, component: login,

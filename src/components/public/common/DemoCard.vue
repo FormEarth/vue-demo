@@ -1,5 +1,5 @@
 <template>
-  <div class="information-card" :style="{backgroundImage: 'url(' + user.avatar + ')'}" style>
+  <div class="information-card" :style="{backgroundImage: 'url(' + cardImage + ')'}">
     <div class="user-avatar">
       <img :src="user.avatar" alt="头像" />
     </div>
@@ -22,14 +22,15 @@
 </template>
 <script>
 export default {
-  name: "UserCard",
+  name: "DemoCard",
   props: {
     user: {
       type: Object,
       //props default 数组／对象的默认值应当由一个工厂函数返回
       default: () => {
         return {
-          avatar: require("@/assets/images/background.jpg"),
+          avatar: require("@/assets/images/Github.png"),
+          frontCover:require("@/assets/images/background.jpg"),
           userName: "不要成为你欲望的奴隶"
         };
       }
@@ -37,11 +38,19 @@ export default {
   },
   data() {
     return {
-      backgroundImage:
-        "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg",
-      github: require("@/assets/images/Github.png"),
-      weibo: require("@/assets/images/sina_weibo.png")
+      // github: require("@/assets/images/Github.png"),
+      // weibo: require("@/assets/images/sina_weibo.png")
+      frontCover:require("@/assets/images/background.jpg"),
     };
+  },
+  computed:{
+    cardImage:function(){
+      if(typeof (this.user.frontCover) == "undefined"||this.user.frontCover == null||this.user.frontCover == ''){
+        return this.frontCover
+      }else{
+        return this.user.frontCover
+      }
+    }
   },
   methods: {
     toLink(url) {
@@ -56,7 +65,7 @@ export default {
   /* border-radius: 5px; */
   text-align: center;
   background-size: cover;
-  background-color: pink;
+  background-color: rgb(71, 235, 247);
 }
 .user-avatar img {
   width: 80px;

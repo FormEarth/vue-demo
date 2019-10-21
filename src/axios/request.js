@@ -38,11 +38,12 @@ instance.interceptors.response.use(
         //未登录或者登录超时清除登录状态
         store.commit('remove_user');
         sessionStorage.removeItem("current_user");
-        console.log("this.$route.fullPath:" + this.$route.fullPath)
-        router.replace({
+        console.log("this.$route.fullPath:" + router.name)
+        router.push({
           path: '/login',
-          query: { redirect: this.$route.fullPath }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          query: { isRequest: true }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
         });
+        // router.go(0)
         console.log("store.getters.isLogin:" + store.getters.isLogin)
       } else {
         // 轻提示弹框        

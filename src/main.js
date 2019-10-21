@@ -27,6 +27,16 @@ Vue.config.productionTip = false
 //是否启用debug
 Vue.config.devtools = true
 
+//批量注册全局组件
+//参数，指定获取哪个文件夹，是否遍历子文件夹，指定获取哪些文件
+const componentsContext = require.context('./components/public/common', false, /\.vue$/)
+componentsContext.keys().forEach(component => {
+    // 获取文件中的 default 模块
+    const componentConfig = componentsContext(component).default
+    Vue.component(componentConfig.name, componentConfig)
+    console.log(componentConfig.name)
+})
+
 new Vue({
   el: '#app',
   router,

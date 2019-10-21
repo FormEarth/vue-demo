@@ -1,15 +1,15 @@
 <template>
   <div class="demo-div">
     <demo-content>
-      <div slot="user-card">
-        <user-card></user-card>
+      <div slot="demo-card">
+        <demo-card></demo-card>
       </div>
       <div slot="detail-content">
-        <div class="mu-card">
-          <mu-card-media :title="article.title" v-if="article.frontCover!=null">
+        <div class="mu-card1">
+          <div v-if="article.frontCover==null||article.frontCover==''" class="title">{{article.title}}</div>
+          <mu-card-media :title="article.title" v-else>
             <img :src="article.frontCover" style="height:250px;width:100%;object-fit:cover;" />
           </mu-card-media>
-          <div v-else class="title">{{article.title}}</div>
           <div style="display:flex;justify-content:space-between;height:30px;margin:5px 0 9px 0">
             <div style="display:flex;padding-left:10px;">
               <div
@@ -23,12 +23,12 @@
             >{{article.readerNum}} 阅读</div>
           </div>
           <div style="padding:5px 10px 5px 10px;">
-            <article-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</article-tag>
+            <demo-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</demo-tag>
           </div>
           <article-content :content="article.content" :article-style="article.style"></article-content>
           <mu-card-actions style="white-space: nowrap">
             <mu-badge content="1" circle class="demo-icon-badge">
-              <mu-button icon>
+              <mu-button icon @click="test">
                 <mu-icon value="thumb_up"></mu-icon>
               </mu-button>
             </mu-badge>
@@ -49,17 +49,28 @@
             <br />评论已被作者关闭
           </mu-card-actions>
           <mu-card-actions v-else>
-            <div v-for="comment in comments" :key="comment.commentId">
+            <div v-for="(comment,index) in comments" :key="comment.commentId">
               <!-- {{comment.commentId}}-{{comment.commentContent}} -->
-              <demo-comment :comment="comment"></demo-comment>
+              <demo-comment
+                :comment="comment"
+                :commentIndex="index"
+                :articleUserId="article.author"
+                :activeCommentId="activeCommentId"
+                @func="changeActiveCommentId"
+                @removeComment="removeCommentByIndex"
+              ></demo-comment>
             </div>
-            <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表评论</div>
-            <demo-input placeholder="添加评论" :value.sync="comment" />
+            <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
+            <demo-input placeholder="添加评论" v-model="comment" />
             <div style="margin-top:10px;">
-              <input type="submit" value="提交" @click="commentArticle"
+              <input
+                :disabled="comment.length==0"
+                type="submit"
+                value="提交"
+                @click="commentArticle"
                 style="border:none;width:100%;background-color:#5db2ff;height:30px;"
               />
-            </div>                    
+            </div>
           </mu-card-actions>
           <!-- <mu-divider></mu-divider> -->
           <mu-card-actions
@@ -94,11 +105,8 @@
 </template>
 <script>
 import ArticleContent from "@/components/public/ArticleContent";
-import UserCard from "@/components/public/user/UserCard";
-import ArticleTag from "@/components/public/common/DemoTag";
-import DemoInput from "@/components/public/common/DemoInput";
-import DemoContent from "@/components/public/common/DemoContent";
-import DemoComment from "@/components/public/common/DemoComment"
+import { Toast } from 'vant';
+
 export default {
   //这个name属性不建议与已有的html元素重名，artice是已有的元素，会在控制台有警告，但好像不影响使用
   name: "article1",
@@ -114,8 +122,8 @@ export default {
       comment: "",
       //评论数组
       comments: [],
-      backgroundImage:
-        "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
+      //要回复的评论的评论id
+      activeCommentId: "-1",
     };
   },
   //created()在页面生成之前调用，一般是加载页面所需要的数据
@@ -132,16 +140,20 @@ export default {
     this.$http.article
       .articleDetail(this.$route.params.articleId)
       .then(response => {
-        this.article = response.data.data.article
-        this.comments = response.data.data.comments
-        console.log(this.comments)
+        this.article = response.data.data.article;
+        this.comments = response.data.data.comments;
+        console.log(this.comments);
       });
   },
   computed: {
+    //已登录用户信息
+    user: function() {
+      return this.$store.state.current_user;
+    },
     //切割标签为数组
     tagArray: function() {
-      if (typeof this.article.tags == "undefined") {
-        return;
+      if (typeof this.article.tags == "undefined"||this.article.tags==null) {
+        return [];
       }
       return this.article.tags.split("|");
     }
@@ -172,30 +184,50 @@ export default {
     goInfo() {
       this.$router.push("/mine/info");
     },
-    test(){
-      console.log(this.$route.fullPath)
-      this.$router.replace({
-          path: '/login',
-          query: { redirect: this.$route.fullPath }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-        });
+    test() {
+      this.comment = ""
+    },
+    changeActiveCommentId(commentId) {
+      this.activeCommentId = commentId
+    },
+    //根据索引，移除comments数组元素
+    removeCommentByIndex(index) {
+      this.comments.splice(index, 1)
     },
     //添加评论
-    commentArticle(){
-       this.$http.article.addComment({
-         "articleId":this.article.articleId,
-         "commentContent":this.comment
-       }).then(response => {
-        console.log(response.data)
-      })
+    commentArticle() {
+      this.$http.article
+        .addComment({
+          articleId: this.article.articleId,
+          commentContent: this.comment
+        })
+        .then(response => {
+          this.comments.push({
+            articleId: this.article.articleId,
+            avatar: this.user.avatar,
+            commentContent: this.comment,
+            commentId: response.data.data.commentId,
+            commentTime: response.data.time,
+            replies: [],
+            userId: this.user.userId,
+            userName: this.user.userName
+          });
+          this.comment = "";
+                    if (response.data.code == "2000") {
+            this.replyContent = "";
+            this.$emit("func", 0);
+            // 轻提示弹框
+            Toast({
+              message: "评论成功",
+              duration: 2000,
+              forbidClick: true
+            });
+          }
+        });
     }
   },
   components: {
     "article-content": ArticleContent,
-    "user-card": UserCard,
-    "article-tag": ArticleTag,
-    "demo-input": DemoInput,
-    "demo-content": DemoContent,
-    "demo-comment":DemoComment
   }
 };
 </script>
@@ -211,12 +243,12 @@ export default {
   padding-left: 10px;
   font-size: 20px;
 }
-.mu-card {
+.mu-card1 {
   /* padding-top: 58px; */
   /* 覆盖掉mu-card的默认白色背景 */
   background-color: transparent;
-  /* padding-left: 20px; */
-  /* padding-right: 20px; */
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .mu-card-text {
   padding: 0px;
@@ -245,11 +277,23 @@ export default {
   margin-left: 16px;
   margin-right: 16px;
 }
+input:disabled {
+  color:aliceblue;
+  opacity:0.8;
+  cursor:not-allowed;
+}
 .toTop {
   position: fixed;
   z-index: 2;
   right: 16px;
   bottom: 60px;
+  z-index: 1501;
+}
+@media screen and (max-width: 600px) {
+  .mu-card1 {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 </style>
 

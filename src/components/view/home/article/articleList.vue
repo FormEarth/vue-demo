@@ -1,8 +1,8 @@
 <template>
   <mu-container class="demo-container" fluid>
     <demo-content>
-      <div slot="user-card">
-        <user-card :user="user"></user-card>
+      <div slot="demo-card">
+        <demo-card :user="user"></demo-card>
       </div>
       <div slot="detail-content">
         <div v-if="articles.length!=0">
@@ -21,10 +21,9 @@
 </template>
 <script>
 import ArticleItem from "@/components/public/article/ArticleItem";
-import UserCard from "@/components/public/user/UserCard";
-import DemoContent from "@/components/public/common/DemoContent";
+
 export default {
-  name: "home_new",
+  name: "ArticleList",
   data() {
     return {
       articles: [],
@@ -54,7 +53,11 @@ export default {
     } else {
       this.current = currentPage = Number(this.$route.params.currentPage);
     }
-    this.getArticleData(this);
+    if(this.$route.name == "homePage"){
+      this.getHomePageArticleData(this)
+    }else{
+      this.getArticleData(this)
+    }
   },
   watch: {
     //查询参数改变，再次执行数据获取方法
@@ -77,8 +80,6 @@ export default {
   },
   components: {
     "article-item": ArticleItem,
-    "user-card": UserCard,
-    "demo-content": DemoContent
   },
   methods: {
     login() {
@@ -93,6 +94,15 @@ export default {
           that.user = response.data.data.user;
         });
     },
+    getHomePageArticleData(that) {
+      that.$http.article
+        .getHomePageArticles(that.current)
+        .then(response => {
+          that.articles = response.data.data.articles
+          that.total = response.data.data.total
+          that.user = response.data.data.user
+        });
+    },
     //分页跳转
     changePage() {
       // this.$http.user
@@ -100,14 +110,19 @@ export default {
       //   .then(response => {
       //     this.articles = response.data.data.articles;
       //     this.total = response.data.data.total
-      this.$options.methods.getArticleData(this);
+      if(this.$route.name == "homePage"){
+        this.$options.methods.getHomePageArticleData(this)
+        return;
+      }else{
+        this.$options.methods.getArticleData(this)
+      }
       //以下为替换地址栏路径
       if (this.$route.name == "articles") {
-        history.pushState(null, "", this.$route.path + "/" + this.current);
+        history.pushState(null, "", this.$route.path + "/" + this.current)
       } else {
-        var url = this.$route.path;
-        url = url.substring(0, url.length - 1) + this.current;
-        history.pushState(null, "", url);
+        var url = this.$route.path
+        url = url.substring(0, url.length - 1) + this.current
+        history.pushState(null, "", url)
       }
       // });
     }

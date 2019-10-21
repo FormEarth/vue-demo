@@ -9,6 +9,14 @@ const user = {
           data
         )
     },
+    //用户退出
+    userLogout(data) {
+        console.log('发送数据：' + data)
+        return request.post(
+          "/demo/api/user/logout",
+          data
+        )
+    },
 
     //获取一个用户的文章列表
     getArticlesByUserId(userId, currentPage) {
