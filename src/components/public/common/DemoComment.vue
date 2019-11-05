@@ -17,6 +17,7 @@
         {{comment.commentContent}}
         <div style="white-space:nowrap;">
           <a v-show="activeCommentId==comment.commentId+''" @click="changeCommentForm('0')">取消回复</a>&nbsp;
+          <a v-show="comment.replyCount>0&&!showReply" @click="getRepliesByCommentId">{{comment.replyCount}}·回复</a>
           <a v-if="user.userId==comment.userId"  @click="showAlertDialog('comment',0,0)">删除评论</a>
           <a v-else @click="changeCommentForm(comment.commentId+'')">回复</a>
         </div>
@@ -123,13 +124,14 @@ export default {
   },
   data() {
     return {
-      replies: this.comment.replies,
+      replies: {},
       //回复评论的内容
       replyContent: "",
       showDialog: false,
       flag: "",
       deleteReplyIndex:-1,
       deleteReplyId:-1,
+      showReply:false
     };
   },
   computed: {
@@ -183,6 +185,13 @@ export default {
           }
           // that.showDialog = false
         });
+    },
+    //获取回复
+    getRepliesByCommentId() {
+      this.$http.article.getRepliesByCommentId(this.comment.commentId).then(response=>{
+        this.replies = response.data.data.replies
+        this.showReply = true
+      })
     },
     //删除回复
     deleteReply(that) {

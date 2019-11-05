@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-appbar color="white" textColor="black" title="图集详情" :z-depth="0">
+    <!-- <mu-appbar color="white" textColor="black" title="图集详情" :z-depth="0">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
@@ -37,13 +37,13 @@
           </mu-list-item>
         </mu-list>
       </mu-menu>
-    </mu-appbar>
+    </mu-appbar>-->
     <mu-divider></mu-divider>
     <mu-card>
       <div style="display:flex;height:30px;margin:5px 0 9px 0">
         <div style="display:flex;width:70%;padding-left:10px;">
           <div>
-            <img :src="picture" style="width:30px;height:30px;border-radius:50%;">
+            <img :src="picture" style="width:30px;height:30px;border-radius:50%;" />
           </div>
           <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{article.author}}</div>
           <div style="margin-top:5px;margin-left:8px;">
@@ -56,24 +56,18 @@
       <div v-if="article.proportion">
         <van-swipe @change="onChange" :loop="false">
           <van-swipe-item v-for="(image, index) in picturesArray" :key="index">
-            <img :src="image" :onerror="defaultImg">
+            <img :src="image" :onerror="defaultImg" />
           </van-swipe-item>
           <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{picturesArray.length}}</div>
         </van-swipe>
       </div>
       <div class="img-container" v-else>
         <div class="img-item" v-for="(image, index) in picturesArray" :key="index">
-          <img :src="image" @click="showImagePreview(index)" :onerror="defaultImg">
+          <img :src="image" @click="showImagePreview(index)" :onerror="defaultImg" />
         </div>
       </div>
       <div style="padding:5px 10px 5px 10px;">
-        <mu-chip
-          class="demo-chip"
-          color="blue100"
-          text-color="black"
-          v-for="tag in tagArray"
-          :key="tag"
-        >#{{tag}}</mu-chip>
+        <demo-tag v-for="tag in tagArray" :key="tag">{{tag}}</demo-tag>
       </div>
       <mu-card-text>{{article.content}}</mu-card-text>
       <div style="padding-left:10px;font-size:12px;">
@@ -101,7 +95,7 @@
       <mu-divider></mu-divider>
       <div v-if="!article.comment" style="text-align:center;font-size:16px;padding-top:5px;">
         <mu-icon value="speaker_notes_off"></mu-icon>
-        <br>评论已被作者关闭
+        <br />评论已被作者关闭
       </div>
       <!-- <mu-divider></mu-divider> -->
       <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>
@@ -138,6 +132,7 @@ export default {
       picture1: require("@/assets/images/404.jpg"),
       star: true,
       open: false,
+      atlas: {},
       article: {
         proportion: false, //这个字段用来判断图文中图片是否是等比例的，true则使用轮播图，false则使用预览
         style: "googlecode",
@@ -223,7 +218,7 @@ export default {
 .container {
   padding-left: 0px;
   padding-right: 0px;
-  max-width: 500px;
+  /* max-width: 500px; */
   min-width: 350px;
 }
 .mu-appbar {

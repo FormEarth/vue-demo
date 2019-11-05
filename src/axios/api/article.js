@@ -50,6 +50,13 @@ const article = {
             '/demo/api/comment?commentId=' + commentId
         );
     },
+    //获取回复
+    getRepliesByCommentId(commentId) {
+        return request.get(
+            '/demo/api/'+commentId+'/replies',
+            {}
+        )
+    },
     //添加回复
     addReply(data) {
         return request.post(

@@ -1,48 +1,50 @@
 <template>
-  <mu-paper :z-depth="0">
+  <div class="main-content">
     <div class="atlas-item">
       <div class="atlas-item-header">
-        <div class="header-left" style="cursor: pointer;" @click="goInfo">
-          <img :src="atlas.avatar" :onerror="defaultImg">
-        </div>
-        <div class="header-center">
-          <div style="font-size:15px;line-height:15px;">
-            {{atlas.author}}
-            <!-- <span class="follow-button">关注</span> -->
+        <div style="display:flex;">
+          <div class="header-left" style="cursor: pointer;" @click="goInfo">
+            <img :src="atlas.user.avatar" :onerror="defaultImg" />
           </div>
-          <div style="line-height:16px;">
-            上海市 松江区
-            {{atlas.sendTime|time}}
+          <div class="header-center">
+            <div style="height:23px;font-size:16px;line-height:15px;padding-top:5px;">
+              {{atlas.user.userName}}
+              <!-- <span class="follow-button">关注</span> -->
+            </div>
+            <div style="height:23px;line-height:16px;padding-top:2px;">
+              上海市 松江区
+              {{atlas.sendTime|time}}
+            </div>
           </div>
         </div>
         <div class="header-right">
-          <mu-icon size="30" value="more_vert" @click="openAlertDialog" style="cursor: pointer;"></mu-icon>
+          <mu-icon size="35" value="more_vert" @click="openAlertDialog" style="cursor: pointer;"></mu-icon>
         </div>
       </div>
       <!-- 轮播图模式 -->
       <div v-if="atlas.proportion">
         <van-swipe @change="onChange" :loop="false">
           <van-swipe-item v-for="(image, index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg" style="width: 100%;object-fit: cover;">
+            <img :src="image" :onerror="defaultImg" style="width: 100%;object-fit: cover;" />
           </van-swipe-item>
           <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{pictureArray.length}}</div>
         </van-swipe>
       </div>
       <!-- 预览模式 -->
       <div v-else>
-        <div v-if="pictureArray.length==1">
-          <div class="atlas-item-img-1" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg">
+        <div v-if="atlas.atlasPictures.length==1">
+          <div class="atlas-item-img-1" v-for="(image,index) in atlas.atlasPictures" :key="index">
+            <img :src="image" :onerror="defaultImg" />
           </div>
         </div>
-        <div v-else-if="pictureArray.length==2" style="display:flex;">
-          <div class="atlas-item-img-2" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)">
+        <div v-else-if="atlas.atlasPictures.length==2" style="display:flex;">
+          <div class="atlas-item-img-2" v-for="(image,index) in atlas.atlasPictures" :key="index">
+            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)" />
           </div>
         </div>
         <div v-else style="display:flex;flex-wrap:wrap;">
-          <div class="atlas-item-img-3" v-for="(image,index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)">
+          <div class="atlas-item-img-3" v-for="(image,index) in atlas.atlasPictures" :key="index">
+            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)" />
           </div>
         </div>
       </div>
@@ -57,21 +59,12 @@
           style="text-align:right;margin-top:3px;margin-right:3px;"
         >123&nbsp;次喜欢</div>
       </div>
-      <mu-chip
-          class="demo-chip"
-          color="blue100"
-          text-color="black"
-          v-for="tag in tagArray"
-          :key="tag"
-        >
-          <mu-icon value="local_offer" size="13"></mu-icon>
-          {{tag}}
-      </mu-chip>
-      <br>
+      <demo-tag v-for="tag in atlas.atlasTags" :key="tag">{{tag}}</demo-tag>
+      <br />
       <div class="atlas-content" :class="fold ? 'fold' : 'unfold'">
         <div>
-          <span style="font-weight: bold;">{{atlas.author}}:</span>
-          <span>{{atlas.content}}</span>
+          <span style="font-weight: bold;">{{atlas.user.userName}}:</span>
+          <span>{{atlas.atlasContent}}</span>
         </div>
       </div>
       <div v-if="showButton">
@@ -83,7 +76,7 @@
       width="100%"
       max-width="90%"
       :esc-press-close="false"
-      :overlay-opacity=0.6
+      :overlay-opacity="0.6"
       :open.sync="openAlert"
     >
       <mu-list>
@@ -91,13 +84,13 @@
           <mu-list-item-action>
             <mu-icon value="star_border"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>关注 {{atlas.author}}</mu-list-item-title>
+          <mu-list-item-title>关注 {{atlas.user.userName}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
             <mu-icon value="mail_outline"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>发邮件给 {{atlas.author}}</mu-list-item-title>
+          <mu-list-item-title>发邮件给 {{atlas.user.userName}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
@@ -117,13 +110,21 @@
           </mu-list-item-action>
           <mu-list-item-title>举报</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.userId==this.atlas.author">
+        <mu-list-item
+          button
+          :ripple="false"
+          v-show="this.$store.state.current_user.userId==this.atlas.creater"
+        >
           <mu-list-item-action>
             <mu-icon value="edit"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>重新编辑</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button :ripple="false" v-show="this.$store.state.current_user.userId==this.atlas.author">
+        <mu-list-item
+          button
+          :ripple="false"
+          v-show="this.$store.state.current_user.userId==this.atlas.creater"
+        >
           <mu-list-item-action>
             <mu-icon value="delete"></mu-icon>
           </mu-list-item-action>
@@ -133,7 +134,7 @@
     </mu-dialog>
     <mu-bottom-sheet :open.sync="open">
       <mu-list @item-click="closeBottomSheet">
-        <mu-sub-header>您正在举报{{atlas.author}}，举报原因：</mu-sub-header>
+        <mu-sub-header>您正在举报{{atlas.user.userName}}，举报原因：</mu-sub-header>
         <mu-list-item button>
           <mu-list-item-title>政治有害类</mu-list-item-title>
         </mu-list-item>
@@ -144,14 +145,14 @@
           <mu-list-item-title>广告、不健康信息</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button>
-          <mu-list-item-title>其它</mu-list-item-title>
+          <mu-list-item-title>内容引起不适</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button @item-click="closeBottomSheet">
           <mu-list-item-title>取消</mu-list-item-title>
         </mu-list-item>
       </mu-list>
     </mu-bottom-sheet>
-  </mu-paper>
+  </div>
 </template>
 <script>
 /* 
@@ -169,7 +170,7 @@ import util from "@/util/util";
 import { ImagePreview } from "vant";
 
 export default {
-  name: "AtlasList", //图集列表组件
+  name: "AtlasItem", //图集列表组件
   props: {
     atlas: {
       //图集对象
@@ -178,7 +179,7 @@ export default {
   },
   data() {
     return {
-      current: 0,//轮播图当前图片的索引
+      current: 0, //轮播图当前图片的索引
       openAlert: false,
       open: false,
       fold: true
@@ -187,32 +188,11 @@ export default {
   computed: {
     // 根据文本长度决定是否展示更多与收起按钮
     showButton: function() {
-      return this.atlas.content.length >= 40 ? true : false;
-    },
-    //返回图片数组
-    pictureArray: function() {
-      var atlas;
-      if (
-        !this.atlas.picture ||
-        this.atlas.picture == "undefined" ||
-        this.atlas.picture == "null"
-      ) {
-        atlas = "";
-      } else {
-        atlas = this.atlas.picture;
-      }
-      return atlas.split("|");
+      return this.atlas.atlasContent.length >= 40 ? true : false;
     },
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
-    },
-    //切割标签为数组
-    tagArray: function() {
-      if (typeof this.atlas.tags == "undefined") {
-        return;
-      }
-      return this.atlas.tags.split("|");
     }
   },
   filters: {
@@ -233,8 +213,8 @@ export default {
       this.$router.push("/mine/info");
     },
     openAlertDialog() {
-      console.log(this.$store.state.current_user.userId)
-      console.log(this.atlas.author)
+      console.log(this.$store.state.current_user.userId);
+      console.log(this.atlas.author);
       this.openAlert = true;
     },
     closeAlertDialog() {
@@ -254,7 +234,7 @@ export default {
       this.current = index;
     },
     showImagePreview(position) {
-      const images = this.pictureArray;
+      const images = this.atlas.atlasPictures;
       const instance = ImagePreview({
         images,
         startPosition: typeof position === "number" ? position : 0
@@ -264,34 +244,31 @@ export default {
 };
 </script>
 <style scoped>
-.mu-paper {
+.main-content {
   min-width: 350px;
-  max-width: 500px;
   width: 100%;
-  /* height: 125px; */
-  /* max-height: 130px; */
 }
 .atlas-item-header {
   display: flex;
-  height: 34px;
+  justify-content: space-between;
+  height: 46px;
   padding: 2px 2px;
-}
-.header-left {
-  width: 10%;
+  /* background-color: rgb(160, 248, 186); */
 }
 .header-center {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
+  /* display: flex;
+  flex-direction: column; */
+  /* width: 60%; */
+  padding-left: 4px;
   font-size: 10px;
 }
 .header-right {
-  width: 30%;
+  /* width: 30%; */
   text-align: right;
 }
 .header-left img {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 .atlas-item-img-1 img {
@@ -326,14 +303,14 @@ export default {
 }
 .atlas-item-footer {
   display: flex;
+  justify-content: space-between;
 }
-.atlas-item-footer .footer-left {
-  width: 60%;
+/* .atlas-item-footer .footer-left {
+
 }
 .atlas-item-footer .footer-right {
-  width: 40%;
   text-align: right;
-}
+} */
 .atlas-item-content {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -354,7 +331,7 @@ export default {
   /* text-align:center; */
   /* border-bottom: 1px solid black; */
 }
-.mu-dialog-wrapper >>> .mu-dialog-body{
+.mu-dialog-wrapper >>> .mu-dialog-body {
   padding: 0;
 }
 .atlas-content {

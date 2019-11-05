@@ -1,10 +1,10 @@
 <template>
   <mu-container>
-    <mu-appbar color="white" :title="pageTitle" textColor="black" z-depth="1">
+    <!-- <mu-appbar color="white" :title="pageTitle" textColor="black" z-depth="1">
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
-    </mu-appbar>
+    </mu-appbar> -->
     <mu-form :model="form" style="padding-top:10px;" label-position="left" label-width="80">
       <mu-form-item prop="input" label="文章标题">
         <mu-text-field v-model="form.title" placeholder="您的文章标题（必填项）"></mu-text-field>

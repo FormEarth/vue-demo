@@ -59,10 +59,10 @@ export default {
 
 <style>
 .album-container {
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
   /* margin: 0 5%; */
-  background-color: gainsboro;
+  /* background-color: gainsboro; */
   padding-top: 20px;
 }
 .pop-container {
@@ -75,7 +75,7 @@ export default {
   z-index: 999;
 }
 .nav-container {
-  height: 7%;
+  height: 35px;
   width: 90%;
   margin: 0 5% 20px 5%;
   background-color: rgba(240, 238, 238, 0.9);

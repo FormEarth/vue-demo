@@ -3,43 +3,53 @@
     <!-- 顶部导航栏 -->
     <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
     <!-- 内容区域 -->
-    <router-view :key="$route.fullPath"></router-view>
-    <!-- <mu-bottom-nav v-show="showBottomNav" :value.sync="this.$route.name" color="primary">
-      <mu-bottom-nav-item value="home" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
+    <router-view v-if="this.$route.meta.nav=='none'" :key="$route.fullPath"></router-view>
+    <demo-content v-else>
+      <div slot="demo-card">
+        <demo-card></demo-card>
+      </div>
+      <div slot="detail-content">
+        <router-view :key="$route.fullPath" solt="detail-content"></router-view>
+      </div>
+    </demo-content>
+    
+    <mu-bottom-nav
+      v-show="showBottomNav"
+      :value.sync="this.$route.name"
+      color="primary"
+      id="bottomNav"
+    >
+      <mu-bottom-nav-item value="homePage" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="star" title="关注" icon="add" replace to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
-    </mu-bottom-nav> -->
+    </mu-bottom-nav>
   </div>
 </template>
 
 <script>
-import DemoNav from "@/components/public/common/DemoNav";
-
 export default {
   name: "App",
-  created() {
+  data() {
+    return {};
   },
-  computed:{
-    //是否显示底部导航栏
-    // showBottomNav(){
-    //   const name = this.$route.name
-    //   console.log("name:"+name,"nav:"+this.$route.meta.nav)
-    //   if(name=="home"||name=="star"||name=="mine"){
-    //     return true
-    //   }else{
-    //     return false
-    //   }
-    // }
-  },
-  components:{
-    "demo-nav": DemoNav,
+  computed: {
+    // 是否显示底部导航栏
+    showBottomNav: function() {
+      const name = this.$route.name;
+      console.log("name:" + name, "nav:" + this.$route.meta.nav);
+      if (name == "homePage" || name == "star" || name == "mine") {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 };
 </script>
 
 <style>
 #app {
-  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /*-webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
   /* text-align: center; */
@@ -54,12 +64,19 @@ body,
   min-width: 300px;
   margin: 0;
   padding: 0;
+  /* 从坐上到右下的渐变色 */
+  /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
 }
 .mu-bottom-nav {
   width: 100%;
   /* max-width: 500px; */
   /* min-width:300px; */
-  position:fixed; 
-  bottom:0px;
+  position: fixed;
+  bottom: 0px;
+}
+@media screen and (min-width: 600px) {
+  #bottomNav {
+    display: none;
+  }
 }
 </style>

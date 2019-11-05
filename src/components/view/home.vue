@@ -1,28 +1,19 @@
 <template>
-    <mu-container class="demo-container" fluid>
-    <demo-content>
-      <div slot="user-card">
-        <demo-card :user="user"></demo-card>
-      </div>
-      <div slot="detail-content">
-        <demo-tag>test tag</demo-tag>
-      </div>
-    </demo-content>
+  <mu-container class="demo-container" fluid>
+    <div>
+      <demo-tag>test tag</demo-tag>
+    </div>
   </mu-container>
 </template>
 
 <script>
 export default {
-  name:"Home",
-  data(){
-    return{
-
-    }
+  name: "Home",
+  data() {
+    return {};
   },
-  created(){
-
-  }
-}
+  created() {}
+};
 </script>
 
 <style scoped>

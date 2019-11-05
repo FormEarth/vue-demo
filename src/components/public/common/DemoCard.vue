@@ -1,55 +1,44 @@
 <template>
   <div class="information-card" :style="{backgroundImage: 'url(' + cardImage + ')'}">
     <div class="user-avatar">
-      <img :src="user.avatar" alt="头像" />
+      <img :src="current_user.avatar" />
     </div>
-    <div class="user-information">
-      <div class="information-username">{{user.userName}}</div>
-      {{user.sign}}
+    <div v-if="isLogin" class="user-information">
+      <div class="information-username">{{current_user.userName}}</div>
+      {{current_user.sign}}
       <br />
-      {{user.personalProfile}}
-      <!-- <br />你可以在这里找到我，未完待续... -->
+      {{current_user.personalProfile}}
     </div>
-    <!-- <div class="other-information">
-      <div v-show="user.github!==null" class="link" @click="toLink(user.github)">
-        <img :src="github" alt="tupian" />
-      </div>
-      <div v-show="user.github!==null" class="link" @click="toLink(user.weibo)">
-        <img :src="weibo" alt="tupian" />
-      </div>
-    </div> -->
+    <div v-else class="user-information">
+      <div class="information-username">不要成为欲望的奴隶，不要扼杀自己的创造力</div>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: "DemoCard",
   props: {
-    user: {
-      type: Object,
-      //props default 数组／对象的默认值应当由一个工厂函数返回
-      default: () => {
-        return {
-          avatar: require("@/assets/images/Github.png"),
-          frontCover:require("@/assets/images/background.jpg"),
-          userName: "不要成为你欲望的奴隶"
-        };
-      }
-    }
   },
   data() {
     return {
-      // github: require("@/assets/images/Github.png"),
-      // weibo: require("@/assets/images/sina_weibo.png")
       frontCover:require("@/assets/images/background.jpg"),
     };
   },
+  created(){
+  },
   computed:{
     cardImage:function(){
-      if(typeof (this.user.frontCover) == "undefined"||this.user.frontCover == null||this.user.frontCover == ''){
+      if(typeof (this.current_user.frontCover) == "undefined"||this.current_user.frontCover == null||this.current_user.frontCover == ''){
         return this.frontCover
       }else{
-        return this.user.frontCover
+        return this.current_user.frontCover
       }
+    },
+    isLogin: function() {
+      return this.$store.getters.isLogin;
+    },
+    current_user: function() {
+      return this.$store.state.current_user;
     }
   },
   methods: {
@@ -65,7 +54,8 @@ export default {
   /* border-radius: 5px; */
   text-align: center;
   background-size: cover;
-  background-color: rgb(71, 235, 247);
+  background-color: rgb(146, 168, 170);
+  opacity: 0.9;/*  值越小越透明*/
 }
 .user-avatar img {
   width: 80px;
@@ -122,16 +112,16 @@ export default {
     position: fixed;
     bottom: 0;
     top: 75px;
-    width: 25%;
+    width: 28%;
   }
   .user-avatar {
     padding-top: 150px;
   }
 }
-@media screen and (max-width: 600px) {
-  .information-card {
+@media screen and (min-width: 300px) and (max-width: 600px) {
+  /* .information-card {
     margin-top: 10px;
-  }
+  } */
   .user-avatar {
     padding-top: 15px;
   }

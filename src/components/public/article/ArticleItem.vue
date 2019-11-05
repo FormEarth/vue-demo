@@ -6,14 +6,18 @@
           @click="$router.push('/article/detail/'+ article.articleId)">{{article.title}}
         </div>
         <div class="header-tags" v-show="tagArray.length!=0">
-          <article-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</article-tag>
+          <demo-tag v-for="(tag,index) in tagArray" :key="index" random>{{tag}}</demo-tag>
         </div>
       </div>
       <div class="content">{{article.content}}</div>
       <div class="content-footer">
-        <mu-button color="primary" :ripple="false" flat small disabled>
+        <mu-button color="primary" flat small disabled>
           <mu-icon left value="query_builder"></mu-icon>
           {{article.sendTime|time}}
+        </mu-button>
+        <mu-button v-show="$route.name == 'homePage'" flat small disabled>
+          <mu-icon left value="person_outline"></mu-icon>
+          {{article.authorName}}
         </mu-button>
       </div>
     </div>
@@ -22,7 +26,6 @@
 
 <script>
 import util from "@/util/util";
-import ArticleTag from "@/components/public/common/DemoTag";
 export default {
   name: "ArticleItem",
   props: {
@@ -50,9 +53,6 @@ export default {
       return this.article.tags.split("|");
     }
   },
-  components:{
-    "article-tag":ArticleTag
-  }
 };
 </script>
 

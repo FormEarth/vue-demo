@@ -1,0 +1,184 @@
+<template>
+  <mu-container class="main-content">
+    <img class="original-avatar" :src="$store.state.current_user.avatar" width="100%" />
+    <div style="width:100%;margin-top:10px;">
+      <!-- <mu-button full-width>选择图片</mu-button> -->
+      <!-- <label
+        for="uploads"
+        style="display:inline-block;width: 70px;padding: 0;text-align: center;line-height: 28px;"
+      >选择图片</label>
+      <input
+        type="file"
+        id="uploads"
+        :value="imgFile"
+        accept="image/png, image/jpeg, image/gif, image/jpg"
+        @change="uploadImg($event, 1)"
+      />-->
+      <!-- <label for="upload" class="ui-upload">upload</label>
+  <input type="file" id="upload" style="display: none;" /> -->
+      <label class="ui-upload">
+        选择新的头像
+        <input
+          type="file"
+          @change="uploadImg($event, 1)"
+          :value="imgFile"
+          accept="image/png, image/jpeg, image/gif, image/jpg"
+          style="display: none;"
+        />
+      </label>
+    </div>
+    <mu-dialog width="360" :padding="0" transition="slide-bottom" fullscreen scrollable :open.sync="openFullscreen">
+      <mu-appbar color="primary" title="图片裁剪">
+        <mu-button slot="left" icon @click="closeFullscreenDialog">
+          <mu-icon value="close"></mu-icon>
+        </mu-button>
+        <!-- <mu-button slot="right" flat @click="closeFullscreenDialog">Done</mu-button> -->
+      </mu-appbar>
+      <div style="width:100%;height:400px;">
+        <vueCropper
+          ref="cropper"
+          :img="option.img"
+          :canMove="false"
+          :autoCrop="true"
+          :canScale="false"
+          centerBox
+          fixed
+          :fixedNumber="[1,1]"
+        ></vueCropper>    
+      </div>
+      <div style="margin:10px 20px;">
+          <mu-button full-width @click="finish('blob')">上传</mu-button>
+      </div>
+      <div style="margin:10px 20px;">
+          <mu-button full-width @click="closeFullscreenDialog">取消</mu-button>
+      </div>
+    </mu-dialog>
+  </mu-container>
+</template>
+
+<script>
+import { VueCropper } from "vue-cropper";
+import { Toast } from "vant";
+export default {
+  name: "EditAvatar",
+  data() {
+    return {
+      openFullscreen: false,
+      image: "",
+      imgFile: "",
+      fileName: "",
+      option: {
+        img: "",
+        fixedNumber: [1, 1]
+      }
+    };
+  },
+  components: {
+    VueCropper
+  },
+  methods: {
+    closeFullscreenDialog() {
+      this.openFullscreen = false;
+    },
+    //选择本地图片
+    uploadImg(e, num) {
+      console.log("uploadImg");
+      var _this = this;
+      //上传图片
+      var file = e.target.files[0];
+      _this.fileName = file.name;
+      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+        alert("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
+        return false;
+      }
+      var reader = new FileReader();
+      reader.onload = e => {
+        let data;
+        if (typeof e.target.result === "object") {
+          // 把Array Buffer转化为blob 如果是base64不需要
+          data = window.URL.createObjectURL(new Blob([e.target.result]));
+        } else {
+          data = e.target.result;
+        }
+        if (num === 1) {
+          _this.option.img = data;
+        } else if (num === 2) {
+          _this.option.img = data;
+        }
+      };
+      // 转化为base64
+      // reader.readAsDataURL(file)
+      // 转化为blob
+      reader.readAsArrayBuffer(file);
+      this.openFullscreen = true;
+      console.log("uploadImgEnd");
+    },
+    //上传图片（点击上传按钮）
+    finish(type) {
+      console.log("finish");
+      let _this = this;
+      let formData = new FormData();
+      // 输出
+      if (type === "blob") {
+        this.$refs.cropper.getCropBlob(data => {
+          //   let img = window.URL.createObjectURL(data);
+          //   this.model = true;
+          //   this.modelSrc = img;
+          formData.append("image", data, this.fileName);
+          _this.$http.user.modifyOwnAvatar(formData).then(response => {
+            if (response.data.code == "2000") {
+              //更新用户信息
+              var user = _this.$store.state.current_user;
+              user.avatar = response.data.data.imageURL;
+              sessionStorage.setItem("current_user", JSON.stringify(user));
+              _this.$store.commit("save_user", user);
+              // 轻提示弹框
+              Toast({
+                message: "上传成功",
+                duration: 2000,
+                forbidClick: true
+              });
+              _this.$router.back(-1);
+            }
+          });
+        });
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.main-content {
+  text-align: center;
+  padding: 0;
+}
+.vue-cropper {
+  background-image: none;
+}
+.ui-upload {
+  height: 30px;
+  width: 100px;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 30px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  border-radius: 2px;
+  color: rgb(99, 95, 95);
+  /* border: 1px rgba(136, 133, 133, 0.658) solid; */
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+  /* margin-left: 20px; */
+}
+@media screen and (min-width: 800px) {
+  .main-content {
+    padding: 10px 10%;
+  }
+  .original-avatar {
+    width: 30%;
+  }
+}
+</style>

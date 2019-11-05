@@ -1,6 +1,40 @@
 <script type="text/javascript">
 // 定义一些公共的属性和方法
-const httpUrl = "http://39.105.17.99:8080/";
+const imageAccessPref = "http://192.168.149.110:9090/static";
+//tag可以选取的颜色
+const tagColor = [
+  {
+    name: "green",
+    color: "rgba(88, 201, 144)",
+    background: "rgba(88, 201, 144,0.1)",
+    nameZh: "青色"
+  },
+  {
+    name: "blue",
+    color: "rgba(33, 150, 243)",
+    background: "rgba(33, 150, 243,0.1)",
+    nameZh: "蓝色"
+  },
+  {
+    name: "red",
+    color: "rgba(243, 0, 0)",
+    background: "rgba(243, 0, 0,0.1)",
+    nameZh: "红色"
+  },
+  // { name: "yellow", color: "rgba(248, 228, 46)",background:"rgba(248, 228, 46,0.1)" },
+  {
+    name: "purple",
+    color: "rgba(65, 33, 243)",
+    background: "rgba(65, 33, 243,0.1)",
+    nameZh: "紫色"
+  },
+  {
+    name: "gray",
+    color: "rgba(145, 148, 150)",
+    background: "rgba(145, 148, 150,0.1)",
+    nameZh: "灰色"
+  }
+];
 //打印对象
 function consoleObj(obj) {
   var description = "";
@@ -20,14 +54,45 @@ function dateSubtract(date) {
     return parseInt(dateTime / (60 * 1000)) + "分钟前";
   } else if (dateTime >= 60 * 60 * 1000 && dateTime < 24 * 60 * 60 * 1000) {
     return parseInt(dateTime / (60 * 60 * 1000)) + "小时前";
-  } else if(dateTime >= 24 * 60 * 60 * 1000){
+  } else if (dateTime >= 24 * 60 * 60 * 1000) {
     return parseInt(dateTime / (24 * 60 * 60 * 1000)) + "天前";
   }
 }
+//对象转formData
+function Obj2FormData(config) {
+  let formData = new FormData();
+  let obj = config.data;
+  let arrayKey = config.arrayKey;
+  for (var i in obj) {
+    if (isArray(obj[i])) {
+      obj[i].map(item => {
+        if (!arrayKey) {
+          formData.append(i, item);
+        } else {
+          formData.append(i + "[]", item);
+        }
+      });
+    } else if (obj[i] instanceof FileList) {
+      //filelist 文件类型的处理
+      for (var fileItem = 0; fileItem < obj[i].length; fileItem++) {
+        if (!arrayKey) {
+          formData.append(i, obj[i].item(fileItem));
+        } else {
+          formData.append(i + "[]", obj[i].item(fileItem));
+        }
+      }
+    } else {
+      formData.append(i, obj[i]);
+    }
+  }
+  return formData;
+}
 // 暴露出这些属性和方法
 export default {
-  httpUrl,
+  imageAccessPref,
+  tagColor,
   consoleObj,
-  dateSubtract
+  dateSubtract,
+  Obj2FormData
 };
 </script>

@@ -1,84 +1,76 @@
 <template>
   <div class="demo-div">
-    <demo-content>
-      <div slot="demo-card">
-        <demo-card></demo-card>
-      </div>
-      <div slot="detail-content">
-        <div class="mu-card1">
-          <div v-if="article.frontCover==null||article.frontCover==''" class="title">{{article.title}}</div>
-          <mu-card-media :title="article.title" v-else>
-            <img :src="article.frontCover" style="height:250px;width:100%;object-fit:cover;" />
-          </mu-card-media>
-          <div style="display:flex;justify-content:space-between;height:30px;margin:5px 0 9px 0">
-            <div style="display:flex;padding-left:10px;">
-              <div
-                style="margin:6px 0px 0px 2px;color:#2196f3;"
-                @click="goInfo"
-              >{{article.authorName}}</div>
-              <div style="margin-top:6px;margin-left:8px;">发布于&nbsp;&nbsp;{{article.sendTime}}</div>
-            </div>
+    <div slot="detail-content">
+      <div class="mu-card1">
+        <div v-if="article.frontCover==null||article.frontCover==''" class="title">{{article.title}}</div>
+        <mu-card-media :title="article.title" v-else>
+          <img :src="article.frontCover" style="height:250px;width:100%;object-fit:cover;" />
+        </mu-card-media>
+        <div style="display:flex;justify-content:space-between;height:30px;margin:5px 0 9px 0">
+          <div style="display:flex;padding-left:10px;">
             <div
-              style="margin-top:6px;text-align:right;padding-right:10px;"
-            >{{article.readerNum}} 阅读</div>
+              style="margin:6px 0px 0px 2px;color:#2196f3;"
+              @click="goInfo"
+            >{{article.authorName}}</div>
+            <div style="margin-top:6px;margin-left:8px;">发布于&nbsp;&nbsp;{{article.sendTime}}</div>
           </div>
-          <div style="padding:5px 10px 5px 10px;">
-            <demo-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</demo-tag>
-          </div>
-          <article-content :content="article.content" :article-style="article.style"></article-content>
-          <mu-card-actions style="white-space: nowrap">
-            <mu-badge content="1" circle class="demo-icon-badge">
-              <mu-button icon @click="test">
-                <mu-icon value="thumb_up"></mu-icon>
-              </mu-button>
-            </mu-badge>
-            <mu-badge content="1" circle class="demo-icon-badge">
-              <mu-button icon>
-                <mu-icon value="thumb_down"></mu-icon>
-              </mu-button>
-            </mu-badge>
-            <mu-badge content="1" circle class="demo-icon-badge">
-              <mu-button icon>
-                <mu-icon value="favorite"></mu-icon>
-              </mu-button>
-            </mu-badge>
-          </mu-card-actions>
-          <!-- <mu-divider></mu-divider> -->
-          <mu-card-actions v-if="!article.comment" style="text-align:center;font-size:16px;">
-            <mu-icon value="speaker_notes_off"></mu-icon>
-            <br />评论已被作者关闭
-          </mu-card-actions>
-          <mu-card-actions v-else>
-            <div v-for="(comment,index) in comments" :key="comment.commentId">
-              <!-- {{comment.commentId}}-{{comment.commentContent}} -->
-              <demo-comment
-                :comment="comment"
-                :commentIndex="index"
-                :articleUserId="article.author"
-                :activeCommentId="activeCommentId"
-                @func="changeActiveCommentId"
-                @removeComment="removeCommentByIndex"
-              ></demo-comment>
-            </div>
-            <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
-            <demo-input placeholder="添加评论" v-model="comment" />
-            <div style="margin-top:10px;">
-              <input
-                :disabled="comment.length==0"
-                type="submit"
-                value="提交"
-                @click="commentArticle"
-                style="border:none;width:100%;background-color:#5db2ff;height:30px;"
-              />
-            </div>
-          </mu-card-actions>
-          <!-- <mu-divider></mu-divider> -->
-          <mu-card-actions
-            style="font-size:12px;text-align:center;padding-top:0px;"
-          >文章由作者发布于本平台，版权属作者所有，文章不代表本站观点，若有侵权，请联系管理员</mu-card-actions>
+          <div style="margin-top:6px;text-align:right;padding-right:10px;">{{article.readerNum}} 阅读</div>
         </div>
+        <div style="padding:5px 10px 5px 10px;">
+          <demo-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</demo-tag>
+        </div>
+        <article-content :content="article.content" :article-style="article.style"></article-content>
+        <mu-card-actions style="white-space: nowrap">
+          <mu-badge content="1" circle class="demo-icon-badge">
+            <mu-button icon @click="test">
+              <mu-icon value="thumb_up"></mu-icon>
+            </mu-button>
+          </mu-badge>
+          <mu-badge content="1" circle class="demo-icon-badge">
+            <mu-button icon>
+              <mu-icon value="thumb_down"></mu-icon>
+            </mu-button>
+          </mu-badge>
+          <mu-badge content="1" circle class="demo-icon-badge">
+            <mu-button icon>
+              <mu-icon value="favorite"></mu-icon>
+            </mu-button>
+          </mu-badge>
+        </mu-card-actions>
+        <!-- <mu-divider></mu-divider> -->
+        <mu-card-actions v-if="!article.comment" style="text-align:center;font-size:16px;">
+          <mu-icon value="speaker_notes_off"></mu-icon>
+          <br />评论已被作者关闭
+        </mu-card-actions>
+        <mu-card-actions v-else>
+          <div v-for="(comment,index) in comments" :key="comment.commentId">
+            <demo-comment
+              :comment="comment"
+              :commentIndex="index"
+              :articleUserId="article.author"
+              :activeCommentId="activeCommentId"
+              @func="changeActiveCommentId"
+              @removeComment="removeCommentByIndex"
+            ></demo-comment>
+          </div>
+          <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
+          <demo-input placeholder="添加评论" v-model="comment" />
+          <div style="margin-top:10px;">
+            <input
+              :disabled="comment.length==0"
+              type="submit"
+              value="提交"
+              @click="commentArticle"
+              style="border:none;width:100%;background-color:#5db2ff;height:30px;"
+            />
+          </div>
+        </mu-card-actions>
+        <!-- <mu-divider></mu-divider> -->
+        <mu-card-actions
+          style="font-size:12px;text-align:center;padding-top:0px;"
+        >文章由作者发布于本平台，版权属作者所有，文章不代表本站观点，若有侵权，请联系管理员</mu-card-actions>
       </div>
-    </demo-content>
+    </div>
 
     <mu-button fab class="toTop" color="indigo" @click="toTop" v-show="toTopIsShow">
       <mu-icon value="arrow_upward"></mu-icon>
@@ -105,7 +97,7 @@
 </template>
 <script>
 import ArticleContent from "@/components/public/ArticleContent";
-import { Toast } from 'vant';
+import { Toast } from "vant";
 
 export default {
   //这个name属性不建议与已有的html元素重名，artice是已有的元素，会在控制台有警告，但好像不影响使用
@@ -123,7 +115,7 @@ export default {
       //评论数组
       comments: [],
       //要回复的评论的评论id
-      activeCommentId: "-1",
+      activeCommentId: "-1"
     };
   },
   //created()在页面生成之前调用，一般是加载页面所需要的数据
@@ -142,7 +134,6 @@ export default {
       .then(response => {
         this.article = response.data.data.article;
         this.comments = response.data.data.comments;
-        console.log(this.comments);
       });
   },
   computed: {
@@ -152,7 +143,10 @@ export default {
     },
     //切割标签为数组
     tagArray: function() {
-      if (typeof this.article.tags == "undefined"||this.article.tags==null) {
+      if (
+        typeof this.article.tags == "undefined" ||
+        this.article.tags == null
+      ) {
         return [];
       }
       return this.article.tags.split("|");
@@ -182,17 +176,17 @@ export default {
       }
     },
     goInfo() {
-      this.$router.push("/mine/info");
+      this.$router.push("/" + this.article.author + "/articles");
     },
     test() {
-      this.comment = ""
+      this.comment = "";
     },
     changeActiveCommentId(commentId) {
-      this.activeCommentId = commentId
+      this.activeCommentId = commentId;
     },
     //根据索引，移除comments数组元素
     removeCommentByIndex(index) {
-      this.comments.splice(index, 1)
+      this.comments.splice(index, 1);
     },
     //添加评论
     commentArticle() {
@@ -213,7 +207,7 @@ export default {
             userName: this.user.userName
           });
           this.comment = "";
-                    if (response.data.code == "2000") {
+          if (response.data.code == "2000") {
             this.replyContent = "";
             this.$emit("func", 0);
             // 轻提示弹框
@@ -227,7 +221,7 @@ export default {
     }
   },
   components: {
-    "article-content": ArticleContent,
+    "article-content": ArticleContent
   }
 };
 </script>
@@ -246,7 +240,7 @@ export default {
 .mu-card1 {
   /* padding-top: 58px; */
   /* 覆盖掉mu-card的默认白色背景 */
-  background-color: transparent;
+  background-color: white;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -278,9 +272,9 @@ export default {
   margin-right: 16px;
 }
 input:disabled {
-  color:aliceblue;
-  opacity:0.8;
-  cursor:not-allowed;
+  color: aliceblue;
+  opacity: 0.8;
+  cursor: not-allowed;
 }
 .toTop {
   position: fixed;

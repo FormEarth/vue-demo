@@ -1,11 +1,10 @@
 <template>
   <mu-container>
-    <!-- <mu-paper :z-depth="1" class="demo-list-wrap"> -->
     <mu-list toggle-nested>
       <mu-list-item v-if="isLogin" avatar button @click="goMyPage">
         <mu-list-item-action>
           <mu-avatar size="40">
-            <img :src="user.avatar" :onerror="defaultImg">
+            <img :src="user.avatar" :onerror="defaultImg" />
           </mu-avatar>
         </mu-list-item-action>
         <mu-list-item-content>
@@ -152,8 +151,8 @@ export default {
       return this.$store.state.current_user;
     },
     //默认加载的图片
-    defaultImg () {
-      return 'this.src="'+ require('@/assets/broken_image.jpg') +'"'
+    defaultImg() {
+      return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
     }
   },
   methods: {
@@ -165,10 +164,10 @@ export default {
     },
     userLogout() {
       this.$http.user.userLogout(this.user).then(response => {
-      //移除sessionStorge中的用户数据
-      sessionStorage.removeItem("current_user");
-      //移除vuex中的用户数据
-      this.$store.commit("remove_user");
+        //移除sessionStorge中的用户数据
+        sessionStorage.removeItem("current_user");
+        //移除vuex中的用户数据
+        this.$store.commit("remove_user");
         //TODO 发后台登出api
         this.openAlert = false;
         this.$notify({
@@ -186,12 +185,6 @@ export default {
 };
 </script>
 <style scoped>
-.container {
-  padding-left: 0px;
-  padding-right: 0px;
-  max-width: 500px;
-  /* min-width: 350px; */
-}
 .demo-list {
   width: 100%;
 }
@@ -200,7 +193,14 @@ export default {
   max-width: 500px;
   overflow: hidden;
 }
-.mu-item {
-  color: #22334444;
+@media screen and (min-width: 800px) {
+  .container {
+    padding: 10px 10%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .demo-card {
+    display: none;
+  }
 }
 </style>

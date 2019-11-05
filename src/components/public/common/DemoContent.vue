@@ -39,11 +39,11 @@ export default {
   .content .left-panel {
     width: 25%;
     /* min-width: 200px; */
-    height: 100%;
-    /* position: fixed; */
-    /* top: 75px; */
-    /* bottom: 0; */
-    /* left: 0; */
+    /* height: 100%; */
+    position: fixed;
+    top: 75px;
+    bottom: 0;
+    left: 0;
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -54,6 +54,23 @@ export default {
     bottom: 0;
     right: 0;
     overflow-y: auto;
+  }
+  /*滚动条整体样式*/
+  .right-panel::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;/*这个高度是用来定义底部攻读条高度的 */
+  }
+  /*滚动条滑块*/
+  .right-panel::-webkit-scrollbar-thumb {
+    /* border-radius: 10px; */
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+    background: rgb(110, 189, 253);
+  }
+  /*滚动条轨道*/
+  .right-panel::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    background: transparent;
   }
   .link img:hover {
     transform: scale(1.1); /* 元素放大1.4倍 */
@@ -86,12 +103,15 @@ export default {
   }
 }
 /* 小屏幕，宽度在300px~640px */
-@media screen and (min-width: 300px) and (max-width: 600px) {
-  .content {
+@media screen and (max-width: 600px) {
+  /* .content {
     margin-top: 15px;
-  }
+  } */
   .content .right-panel {
     margin-bottom: 5px;
+  }
+  .left-panel {
+    display: none;
   }
 }
 </style>
