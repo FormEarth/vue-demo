@@ -9,10 +9,13 @@
         <demo-card></demo-card>
       </div>
       <div slot="detail-content">
-        <router-view :key="$route.fullPath" solt="detail-content"></router-view>
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath" solt="detail-content"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
       </div>
     </demo-content>
-    
+
     <mu-bottom-nav
       v-show="showBottomNav"
       :value.sync="this.$route.name"
@@ -20,13 +23,16 @@
       id="bottomNav"
     >
       <mu-bottom-nav-item value="homePage" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
-      <mu-bottom-nav-item value="star" title="关注" icon="add" replace to="/star"></mu-bottom-nav-item>
+      <mu-bottom-nav-item value="atlasList" title="图集" icon="burst_mode" replace to="/atlas"></mu-bottom-nav-item>
+      <div class="mu-bottom-item"><native-add-button></native-add-button></div>
+      <mu-bottom-nav-item value="star" title="收藏" icon="star" replace to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
     </mu-bottom-nav>
   </div>
 </template>
 
 <script>
+import NativeAddButton from "@/components/public/NativeAddButton"
 export default {
   name: "App",
   data() {
@@ -37,12 +43,15 @@ export default {
     showBottomNav: function() {
       const name = this.$route.name;
       console.log("name:" + name, "nav:" + this.$route.meta.nav);
-      if (name == "homePage" || name == "star" || name == "mine") {
+      if (name == "homePage" || name == "atlasList" || name == "mine"|| name == "star") {
         return true;
       } else {
         return false;
       }
     }
+  },
+  components:{
+    NativeAddButton
   }
 };
 </script>

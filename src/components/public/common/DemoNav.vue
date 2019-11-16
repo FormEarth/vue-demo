@@ -74,8 +74,10 @@ export default {
       var routeName = this.$route.name;
       if (
         routeName == "homePage" ||
-        routeName == "mine" ||
-        routeName == "star"
+        routeName == "atlasList" ||
+        routeName == "mine"|| 
+        routeName == "star"||
+        routeName == "info"
       ) {
         return false;
       } else {

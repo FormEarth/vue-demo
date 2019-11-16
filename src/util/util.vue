@@ -33,6 +33,12 @@ const tagColor = [
     color: "rgba(145, 148, 150)",
     background: "rgba(145, 148, 150,0.1)",
     nameZh: "灰色"
+  },
+  {
+    name: "white",
+    color: "rgba(255, 255, 255)",
+    background: "rgba(255, 255, 255,0.1)",
+    nameZh: "白色"
   }
 ];
 //打印对象
@@ -58,41 +64,27 @@ function dateSubtract(date) {
     return parseInt(dateTime / (24 * 60 * 60 * 1000)) + "天前";
   }
 }
-//对象转formData
-function Obj2FormData(config) {
-  let formData = new FormData();
-  let obj = config.data;
-  let arrayKey = config.arrayKey;
-  for (var i in obj) {
-    if (isArray(obj[i])) {
-      obj[i].map(item => {
-        if (!arrayKey) {
-          formData.append(i, item);
-        } else {
-          formData.append(i + "[]", item);
-        }
-      });
-    } else if (obj[i] instanceof FileList) {
-      //filelist 文件类型的处理
-      for (var fileItem = 0; fileItem < obj[i].length; fileItem++) {
-        if (!arrayKey) {
-          formData.append(i, obj[i].item(fileItem));
-        } else {
-          formData.append(i + "[]", obj[i].item(fileItem));
-        }
-      }
-    } else {
-      formData.append(i, obj[i]);
+//防抖
+export function _debounce(fn, delay) {
+  var delay = delay || 200;
+  var timer;
+  return function() {
+    var th = this;
+    var args = arguments;
+    if (timer) {
+      clearTimeout(timer);
     }
-  }
-  return formData;
+    timer = setTimeout(function() {
+      timer = null;
+      fn.apply(th, args);
+    }, delay);
+  };
 }
 // 暴露出这些属性和方法
 export default {
   imageAccessPref,
   tagColor,
   consoleObj,
-  dateSubtract,
-  Obj2FormData
+  dateSubtract
 };
 </script>

@@ -53,21 +53,67 @@
       </mu-button>
     </div>
   </div>-->
-  <div style="width:100%;display:flex;">
+  <!-- <div style="width:100%;display:flex;">
     <div style="width:30%;position:fixed;" >123</div>
     <div style="width:70%;position:fixed;right:0;top:75px;bottom:0;overflow-y: auto;">123</div>
+  </div>-->
+  <div style="padding:20px;">
+    <div class="test-shadow">
+      <div
+        class="text-ellipsis"
+        :style="{lineClamp: line}"
+        ref="test"
+      >没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了</div>
+      <div v-if="showButton">
+        <div class="show" @click="handleFold" v-show="line!=100">展开更多</div>
+        <div class="show" @click="handleFold" v-show="line==100">收起</div>
+      </div>
+    </div>
+    <div style="with:100%;background-color:green;padding:10px;">
+      <img
+        src="http://192.168.149.110:9090/static/upload/images/thumbnail/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
+        style="max-width:100%;max-height:300px;vertical-align: middle;"
+      />
+    </div>
+    <transition name="bottom-top">
+      <div v-show="show" class="blur-effect">
+        <div class="footer">
+          <div style="display:flex;justify-content: space-around;">
+            <div>
+                <mu-icon value="post_add" color="red700"></mu-icon>
+              <p>发布长文</p>
+            </div>
+            <div>
+                <mu-icon value="burst_mode" color="Green"></mu-icon>
+              <p>发布图集</p>
+            </div>
+            <div>
+                <mu-icon value="notes" color="Orange"></mu-icon>
+              <p>发布动态</p>
+            </div>
+          </div>
+          <mu-icon value="close" size="38" @click="show=!show"></mu-icon>
+        </div>
+      </div>
+    </transition>
+    <mu-button fab @click="show=!show">
+      <mu-icon value="add" size="38"></mu-icon>
+    </mu-button>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      line: 100,
       show: false,
       isShow: true,
       array: [1, 2, 3, 4, 5, 6],
       content:
-        '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了**',
-      converter: null
+        '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了**',
+      converter: null,
+      showButton: false,
+      fold: true
     };
   },
   watch: {
@@ -75,9 +121,30 @@ export default {
   },
   created() {},
   mounted() {
-    //this.init();
+    let initHight = this.$refs.test.offsetHeight;
+    console.log(initHight);
+    // 44是两行的高度,当溢出时才显示展示更多按钮
+    if (initHight > 44) {
+      this.showButton = true;
+      this.line = 2;
+    }
+    //监听页面变化时是否溢出
+    // window.onresize = () => {
+    //   console.log("页面宽度改变了");
+
+    //   let height = this.$refs.contentText.offsetHeight;
+    //   console.log("span高度：" + height);
+    //   if (height > 38.4) {
+    //     _this.showButton = true;
+    //   } else {
+    //     _this.showButton = false;
+    //   }
+    // };
   },
   methods: {
+    handleFold() {
+      this.line = this.line == 100 ? 2 : 100;
+    },
     contentChanged() {
       var html = this.converter.makeHtml(this.content);
       document.getElementById("show-content").innerHTML = html;
@@ -118,8 +185,70 @@ export default {
 };
 </script>
 <style scoped>
+.blur-effect {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  /* background-image: url("http://192.168.149.110:9090/static/upload/images/thumbnail/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"); */
+  z-index: 99;
+}
+.blur-effect::before {
+  /* 设置高斯模糊 */
+  filter: blur(20px);
+}
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.bottom-top-enter-active {
+  transition: all 0.2s ease-in;
+}
+.bottom-top-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.bottom-top-enter {
+  /* .slide-fade-leave-active for below version 2.1.8 */
+  /* transform: translateY(20px); */
+  transform: rotate(50deg);
+  opacity: 0;
+}
+.bottom-top-leave-to {
+  transform: scale(0.1);
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10px;
+}
+.text-ellipsis {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.test-shadow {
+  margin-bottom: 15px;
+  border-radius: 3px;
+  /* border: black 1px solid; */
+  padding: 5px;
+  border-top: 0.5px rgba(0, 0, 0, 0.5) solid;
+  border-left: 0.5px rgba(0, 0, 0, 0.5) solid;
+  border-right: 0.5px rgba(0, 0, 0, 0.5) solid;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4);
+  /* box-shadow: inset 0px -1px 0px 0px rgba(0, 0, 0, 0.4) ; */
+}
+.fold {
+  -webkit-line-clamp: 2;
+}
+.unfold {
+  -webkit-line-clamp: 10;
+}
 div {
-  border: 1px red solid;
+  /* border: 1px red solid; */
 }
 html,
 .box-container {

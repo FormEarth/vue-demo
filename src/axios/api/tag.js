@@ -15,6 +15,16 @@ const tag = {
             {}
         )
     },
+    //根据输入内容模糊查询标签
+    queryTagsByText(searchText) {
+        return request.get(
+            "/demo/api/tags/search", {
+            params: {
+                searchText: searchText
+            }
+        }
+        )
+    },
 }
 
 export default tag

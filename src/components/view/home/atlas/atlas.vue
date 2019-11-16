@@ -1,51 +1,25 @@
 <template>
   <mu-container>
-    <!-- <mu-appbar color="white" textColor="black" title="图集详情" :z-depth="0">
-      <mu-button icon slot="left" @click="$router.back(-1)">
-        <mu-icon value="arrow_back"></mu-icon>
-      </mu-button>
-      <mu-menu slot="right">
-        <mu-button icon>
-          <mu-icon value="more_vert"></mu-icon>
-        </mu-button>
-        <mu-list slot="content">
-          <mu-list-item button @click="starArticle">
-            <mu-list-item-content v-if="star" style="display:flex;">
-              <mu-slide-top-transition>
-                <mu-icon value="turned_in" color="green" size="24"></mu-icon>
-              </mu-slide-top-transition>
-              <div style="margin-top:3px;margin-left:5px;">已收藏</div>
-            </mu-list-item-content>
-            <mu-list-item-content v-else style="display:flex;">
-              <mu-slide-top-transition>
-                <mu-icon value="turned_in_not" color="black" size="24"></mu-icon>
-              </mu-slide-top-transition>
-              <div style="margin-top:3px;margin-left:5px;">收藏</div>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-list-item button>
-            <mu-list-item-content style="display:flex;">
-              <mu-icon value="sentiment_very_dissatisfied" color="black" size="24"></mu-icon>
-              <div style="margin-top:3px;margin-left:5px;">不感兴趣</div>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-list-item button @click="openBotttomSheet">
-            <mu-list-item-content style="display:flex;">
-              <mu-icon value="warning" color="redA700" size="24"></mu-icon>
-              <div style="margin-top:3px;margin-left:5px;">举报</div>
-            </mu-list-item-content>
-          </mu-list-item>
-        </mu-list>
-      </mu-menu>
-    </mu-appbar>-->
-    <mu-divider></mu-divider>
-    <mu-card>
+    <div
+      v-if="!dataIsLoaded"
+      style="position:fixed;width:100%;height:100%;text-align:center;"
+      v-loading="loading"
+      data-mu-loading-text="数据正在加载中……"
+      @click="loadData"
+    >
+      <div v-show="!loading" style="text-align:center;">
+        <span>数据加载失败，点击屏幕以重试</span>
+        <br />
+        <mu-icon size="56" value="refresh" color="blue100"></mu-icon>
+      </div>
+    </div>
+    <div v-else>
       <div style="display:flex;height:30px;margin:5px 0 9px 0">
         <div style="display:flex;width:70%;padding-left:10px;">
           <div>
-            <img :src="picture" style="width:30px;height:30px;border-radius:50%;" />
+            <img :src="atlas.user.avatar" style="width:30px;height:30px;border-radius:50%;" />
           </div>
-          <div style="margin:6px 0px 0px 2px;color:#2979ff;" @click="goInfo">{{article.author}}</div>
+          <div style="margin:6px 0px 0px 2px;color:#2196F3;" @click="goInfo">{{atlas.user.userName}}</div>
           <div style="margin-top:5px;margin-left:8px;">
             <van-button plain type="danger" size="mini">关注</van-button>
             <!-- <van-button type="danger" size="mini">已关注</van-button> -->
@@ -53,27 +27,30 @@
         </div>
         <div style="width:30%;margin-top:6px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
-      <div v-if="article.proportion">
+      <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
+      <!-- <div v-if="atlas.identical">
         <van-swipe @change="onChange" :loop="false">
-          <van-swipe-item v-for="(image, index) in picturesArray" :key="index">
+          <van-swipe-item v-for="(image, index) in atlas.atlasPictures" :key="index">
             <img :src="image" :onerror="defaultImg" />
           </van-swipe-item>
-          <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{picturesArray.length}}</div>
+          <div
+            class="custom-indicator"
+            slot="indicator"
+          >{{ current + 1 }}/{{atlas.atlasPictures.length}}</div>
         </van-swipe>
       </div>
       <div class="img-container" v-else>
-        <div class="img-item" v-for="(image, index) in picturesArray" :key="index">
+        <div class="img-item" v-for="(image, index) in atlas.atlasPictures" :key="index">
           <img :src="image" @click="showImagePreview(index)" :onerror="defaultImg" />
         </div>
+      </div>-->
+      <div style="padding:0 10px;">
+        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId">{{tag.tagText}}</demo-tag>
       </div>
-      <div style="padding:5px 10px 5px 10px;">
-        <demo-tag v-for="tag in tagArray" :key="tag">{{tag}}</demo-tag>
-      </div>
-      <mu-card-text>{{article.content}}</mu-card-text>
+      <mu-card-text style="white-space: pre-wrap;">{{atlas.atlasContent}}</mu-card-text>
       <div style="padding-left:10px;font-size:12px;">
-        发布于&nbsp;{{article.datatime}}&nbsp;
-        <mu-icon value="place" size="16"></mu-icon>
-        {{article.place}}
+        发布于&nbsp;{{atlas.sendTime}}&nbsp;
+        <mu-icon value="place" size="16"></mu-icon>上海 浦东
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
         <mu-badge content="12" circle class="demo-icon-badge">
@@ -92,14 +69,25 @@
           </mu-button>
         </mu-badge>
       </div>
-      <mu-divider></mu-divider>
-      <div v-if="!article.comment" style="text-align:center;font-size:16px;padding-top:5px;">
+      <!-- <mu-divider></mu-divider> -->
+      <div v-if="!atlas.comment" style="text-align:center;font-size:16px;padding-top:5px;">
         <mu-icon value="speaker_notes_off"></mu-icon>
         <br />评论已被作者关闭
       </div>
+      <div v-else style="padding:0 10px;">
+        <demo-input placeholder="添加评论" v-model="comment" />
+        <div style="margin-top:10px;">
+          <input
+            :disabled="comment.length==0"
+            type="submit"
+            value="提交"
+            style="border:none;width:100%;background-color:#5db2ff;height:30px;"
+          />
+        </div>
+      </div>
       <!-- <mu-divider></mu-divider> -->
       <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>
-    </mu-card>
+    </div>
     <!-- <app-footer param="home"></app-footer> -->
     <mu-bottom-sheet :open.sync="open">
       <mu-list @item-click="closeBottomSheet">
@@ -121,10 +109,9 @@
   </mu-container>
 </template>
 <script>
-import ArticleContent from "@/components/public/ArticleContent.vue";
 import { ImagePreview } from "vant";
 export default {
-  name: "article",
+  name: "atlas",
   data() {
     return {
       current: 0,
@@ -133,46 +120,46 @@ export default {
       star: true,
       open: false,
       atlas: {},
-      article: {
-        proportion: false, //这个字段用来判断图文中图片是否是等比例的，true则使用轮播图，false则使用预览
-        style: "googlecode",
-        title: "午后时光",
-        comment: false, //评论
-        datatime: "2019-3-17 16:03", //发布时间
-        author: "花间舞",
-        place: "上海 浦东",
-        tags: "原创|王者荣耀|云淡风轻",
-        pictures:
-          "http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
-        content:
-          " 散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影.调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！"
-      }
+      comment: "",
+      loading: true, //是否显示加载遮罩层
+      dataIsLoaded: false
     };
+  },
+  created() {
+    this.loadData();
   },
   mounted() {
     //这里必须是mouted钩子
   },
   computed: {
-    // 将标签字符串切割成数组
-    tagArray: function() {
-      return this.article.tags.split("|");
-    },
-    // 将图片地址字符串切割成数组
-    picturesArray: function() {
-      return this.article.pictures.split("|");
-    },
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
     }
   },
   methods: {
+    loadData() {
+      this.loading = true;
+      this.$http.atlas
+        .queryAtlasById(this.$route.params.atlasId)
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.atlas = response.data.data.atlas;
+            this.dataIsLoaded = true;
+          } else {
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+        });
+    },
     starArticle() {
       console.log(this.star);
       if (this.star) {
         this.star = false;
         this.$toast.success("取消收藏成功");
-        //Toast.success('取消收藏成功');
+        //Toast.success('取消收藏成功')
       } else {
         this.star = true;
         this.$toast.success("收藏成功");
@@ -195,18 +182,12 @@ export default {
       this.$router.push("/mine/info");
     },
     showImagePreview(position) {
-      const images = this.picturesArray;
+      const images = this.atlas.atlasPictures;
       const instance = ImagePreview({
         images,
         startPosition: typeof position === "number" ? position : 0
       });
     }
-  },
-  components: {
-    "article-content": ArticleContent
-  },
-  filters: {
-    formateDate(value) {}
   }
 };
 </script>
@@ -220,20 +201,6 @@ export default {
   padding-right: 0px;
   /* max-width: 500px; */
   min-width: 350px;
-}
-.mu-appbar {
-  width: 100%;
-  /* left:0px;
-  bottom:0px; */
-}
-.mu-card {
-  /* padding-top: 58px; */
-  padding-left: 0px;
-  padding-right: 0px;
-}
-.demo-chip {
-  line-height: 22px;
-  margin-right: 5px;
 }
 .mu-card-text {
   padding: 0px 10px 0px 10px;
@@ -286,6 +253,11 @@ export default {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+@media screen and (min-width: 800px) {
+  .container {
+    padding: 0 10%;
+  }
 }
 /* 1 3 1 1 3 1 1 3 1 */
 /* 1 2 2 1 */

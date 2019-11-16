@@ -9,7 +9,7 @@ import article from '@/axios/api/article';
 // 标签模块接口
 import tag from '@/axios/api/tag';
 // 图集模块接口
-import atlas from '@/axios/api/altas';
+import atlas from '@/axios/api/atlas';
 // 其他模块的接口……
  
 // 导出接口

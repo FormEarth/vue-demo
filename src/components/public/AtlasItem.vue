@@ -3,16 +3,20 @@
     <div class="atlas-item">
       <div class="atlas-item-header">
         <div style="display:flex;">
-          <div class="header-left" style="cursor: pointer;" @click="goInfo">
-            <img :src="atlas.user.avatar" :onerror="defaultImg" />
+          <div
+            class="header-left"
+            style="cursor: pointer;"
+            @click="$router.push('/'+atlas.user.userId+'/homepage')"
+          >
+            <img v-lazy="atlas.user.avatar" :onerror="defaultImg" />
           </div>
           <div class="header-center">
             <div style="height:23px;font-size:16px;line-height:15px;padding-top:5px;">
-              {{atlas.user.userName}}
+              <span style="color:red;">{{atlas.user.userName}}</span>
               <!-- <span class="follow-button">关注</span> -->
             </div>
             <div style="height:23px;line-height:16px;padding-top:2px;">
-              上海市 松江区
+              上海市 松江区&nbsp;来自demooo网页版
               {{atlas.sendTime|time}}
             </div>
           </div>
@@ -21,57 +25,33 @@
           <mu-icon size="35" value="more_vert" @click="openAlertDialog" style="cursor: pointer;"></mu-icon>
         </div>
       </div>
-      <!-- 轮播图模式 -->
-      <div v-if="atlas.proportion">
-        <van-swipe @change="onChange" :loop="false">
-          <van-swipe-item v-for="(image, index) in pictureArray" :key="index">
-            <img :src="image" :onerror="defaultImg" style="width: 100%;object-fit: cover;" />
-          </van-swipe-item>
-          <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{pictureArray.length}}</div>
-        </van-swipe>
+      <mu-divider></mu-divider>
+      <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical" forbidOversize></demo-atlas-view>
+      <div>
+        <demo-tag v-if="atlas.personal" color="red">仅自己可见</demo-tag>
+        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId">{{tag.tagText}}</demo-tag>
       </div>
-      <!-- 预览模式 -->
-      <div v-else>
-        <div v-if="atlas.atlasPictures.length==1">
-          <div class="atlas-item-img-1" v-for="(image,index) in atlas.atlasPictures" :key="index">
-            <img :src="image" :onerror="defaultImg" />
-          </div>
-        </div>
-        <div v-else-if="atlas.atlasPictures.length==2" style="display:flex;">
-          <div class="atlas-item-img-2" v-for="(image,index) in atlas.atlasPictures" :key="index">
-            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)" />
-          </div>
-        </div>
-        <div v-else style="display:flex;flex-wrap:wrap;">
-          <div class="atlas-item-img-3" v-for="(image,index) in atlas.atlasPictures" :key="index">
-            <img :src="image" :onerror="defaultImg" @click="showImagePreview(index)" />
-          </div>
-        </div>
+      <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
+        <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.atlasContent"></span>
       </div>
+      <div v-if="showButton">
+        <div class="show" @click="handleFold" v-show="fold==2">展开更多</div>
+        <div class="show" @click="handleFold" v-show="fold==100">收起</div>
+      </div>
+      <!-- <div style="font-size:12px;">123条评论</div> -->
       <div class="atlas-item-footer">
-        <div class="footer-left">
+        <div class="footer-left" style="width:100%;">
           <mu-icon value="favorite_border" size="25"></mu-icon>
           <mu-icon value="turned_in_not" size="25"></mu-icon>
+          <mu-icon value="chat_bubble_outline" size="25"></mu-icon>
           <mu-icon value="open_in_new" size="25"></mu-icon>
         </div>
         <div
           class="footer-right"
-          style="text-align:right;margin-top:3px;margin-right:3px;"
+          style="width:100%;text-align:right;margin-top:3px;margin-right:3px;"
         >123&nbsp;次喜欢</div>
       </div>
-      <demo-tag v-for="tag in atlas.atlasTags" :key="tag">{{tag}}</demo-tag>
-      <br />
-      <div class="atlas-content" :class="fold ? 'fold' : 'unfold'">
-        <div>
-          <span style="font-weight: bold;">{{atlas.user.userName}}:</span>
-          <span>{{atlas.atlasContent}}</span>
-        </div>
-      </div>
-      <div v-if="showButton">
-        <div class="show" @click="handleFold" v-show="fold">更多</div>
-        <div class="show" @click="handleFold" v-show="!fold">收起</div>
-      </div>
-    </div>123条评论
+    </div>
     <mu-dialog
       width="100%"
       max-width="90%"
@@ -80,6 +60,16 @@
       :open.sync="openAlert"
     >
       <mu-list>
+        <mu-list-item
+          button
+          :ripple="false"
+          @click="$router.push('/atlas/detail/'+atlas.atlasId);openAlert=false"
+        >
+          <mu-list-item-action>
+            <mu-icon value="collections"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>详情</mu-list-item-title>
+        </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
             <mu-icon value="star_border"></mu-icon>
@@ -88,9 +78,9 @@
         </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
-            <mu-icon value="mail_outline"></mu-icon>
+            <mu-icon value="file_copy"></mu-icon>
           </mu-list-item-action>
-          <mu-list-item-title>发邮件给 {{atlas.user.userName}}</mu-list-item-title>
+          <mu-list-item-title>复制文字内容</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button :ripple="false">
           <mu-list-item-action>
@@ -124,6 +114,7 @@
           button
           :ripple="false"
           v-show="this.$store.state.current_user.userId==this.atlas.creater"
+          @click="openAlert=false;showDialog=true;"
         >
           <mu-list-item-action>
             <mu-icon value="delete"></mu-icon>
@@ -152,44 +143,58 @@
         </mu-list-item>
       </mu-list>
     </mu-bottom-sheet>
+    <mu-dialog
+      width="600"
+      max-width="80%"
+      title="删除确认"
+      :esc-press-close="false"
+      :overlay-close="false"
+      :open.sync="showDialog"
+      transition="slide-left"
+    >
+      <div style="padding-left:24px;">确定要删除吗？删除后将无法撤销</div>
+      <mu-button slot="actions" flat color="primary" @click="showDialog=false">取消</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="deleteAtlas">确认</mu-button>
+    </mu-dialog>
   </div>
 </template>
 <script>
-/* 
-图集列表组件
-组件设计思路：
-图集组件主要用来展示图集，已知的图片展示有轮播图和预览，需要考虑以下几种情况
-1.没有图片，只有文字，展示固定100个文字，其余隐藏，可点击更多查看全部；若文字<100，不固定高度
-2.一张图片的，100%宽度，等高度展示,文字展示同上
-3.两张图片的，50%宽度，等高度展示，文字展示同上
-4.三张图片的，30%宽度，等高度展示，文字展示同上
-6.四张图片的，50%宽度，等高度展示，文字展示同上(已归为其它)
-7.其它，30%宽度展示，等高度，文字展示同上
-*/
 import util from "@/util/util";
-import { ImagePreview } from "vant";
 
 export default {
   name: "AtlasItem", //图集列表组件
   props: {
+    //图集对象
     atlas: {
-      //图集对象
       type: Object
+    },
+    //外层循环的索引
+    arrayIndex: {
+      type: Number
     }
   },
   data() {
     return {
-      current: 0, //轮播图当前图片的索引
       openAlert: false,
       open: false,
-      fold: true
+      fold: 100,
+      showButton: false,
+      showDialog: false //删除的确认框
     };
   },
   computed: {
     // 根据文本长度决定是否展示更多与收起按钮
-    showButton: function() {
-      return this.atlas.atlasContent.length >= 40 ? true : false;
-    },
+    //TODO 这里不严谨，不应该根据长度来判断，40在手机端会溢出，在PC端就不会溢出
+    // showButton: function() {
+    //   // let height= this.$refs.contentText;
+    //   // let height=  window.getComputedStyle(this.$refs.contentText).height;
+    //   // let width=  window.getComputedStyle(this.$refs.contentText1).width;
+    //   // console.log("content-text的高度："+height)
+    //   // console.log("content-text的高度："+width)
+    //   //44.8是两行的高度
+    //   // return height > 44.8 ? true : false;
+    //   return true
+    // },
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
@@ -200,21 +205,40 @@ export default {
       return util.dateSubtract(value);
     }
   },
+  mounted() {
+    let initHight = this.$refs.contentText.offsetHeight;
+    // 45是两行的高度,当溢出时才显示展示更多按钮,这样还是有问题，页面改变时，无法获取到overflow的溢出高度，无法使用监控来自适应
+    if (initHight > 45) {
+      this.showButton = true;
+      this.fold = 2;
+    }
+    // let _this = this;
+    // window.onresize = () => {
+    //   console.log("页面宽度改变了");
+
+    //   let height = this.$refs.contentText.offsetHeight;
+    //   console.log("span高度："+height);
+    //   if (height > 38.4) {
+    //     _this.showButton = true;
+    //   }else{
+    //     _this.showButton = false;
+    //   }
+    // };
+  },
   methods: {
+    test() {
+      alert(width);
+    },
     // goArticle(id) {
     //   var url = "/home/article/detail/" + id;
     //   this.$router.push(url);
     // },
-    goPictures(id) {
-      var url = "/home/atlas/detail/" + id;
-      this.$router.push(url);
-    },
     goInfo() {
       this.$router.push("/mine/info");
     },
     openAlertDialog() {
       console.log(this.$store.state.current_user.userId);
-      console.log(this.atlas.author);
+      console.log(this.atlas.creater);
       this.openAlert = true;
     },
     closeAlertDialog() {
@@ -222,23 +246,33 @@ export default {
     },
     closeBottomSheet() {
       this.open = false;
+      this.$toast("举报成功！");
     },
     openBotttomSheet() {
       this.openAlert = false;
       this.open = true;
     },
     handleFold() {
-      this.fold = !this.fold;
+      this.fold = this.fold == 100 ? 2 : 100;
     },
     onChange(index) {
       this.current = index;
     },
-    showImagePreview(position) {
-      const images = this.atlas.atlasPictures;
-      const instance = ImagePreview({
-        images,
-        startPosition: typeof position === "number" ? position : 0
-      });
+    //删除图集
+    deleteAtlas() {
+      console.log("调用了父组件");
+      this.$emit("remove", this.arrayIndex);
+      this.$http.atlas
+        .deleteAtlasById(this.atlas.atlasId)
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.$toast("已删除");
+            //调用父组件
+            this.$emit("remove", this.arrayIndex);
+            this.openAlert = false;
+          }
+        })
+        .catch(error => {});
     }
   }
 };
@@ -247,6 +281,7 @@ export default {
 .main-content {
   min-width: 350px;
   width: 100%;
+  background-color: #fff;
 }
 .atlas-item-header {
   display: flex;
@@ -271,52 +306,9 @@ export default {
   height: 40px;
   border-radius: 50%;
 }
-.atlas-item-img-1 img {
-  width: 100%;
-}
-.atlas-item-img-2 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  overflow: hidden;
-}
-.atlas-item-img-2 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  padding-right: 3px;
-}
-.atlas-item-img-3 {
-  width: 33.3%;
-  height: 33.3vw;
-  max-height: 166.5px;
-  min-height: 116.5px;
-  overflow: hidden;
-}
-.atlas-item-img-3 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  padding-right: 3px;
-  padding-bottom: 3px;
-}
 .atlas-item-footer {
   display: flex;
   justify-content: space-between;
-}
-/* .atlas-item-footer .footer-left {
-
-}
-.atlas-item-footer .footer-right {
-  text-align: right;
-} */
-.atlas-item-content {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 行数 */
 }
 .follow-button {
   border: 1px solid rgb(204, 0, 0);
@@ -339,30 +331,12 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-line-clamp: 100;
   /* margin: 10px 0 10px 0; */
   font-size: 15px;
-}
-.atlas-content.fold {
-  -webkit-line-clamp: 2;
-}
-.atlas-content.unfold {
-  -webkit-line-clamp: 100;
 }
 .show {
   font-size: 13px;
   color: cornflowerblue;
-}
-.custom-indicator {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  padding: 2px 5px;
-  font-size: 12px;
-  color: white;
-  background: rgba(0, 0, 0, 0.1);
-}
-.demo-chip {
-  line-height: 22px;
-  margin-right: 5px;
 }
 </style>

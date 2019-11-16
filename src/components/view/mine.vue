@@ -18,11 +18,11 @@
           </mu-list-item-title>
           <mu-list-item-sub-title>{{user.sign}}</mu-list-item-sub-title>
         </mu-list-item-content>
-        <mu-list-item-action>
+        <!-- <mu-list-item-action>
           <mu-button icon>
             <mu-icon value="arrow_forward_ios"></mu-icon>
           </mu-button>
-        </mu-list-item-action>
+        </mu-list-item-action> -->
       </mu-list-item>
       <mu-list-item v-else avatar button :ripple="false" to="/login">
         <mu-list-item-action>
@@ -178,7 +178,7 @@ export default {
       });
     },
     goMyPage() {
-      var url = "/" + this.user.userId + "/articles";
+      var url = "/" + this.user.userId + "/homepage";
       this.$router.push(url);
     }
   }

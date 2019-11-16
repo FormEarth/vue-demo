@@ -1,12 +1,15 @@
 <template>
-  <input
-    :type="type"
-    :placeholder="placeholder"
-    ref="input"
-    :value="value"
-    @input="$emit('input', $event.target.value)"
-    maxlength="100"
-  />
+  <div>
+    <input
+      :type="type"
+      :placeholder="placeholder"
+      ref="input"
+      :value="value"
+      :maxlength="max"
+      @input="$emit('input', $event.target.value)"
+    />
+    <span class="error-message">{{error}}</span>
+  </div>
 </template>
 
 <script>
@@ -21,7 +24,15 @@ export default {
       type: String,
       default: "提示"
     },
+    max: {
+      type: String,
+      default: "100"
+    },
     value: {
+      type: String,
+      default: ""
+    },
+    error: {
       type: String,
       default: ""
     }
@@ -53,5 +64,9 @@ input:focus {
     0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
+}
+.error-message {
+  font-size: 12px;
+  color: red;
 }
 </style>

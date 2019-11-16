@@ -6,7 +6,7 @@ import router from '../router'
 
 const instance = axios.create({
   baseURL: 'http://192.168.149.110:9092', // api 的 base_url
-  timeout: 3000, // request timeout
+  timeout: 18000, // request timeout,3分钟，因为有图片上传
   // headers: { 'Content-Type': 'application/json;charset=UTF-8' },//请求头
   withCredentials: true //跨域时携带cookie
 })
@@ -57,10 +57,10 @@ instance.interceptors.response.use(
     return response
   },
   error => {
-    console.log("响应error" + error) // for debug
+    console.log("响应error" + error.toString()) // for debug
     if (typeof (error.response) == "undefined") {
       Toast({
-        message: '网络连接错误',
+        message: "网络连接错误",
         duration: 2000,
         forbidClick: true
       });

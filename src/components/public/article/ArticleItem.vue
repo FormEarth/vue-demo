@@ -2,10 +2,11 @@
   <div class="article-item">
     <div class="article-content">
       <div class="content-header">
-        <div class="header-title"
-          @click="$router.push('/article/detail/'+ article.articleId)">{{article.title}}
-        </div>
-        <div class="header-tags" v-show="tagArray.length!=0">
+        <div
+          class="header-title"
+          @click="$router.push('/article/detail/'+ article.articleId)"
+        >{{article.title}}</div>
+        <div>
           <demo-tag v-for="(tag,index) in tagArray" :key="index" random>{{tag}}</demo-tag>
         </div>
       </div>
@@ -32,8 +33,7 @@ export default {
     article: {}
   },
   data() {
-    return {
-    };
+    return {};
   },
   filters: {
     time: function(value) {
@@ -52,25 +52,20 @@ export default {
       }
       return this.article.tags.split("|");
     }
-  },
+  }
 };
 </script>
 
 <style scoped>
-.article-tag {
-  margin: 0 0.1em;
-  padding: 0.3em 1em;
-  color: #fff;
-  background: rgba(33, 150, 243, 0.4);
-  font-size: 12px;
-  /* 换行时保证标签完整性 */
-  white-space: pre;
-}
 .article-item {
   display: flex;
-  background-color: whitesmoke;
+  background-color: #fff;
   margin-bottom: 10px;
   /* border-bottom: 1px grey solid; */
+  border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
+  border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
+  border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4);
 }
 .article-img img {
   height: 100%;
@@ -118,11 +113,11 @@ export default {
   color: rgb(88, 88, 88);
 }
 .mu-flat-button.disabled {
-     cursor:default;
+  cursor: default;
 }
 @media screen and (min-width: 800px) {
   .article-item {
-    padding: 0 30px;
+    padding: 0 0 0 30px ;
   }
   .article-item .article-content {
     /* width: 73%; */

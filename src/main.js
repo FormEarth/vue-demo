@@ -16,7 +16,13 @@ import api from './axios/api'
 //import "@/mock/mock.js"; //引入mock
 // 引入mockjs
 //require('@/mock/mock.js')
+import VueLazyload from 'vue-lazyload'//图片懒加载
+import '@vant/touch-emulator';//vant适配PC端
 
+Vue.use(VueLazyload,{
+  error: require('@/assets/broken_image.jpg'),
+  // loading: 'dist/loading.gif',
+  })
 Vue.use(MuseUI);
 //加载状态组件
 Vue.use(Loading);

@@ -1,39 +1,34 @@
 <template>
-  <mu-container class="demo-container" fluid v-loading="loading">
+  <div
+    v-if="!dataIsLoaded"
+    style="width:100%;height:100%;padding-top:200px;"
+    v-loading="initLoading"
+    data-mu-loading-text="数据正在加载中……"
+    @click="getInitArticlesData"
+  >
+    <div v-show="!initLoading" style="text-align:center;">
+      <span>数据加载失败，点击屏幕以重试</span>
+      <br />
+      <mu-icon size="56" value="refresh" color="blue100"></mu-icon>
+    </div>
+  </div>
+  <mu-container class="demo-container" fluid v-else>
     <div class="detail-content">
       <div v-if="articles.length!=0">
-        <article-item v-for="article in articles" :key="article.articleId" :article="article"></article-item>
+        <mu-load-more
+          :loading="loading"
+          :refreshing="refreshing"
+          :loaded-all="loadedAll"
+          @load="getMoreArticleData"
+        >
+          <mu-list>
+            <mu-sub-header>文章推荐</mu-sub-header>
+            <article-item v-for="article in articles" :key="article.articleId" :article="article"></article-item>
+            <div v-if="loadedAll" style="text-align:center;">————没有更多惹╮(╯▽╰)╭————</div>
+          </mu-list>
+        </mu-load-more>
       </div>
       <div class="no-articles" v-else>空空如也……@￥%#</div>
-      <mu-flex justify-content="center">
-        <mu-pagination :total="total" :page-size="5" :current.sync="current" @change="changePage"></mu-pagination>
-      </mu-flex>
-      <div class="footer">
-        <span>© 2019 raining_heavily</span>
-      </div>
-      <div class="addButton">
-        <mu-slide-left-transition>
-          <mu-button v-show="this.open" to="/home/atlas/add" style="margin-bottom:8px;">
-            发布图集
-            <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
-          </mu-button>
-        </mu-slide-left-transition>
-        <mu-slide-right-transition>
-          <mu-button v-show="this.open" to="/home/article/add" style="margin-bottom:8px;">
-            写长文
-            <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
-          </mu-button>
-        </mu-slide-right-transition>
-        <mu-slide-bottom-transition>
-          <mu-button v-show="this.open" style="margin-bottom:8px;">写短文</mu-button>
-        </mu-slide-bottom-transition>
-        <mu-button fab color="redA700" :ripple="false" v-if="!open" @click="change">
-          <mu-icon value="add" size="38"></mu-icon>
-        </mu-button>
-        <mu-button fab color="redA700" v-else @click="change">
-          <mu-icon value="close" size="38"></mu-icon>
-        </mu-button>
-      </div>
     </div>
   </mu-container>
 </template>
@@ -47,33 +42,18 @@ export default {
       loading: false, //是否显示加载遮罩层
       open: false, //写文章按钮是否展开,
       articles: [],
-      user: {},
       total: 0, //数据总条数
-      current: 1
+      current: 1,
+      initLoading: false, //初始化是否显示加载遮罩层
+      dataIsLoaded: false, //初始化请求页面是否成功
+      loadedAll: false, //下拉加载数据时，数据是否已加载完毕
+      loading: false, //上滑加载更多时是否在加载状态
+      refreshing: false, //下拉更新时是否在加载状态
+      refreshTime: "" //每次更新数据时记录
     };
   },
   created: function() {
-    var currentPage;
-    if (typeof this.$route.params.currentPage == "undefined") {
-      currentPage = 1;
-      this.current = 1;
-    } else {
-      this.current = currentPage = Number(this.$route.params.currentPage);
-    }
-    if (this.$route.name == "homePage") {
-      this.getHomePageArticleData(this);
-    } else {
-      this.getArticleData(this);
-    }
-  },
-  watch: {
-    //查询参数改变，再次执行数据获取方法
-    $route() {
-      console.log("路由更改了");
-      if (this.$route.name == "articleswithpageno") {
-        this.getArticleData(this);
-      }
-    }
+    this.getInitArticlesData();
   },
   computed: {
     //已登录用户信息
@@ -92,54 +72,47 @@ export default {
     change() {
       this.open ? (this.open = false) : (this.open = true);
     },
-    login() {
-      this.$router.push("/login");
-    },
-    getArticleData(that) {
-      that.$http.user
-        .getArticlesByUserId(that.$route.params.userId, that.current)
+    //页面加载时显示的初始化数据
+    getInitArticlesData() {
+      this.initLoading = true;
+      this.$http.article
+        .getHomePageArticles(this.current)
         .then(response => {
-          that.articles = response.data.data.articles;
-          that.total = response.data.data.total;
-          that.user = response.data.data.user;
-        });
-    },
-    getHomePageArticleData(that) {
-      that.loading = true;
-      that.$http.article
-        .getHomePageArticles(that.current)
-        .then(response => {
-          that.articles = response.data.data.articles;
-          that.total = response.data.data.total;
-          that.user = response.data.data.user;
-          that.loading = false;
+          if (response.data.code == "2000") {
+            this.articles = response.data.data.articles;
+            this.total = response.data.data.total;
+            this.dataIsLoaded = true;
+            this.initLoading = false;
+            this.refreshTime = response.data.time;
+          }else{
+            this.initLoading = false;
+          }
         })
         .catch(error => {
-          that.loading = false;
+          this.initLoading = false;
         });
     },
-    //分页跳转
-    changePage() {
-      // this.$http.user
-      //   .getArticlesByUserId(this.$route.params.userId, this.current)
-      //   .then(response => {
-      //     this.articles = response.data.data.articles;
-      //     this.total = response.data.data.total
-      if (this.$route.name == "homePage") {
-        this.$options.methods.getHomePageArticleData(this);
-        return;
-      } else {
-        this.$options.methods.getArticleData(this);
-      }
-      //以下为替换地址栏路径
-      if (this.$route.name == "articles") {
-        history.pushState(null, "", this.$route.path + "/" + this.current);
-      } else {
-        var url = this.$route.path;
-        url = url.substring(0, url.length - 1) + this.current;
-        history.pushState(null, "", url);
-      }
-      // });
+    //滑动到底部时加载更多数据
+    getMoreArticleData() {
+      this.current = this.current + 1;
+      this.loading = true;
+      this.$http.article
+        .getHomePageArticles(this.current)
+        .then(response => {
+          if ((response.data.code = "2000")) {
+            let dataLength = response.data.data.articles.length;
+            for (let i = 0; i < dataLength; i++) {
+              this.articles.push(response.data.data.articles[i]);
+            }
+            if (this.articles.length >= this.total) {
+              this.loadedAll = true;
+            }
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+        });
     }
   }
 };
@@ -166,17 +139,11 @@ export default {
   text-align: center;
   /* color:white; */
 }
-.addButton {
-  width: 20%;
-  position: fixed;
-  right: 5px;
-  bottom: 60px;
-  display: flex;
-  flex-direction: column;
-  margin-left: 5px;
-}
 /* 大屏幕，宽度大于960px; */
 @media screen and (min-width: 800px) {
+  .demo-container {
+    padding: 0 10%;
+  }
   .content {
     display: flex;
   }
@@ -193,9 +160,10 @@ export default {
   }
 }
 /* 小屏幕，宽度在300px~640px */
-@media screen and (min-width: 300px) and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .detail-content {
-    padding: 10px 5px 0 5px;
+    background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7);
+    padding: 10px 5px 56px 5px;
   }
   /* .content {
     margin-top: 15px;
