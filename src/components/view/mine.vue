@@ -10,11 +10,7 @@
         <mu-list-item-content>
           <mu-list-item-title>
             {{user.userName}}
-            <mu-chip
-              color="redA700"
-              text-color="white"
-              style="line-height: 20px;font-size:10px"
-            >vip 8</mu-chip>
+            <span class="level-block">Lv.0</span>
           </mu-list-item-title>
           <mu-list-item-sub-title>{{user.sign}}</mu-list-item-sub-title>
         </mu-list-item-content>
@@ -97,6 +93,17 @@
           </mu-button>
         </mu-list-item-action>
       </mu-list-item>
+      <mu-list-item button :ripple="false" to="/test">
+        <mu-list-item-action>
+          <mu-icon value="colorize" color="purple"></mu-icon>
+        </mu-list-item-action>
+        <mu-list-item-title>测试</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-button icon>
+            <mu-icon value="arrow_forward_ios"></mu-icon>
+          </mu-button>
+        </mu-list-item-action>
+      </mu-list-item>
       <mu-list-item button :ripple="false" @click="openAlertDialog" v-show="isLogin">
         <mu-list-item-action>
           <mu-icon value="exit_to_app" color="black"></mu-icon>
@@ -168,6 +175,9 @@ export default {
         sessionStorage.removeItem("current_user");
         //移除vuex中的用户数据
         this.$store.commit("remove_user");
+        //移除localStorage中的sessionId
+        sessionStorage.removeItem("Authorization-Sessionid");
+        localStorage.removeItem("Authorization-Sessionid")
         //TODO 发后台登出api
         this.openAlert = false;
         this.$notify({
@@ -188,15 +198,26 @@ export default {
 .demo-list {
   width: 100%;
 }
+.level-block{
+  vertical-align:middle;
+  letter-spacing: 0.2em;
+  border-radius: 3px;
+  font-family:"Times New Roman";
+  margin-left:0.25em;
+  padding:0.1em;
+  font-size:10px;
+  color:white;
+  background-color:hsl(240, 75%, 58%);
+}
 .demo-list-wrap {
   width: 100%;
   max-width: 500px;
   overflow: hidden;
 }
 @media screen and (min-width: 800px) {
-  .container {
+  /* .container {
     padding: 10px 10%;
-  }
+  } */
 }
 @media screen and (max-width: 600px) {
   .demo-card {

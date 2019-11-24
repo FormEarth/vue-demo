@@ -174,8 +174,8 @@ export default {
 }
 
 @media screen and (min-width: 800px) {
-  .detail-content {
+  /* .detail-content {
     padding: 0 10%;
-  }
+  } */
 }
 </style>

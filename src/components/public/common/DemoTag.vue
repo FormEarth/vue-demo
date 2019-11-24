@@ -1,10 +1,13 @@
 <template>
-  <div style="display:inline-block;">
+  <div v-if="simple" style="display:inline-block;">
+    <a class="demo-tag simple" :style="randomObject">
+      <slot>示例标签</slot>
+    </a>
+  </div>
+  <div v-else style="display:inline-block;">
     <a :class="['demo-tag',ellipse?'ellipse':'',small?'small':'']" :style="randomObject">
       <slot>示例标签</slot>
-    </a><span v-if="optional" class="delete-suffix" @click="deleteTag">
-      ×
-    </span>
+    </a><span v-if="optional" class="delete-suffix" @click="deleteTag">×</span>
     <!-- 不要换行，span的换行符会被渲染成空白 -->
   </div>
 </template>
@@ -34,6 +37,10 @@ export default {
       type: Boolean,
       default: false
     },
+    simple: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {};
@@ -42,32 +49,38 @@ export default {
     //颜色定义，当传入color时，random不再生效
     randomObject: function() {
       // console.log(this.color)
-      if (this.random) {
-        var max = util.tagColor.length - 1;
-        var random = Math.random();
-        var num = Math.round(random * max);
-        var color = util.tagColor[num].color;
-        return {
-          color: util.tagColor[num].color,
-          background: util.tagColor[num].background
-        };
-      }
-      if (this.color) {
-        for (var i = 0, len = util.tagColor.length; i < len; i++) {
-          if (this.color == util.tagColor[i].name) {
+      // if (this.random) {
+      //   var max = util.tagColor.length - 1;
+      //   var random = Math.random();
+      //   var num = Math.round(random * max);
+      //   var color = util.tagColor[num].color;
+      //   return {
+      //     color: util.tagColor[num].color,
+      //     background: util.tagColor[num].background
+      //   };
+      // }
+      // if (this.color) {
+      for (var i = 0, len = util.tagColor.length; i < len; i++) {
+        if (this.color == util.tagColor[i].name) {
+          if (this.simple) {
+            return {
+              color: util.tagColor[i].color
+            };
+          } else {
             return {
               color: util.tagColor[i].color,
               background: util.tagColor[i].background
             };
           }
         }
+        // }
         // return {}
       }
     }
   },
   methods: {
     deleteTag() {
-      this.$emit('deleteTag')
+      this.$emit("deleteTag");
     }
   }
 };
@@ -75,7 +88,6 @@ export default {
 
 <style scoped>
 .demo-tag {
-  
   display: inline-block;
   margin: 0 0 3px 0.3em;
   padding: 0.3em 1em;
@@ -107,5 +119,11 @@ export default {
   padding: 0.3em 0.5em;
   font-size: 12px;
   cursor: pointer;
+}
+.simple{
+  background:transparent;
+  padding: 0;
+  margin: 0 0 0 0.3em;
+  font-size: 14px;
 }
 </style>

@@ -28,7 +28,7 @@
       </mu-list>
       <div
         v-if="loadedAll"
-        style="text-align:center;background-color:rgba(128, 128, 128, 0.5);"
+        style="text-align:center;"
       >————没有更多惹╮(╯▽╰)╭————</div>
     </mu-load-more>
   </div>
@@ -77,6 +77,9 @@ export default {
             this.total = response.data.data.total;
             this.refreshTime = response.data.time;
             this.dataIsLoaded = true;
+            if (this.atlases.length >= this.total) {
+              this.loadedAll = true;
+            }
           } else {
             this.initLoading = false;
           }
@@ -157,9 +160,9 @@ export default {
   padding-bottom: 0;
 }
 @media screen and (min-width: 800px) {
-  .demo-container {
+  /* .demo-container {
     padding: 10px 16%;
-  }
+  } */
 }
 @media screen and (max-width: 600px) {
   .demo-container {

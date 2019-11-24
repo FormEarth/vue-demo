@@ -4,11 +4,13 @@ import { Toast } from 'vant';
 import store from '../store/index';
 import router from '../router'
 
+//不判断的话会将null上送成'null'
+// let sessionId = ()
 const instance = axios.create({
-  baseURL: 'http://192.168.149.110:9092', // api 的 base_url
+  baseURL: 'http://192.168.2.105:9092', // api 的 base_url
   timeout: 18000, // request timeout,3分钟，因为有图片上传
-  // headers: { 'Content-Type': 'application/json;charset=UTF-8' },//请求头
-  withCredentials: true //跨域时携带cookie
+  // headers: { 'Authorization-Sessionid': sessionId },//请求头
+  // withCredentials: true //跨域时携带cookie
 })
 //请求头
 // axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
@@ -20,7 +22,7 @@ instance.interceptors.request.use(
     // const token = getCookie('名称');可以从cookie中获取token，加到请求头中
     // config.baseURL = 'http://192.168.0.110:8080'
     // config.data = JSON.stringify(config.data)
-    // config.headers = {'Content-Type':'application/json;charset=UTF-8'}
+    config.headers = {'Authorization-Sessionid':sessionStorage.getItem("Authorization-Sessionid")||''}
     // config.timeout = 30000
     return config
   },
@@ -38,10 +40,16 @@ instance.interceptors.response.use(
         //未登录或者登录超时清除登录状态
         store.commit('remove_user');
         sessionStorage.removeItem("current_user");
-        console.log("this.$route.fullPath:" + router.name)
+        //移除localStorage中的sessionId
+        sessionStorage.removeItem("Authorization-Sessionid");
+        localStorage.removeItem("Authorization-Sessionid")
+        //因为无法获取route.path，在这截取下,需要跳过http://
+        let currentPath = window.location.href.substring(8)
+        currentPath = currentPath.substring(currentPath.indexOf('/'))
+        console.log("currentPath:" + currentPath)
         router.push({
           path: '/login',
-          query: { isRequest: true }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          query: { redirect: currentPath }  // 获取该路由名，登录成功后跳转到该路由
         });
         // router.go(0)
         console.log("store.getters.isLogin:" + store.getters.isLogin)

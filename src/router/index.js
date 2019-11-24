@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index';
+import api from '@/axios/api'
 
 import login from '@/components/view/login'
 import register from '@/components/view/register'
@@ -34,36 +35,45 @@ const router = new Router({
   //去掉路径中的#
   mode: 'history',
   routes: [
-    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false ,keepAlive:true,nav:"article"}, component: articles },
-    { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
+    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: articles },
+    { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: articles },
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
-    { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false ,nav:"article"}, component: article },
-    { path: '/home/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true ,nav:"article"}, component: articleAdd },
-    { path: '/home/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true ,nav:"article"}, component: articleAdd },
+    { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false, nav: "article" }, component: article },
+    { path: '/home/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true, nav: "article" }, component: articleAdd },
+    { path: '/home/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleAdd },
 
-    { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false ,nav:"none"}, component: register ,nav:"none"},
-    { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false ,nav:"none"}, component: login, },
-    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false ,nav:"none"}, component: test },
-    { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false ,nav:"album"}, component: album },
-    { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false ,keepAlive:true,nav:"atlas"}, component: atlasList },
-    { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false ,nav:"atlas"}, component: atlas },
-    { path: '/home/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true ,nav:"atlas"}, component: atlasAdd },
-    { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false ,nav:"atlas"}, component: star },
-    { path: '/mine', name: 'mine', meta: { title: "我的", requireLogin: false ,nav:"mine"}, component: mine },
-    { path: '/mine/personal', name: 'personal', meta: { title: "个人信息", requireLogin: true ,nav:"mine"}, component: personal },
-    { path: '/mine/personal/edit', name: 'personalinfoedit', meta: { title: "信息修改", requireLogin: true ,nav:"mine"}, component: infoEdit },
-    { path: '/mine/personal/avatar', name: 'personalAvataredit', meta: { title: "头像修改", requireLogin: true ,nav:"mine"}, component: editAvatar },
-    { path: '/:userId/homepage', name: 'info', meta: { title: "个人主页", requireLogin: false ,nav:"mine"}, component: info },
-    { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true ,nav:"mine"}, component: setting },
-    { path: '/mine/tag/add', name: 'tagAdd', meta: { title: "添加标签", requireLogin: true ,nav:"mine"}, component: tagAdd },
+    { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
+    { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },
+    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, nav: "none" }, component: test },
+    { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" }, component: album },
+    { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: false, nav: "atlas" }, component: atlasList },
+    { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false, nav: "atlas" }, component: atlas },
+    { path: '/home/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true, nav: "atlas" }, component: atlasAdd },
+    { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false, nav: "atlas" }, component: star },
+    { path: '/mine', name: 'mine', meta: { title: "我的", requireLogin: false, nav: "mine" }, component: mine },
+    { path: '/mine/personal', name: 'personal', meta: { title: "个人信息", requireLogin: true, nav: "mine" }, component: personal },
+    { path: '/mine/personal/edit', name: 'personalinfoedit', meta: { title: "信息修改", requireLogin: true, nav: "mine" }, component: infoEdit },
+    { path: '/mine/personal/avatar', name: 'personalAvataredit', meta: { title: "头像修改", requireLogin: true, nav: "mine" }, component: editAvatar },
+    { path: '/mine/personal/frontcover', name: 'frontcoverEdit', meta: { title: "封面修改", requireLogin: true, nav: "mine" }, component: editAvatar },
+    { path: '/:userId/homepage', name: 'info', meta: { title: "个人主页", requireLogin: false, keepAlive: true,nav: "mine" }, component: info },
+    { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true, nav: "mine" }, component: setting },
+    { path: '/mine/tag/add', name: 'tagAdd', meta: { title: "添加标签", requireLogin: true, nav: "mine" }, component: tagAdd },
 
     // 404页面在最下面
-    { path: '*', name: 'notfound', meta: { title: "404 not found", requireLogin: false,nav:"atlas"}, component: notfound }
+    { path: '*', name: 'notfound', meta: { title: "404 not found", requireLogin: false, nav: "atlas" }, component: notfound }
   ]
 })
 //导航守卫（navigation-guards）
-router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
-  if (to.meta.title) {//判断是否有标题
+//beforeEach是router的钩子函数，在进入路由前执行
+router.beforeEach((to, from, next) => {
+  //已登录的情况再去登录页，跳转至首页
+  if (to.name === 'login') {
+    if (store.getters.isLogin) {
+      router.replace('/');
+    }
+  }
+  //判断是否有标题，有标题设置标题
+  if (to.meta.title) {
     document.title = to.meta.title
   }
   //移动端跳转移动端路径
@@ -75,16 +85,16 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
   //       })
   //     }
   // }
-  //vuex中没有数据时从sessionStorge中获取
   if (!store.getters.isLogin) {
-    var current_user = JSON.parse(sessionStorage.getItem("current_user"));
-    //如果sessionStorage没有用户信息证明没有登录或会话过期了
-    if (current_user != null) {
-      //vuex中的数据在页面刷新的时候会重置，在登陆时将用户信息保存在sessionStorge,
-      //若刷新页面从sessionStorge中重新获取当前用户信息给vuex赋值
+    //vuex中没有数据时从sessionStorge中获取
+    //vuex中的数据在页面刷新的时候会重置，在登陆时将用户信息保存在sessionStorge,
+    //若刷新页面从sessionStorge中重新获取当前用户信息给vuex赋值
+    let current_user = JSON.parse(sessionStorage.getItem("current_user"));
+    if(current_user){
       store.commit("save_user", current_user);
     }
   }
+
   // 判断该路由是否需要登录
   if (to.meta.requireLogin) {
     //从vuex中获取是否已登录,刷新页面时由于vuex数据丢失,所以在这里重新从sessionStorage加载数据到vuex

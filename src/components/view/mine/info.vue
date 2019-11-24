@@ -1,58 +1,76 @@
 <template>
   <mu-container>
-      <div class="user-card" :style="header" style="z-index:1000;">
-        <div style="display:flex;justify-content:space-between;height:50px;">
-          <mu-button icon slot="left" :ripple="false" @click="$router.back(-1)">
-            <mu-icon value="arrow_back" color="white"></mu-icon>
-          </mu-button>
-          <mu-button icon slot="right">
-            <mu-icon value="more_vert" color="white"></mu-icon>
-          </mu-button>
-        </div>
-        <div>
-          <div class="user-avatar" style="display:flex;z-index:100;">
-            <img :src="user.avatar" alt="用户头像" />
-            <div style="text-align:right;padding:14px 10px 0 0;width:100%;">
-              <!-- <mu-button round color="greenA700" small>关注</mu-button> -->
-              <mu-button color="white" textColor="black" round small>
-                <mu-icon value="edit"></mu-icon>编辑
-              </mu-button>
-              <!-- <mu-button fab small >
+    <div class="user-card" :style="{backgroundImage: 'url(' + user.frontCover + ')'}">
+      <div style="display:flex;justify-content:space-between;height:50px;">
+        <mu-button icon slot="left" :ripple="false" @click="$router.back(-1)">
+          <mu-icon value="arrow_back" color="white"></mu-icon>
+        </mu-button>
+        <mu-button icon slot="right" to="/mine/personal/frontcover">
+          <mu-icon value="edit" color="white"></mu-icon>
+        </mu-button>
+      </div>
+      <div v-show="showHeader">
+        <div class="user-avatar" style="display:flex;z-index:100;">
+          <img :src="user.avatar" alt="用户头像" />
+          <div style="text-align:right;padding:17px 10px 0 0;width:100%;">
+            <mu-button
+              v-if="loginAndIsSelf"
+              color="white"
+              textColor="black"
+              round
+              small
+              to="/mine/personal"
+            >
+              <mu-icon value="edit"></mu-icon>编辑
+            </mu-button>
+            <mu-button
+              v-else-if="!currentUserIsWatched"
+              :disabled="buttonLoading"
+              color="greenA700"
+              round
+              small
+              @click="userWatch"
+            >关注</mu-button>
+            <mu-button
+              v-else
+              :disabled="buttonLoading"
+              color="greenA700"
+              round
+              small
+              @click="removeWatch"
+            >已关注</mu-button>
+            <!-- <mu-button fab small >
               <mu-icon value="email"></mu-icon>
-              </mu-button>-->
-            </div>
+            </mu-button>-->
           </div>
+        </div>
 
-          <div style="color:rgba(255,255,255,0.9);padding-left:3%;z-index:100;">
-            <div style="margin:20px 0 0px 0;letter-spacing:0.1em;">
-              <div class="user-name">{{user.userName}}</div>
-              <div>{{user.sign}}</div>
-              <div>个人简介:</div>
-              {{user.personalProfile}}
-            </div>
-            <div>
-              <div class="data-item" :z-depth="0">
-                12
-                <label>&nbsp;关注</label>
-              </div>
-              <div class="data-item" :z-depth="0">
-                99
-                <label>&nbsp;粉丝</label>
-              </div>
-              <div class="data-item" :z-depth="0">
-                23
-                <label>&nbsp;动态</label>
-              </div>
-              <div class="data-item" :z-depth="0">
-                12k
-                <label>&nbsp;获赞</label>
-              </div>
-            </div>
-            <demo-tag color="white" ellipse small></demo-tag>
-            <demo-tag color="white" ellipse small>一个 绅士</demo-tag>
+        <div style="color:rgba(255,255,255,0.9);padding-left:3%;z-index:100;">
+          <div style="margin:20px 0 0px 0;letter-spacing:0.1em;">
+            <div class="user-name">{{user.userName}}</div>
+            <div>{{user.sign}}</div>
+            <div style="white-space: pre-wrap;">个人简介:{{user.personalProfile}}</div>
+            <!-- <span style="white-space: pre-wrap;">{{user.personalProfile}}</span> -->
           </div>
+          <div v-if="loginAndIsSelf">
+            <div class="data-item">
+              {{$store.state.current_user.user_watch_list.length}}
+              <label>&nbsp;关注</label>
+            </div>
+            <div class="data-item">
+              {{$store.state.current_user.user_like_list.length}}
+              <label>&nbsp;喜欢</label>
+            </div>
+            <div class="data-item">
+              {{$store.state.current_user.user_keep_list.length}}
+              <label>&nbsp;收藏</label>
+            </div>
+          </div>
+          <demo-tag color="white" ellipse small></demo-tag>
+          <demo-tag color="white" ellipse small>一个 绅士</demo-tag>
         </div>
       </div>
+    </div>
     <mu-tabs
       :value.sync="active"
       indicator-color="red"
@@ -65,54 +83,6 @@
       <mu-tab>喜欢</mu-tab>
     </mu-tabs>
     <atlas-list withUser></atlas-list>
-
-    <div class="demo-text" v-if="active === 0">
-      <p>“……是的，我承认从很早以前我都害怕死亡，在医院里被人研究的时候，以前做出布局的时候，其实我很怕死的，因为除了死以外，我没有值得珍惜的东西，很奇怪是吧？恰好是这样我真的很怕死，因为我想要有值得珍惜的东西之后，死亡之后才会不寂寞，我才能够安然的面对死亡……”</p>
-    </div>
-    <div class="demo-text" v-if="active === 1">
-      <p>“我的心从来没有这么坚定过，所以我会为了补偿而死，也可以为了补偿而死……一辈子，急辈子都无所谓，我绝不后退！”</p>
-      <p>“如果我后退呢？如果我想要死呢？我不想你再次背对着我逃跑了……”</p>
-      <p>“那么就去地狱找到你，我绝对不逃！”</p>
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-      <p>“白痴，你也哭了？因为那些软弱拖累你的脚步？”</p>
-    </div>
-    <div class="demo-text" v-if="active === 2">
-      <p>“不，这泪水……是因为勇气，因为力量，因为信任，……你不会懂的！”</p>
-      <p>“我不会帮你，想要什么样的未来……自己去追寻吧！”</p>
-      <p>“我不需要你的帮忙！未来我会一手开启，什么样的敌人我也不会惧怕……还有，其实我们可以成为朋友的……”</p>
-      <p>“也许吧，未来……给你了。”</p>
-    </div>
   </mu-container>
 </template>
 <script>
@@ -122,56 +92,59 @@ export default {
   name: "info",
   data() {
     return {
+      buttonLoading: false,
       showHeader: true,
       open: "send",
       active: 0,
-      user: {
-        name: "Nidhogg",
-        sign: "曾经沧海难为水，除却巫山不是云",
-        avatar: require("@/assets/images/carousel2.jpg")
-      },
-      header: {
-        backgroundImage: "url(" + require("@/assets/images/test6.jpg") + ")",
-        // backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
-        // height: "250px"
-      },
-      articles: [
-        {
-          id: "129",
-          title: "盛名之下，其实难却",
-          picture: require("@/assets/images/test2.jpg"),
-          from: "历史之窗",
-          author: "Nidhogg",
-          url: "/home/article",
-          content:
-            "忘记历史即意味着背叛，然而还有多少人记起那战火里的惨无人道呢？"
-        }
-      ],
-      pictures: [
-        {
-          id: "130",
-          type: "atlas", //类型为图集
-          title: "这是个图集",
-          picture:
-            "http://uploads.5068.com/allimg/1712/151-1G202120Q9-50.jpg|http://www.lzshuli.com/game_images/105317829.jpeg|http://img3.imgtn.bdimg.com/it/u=234200694,2958848013&fm=26&gp=0.jpg|https://www.xiazaiba.com/uploadfiles/content/2017/1117/water_1510903919594499.png|http://image.9game.cn/2017/11/13/18553901.jpg",
-          author: "高天原",
-          url: "/home/article",
-          content:
-            "今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩今天好高兴出来玩",
-          sendTime: "2019-04-08 20:33:14",
-          tags: "原创|图集"
-        }
-      ],
+      user: {},
+      articles: [],
+      pictures: [],
       favorites: []
     };
   },
+  computed: {
+    //已登录并且查看的是自己的资料
+    loginAndIsSelf() {
+      if (this.$store.getters.isLogin) {
+        if (
+          this.$store.state.current_user.userId == this.$route.params.userId
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
+    //当前用户是否已关注
+    currentUserIsWatched() {
+      if (this.$store.getters.isLogin) {
+        if (
+          this.$store.state.current_user.user_watch_list.includes(
+            this.user.userId
+          )
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+  },
   created() {
     console.log(this.$route.params.userId);
-    if (this.$store.getters.isLogin) {
+    console.log("login_user_id:" + this.$store.state.current_user.userId);
+    if (this.loginAndIsSelf) {
       this.user = this.$store.state.current_user;
+      window.document.title = this.user.userName + "的个人主页";
     } else {
       //TODO 查询用户
+      this.$http.user
+        .getCommonInfoByUserId(this.$route.params.userId)
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.user = response.data.data.user;
+          } else {
+          }
+        })
+        .catch(error => {});
     }
     // 获取地理位置信息,（需要https支持……）
     // navigator.geolocation.getCurrentPosition(this.geoHandler, this.errorHandler, {
@@ -180,23 +153,99 @@ export default {
     // })
   },
   mounted() {
-    window.addEventListener("scroll", this.scroll);
+    // window.addEventListener("scroll", this.scroll, 1000);
   },
   destroyed() {
-    window.removeEventListener("scroll", this.scroll, false);
+    // window.removeEventListener("scroll", this.scroll, false);
   },
   components: {
     AtlasList
   },
   methods: {
+    //关注用户
+    userWatch() {
+      this.buttonLoading = true;
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "正在关注"
+      });
+      this.$http.user
+        .userAddCollection({
+          collectionType: "USER_WATCH",
+          collectionId: this.user.userId
+        })
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.$toast.clear();
+            this.$store.commit("add_watch_user", this.user.userId);
+            //保存数据到sessionStorage
+            sessionStorage.setItem(
+              "current_user",
+              JSON.stringify(this.$store.state.current_user)
+            );
+            this.$toast("关注成功");
+          } else {
+            this.$toast.clear();
+          }
+          this.buttonLoading = false;
+        })
+        .catch(error => {
+          this.buttonLoading = false;
+          this.$toast.clear();
+        });
+    },
+    //不再关注
+    removeWatch() {
+      this.buttonLoading = true;
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "正在关注"
+      });
+      this.$http.user
+        .userRemoveCollection({
+          collectionType: "USER_WATCH",
+          collectionId: this.user.userId
+        })
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.$toast.clear();
+            this.$store.commit("remove_watch_user", this.user.userId);
+            //保存数据到sessionStorage
+            sessionStorage.setItem(
+              "current_user",
+              JSON.stringify(this.$store.state.current_user)
+            );
+            this.$toast("取消关注成功");
+          } else {
+            this.$toast.clear();
+          }
+          this.buttonLoading = false;
+        })
+        .catch(error => {
+          this.$toast.clear();
+          this.buttonLoading = false;
+        });
+    },
+    //监听滚动
     scroll() {
       // var offsetTop = document.querySelector('#searchBar').offsetTop;
       // console.log("offsetTop:"+offsetTop)
-      if (document.documentElement.scrollTop > 249) {
+      console.log(document.documentElement.scrollTop);
+      if (document.documentElement.scrollTop > 20) {
         this.showHeader = false;
       } else {
         this.showHeader = true;
       }
+    },
+    // 防抖
+    debounce(fn, wait) {
+      var timeout = null;
+      return function() {
+        if (timeout !== null) clearTimeout(timeout);
+        timeout = setTimeout(fn, wait);
+      };
     },
     geoHandler(position) {
       var geoMsg = "";
@@ -227,13 +276,12 @@ export default {
 .container {
   padding-left: 0px;
   padding-right: 0px;
-  max-width: 500px;
+  /* max-width: 500px; */
   min-width: 350px;
 }
-/* .user-card {
-  width: 100%;
-  height: 120px;
-} */
+.user-card {
+  background-size: cover;
+}
 .user-card .user-avatar {
   width: 100%;
   height: 62px;
@@ -244,7 +292,7 @@ export default {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 1px solid white;
+  /* border: 1px solid white; */
 }
 .user-name {
   height: 18px;
@@ -264,9 +312,5 @@ export default {
   font-size: 16px;
   display: inline-block;
   margin-right: 10px;
-}
-.data-item label {
-  font-size: 14px;
-  font-weight: bolder;
 }
 </style>

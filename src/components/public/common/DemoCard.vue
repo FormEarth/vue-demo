@@ -3,11 +3,12 @@
     <div class="user-avatar">
       <img :src="current_user.avatar" />
     </div>
-    <div v-if="isLogin" class="user-information">
+    <div v-if="isLogin" class="user-information" style="text-align:left;">
       <div class="information-username">{{current_user.userName}}</div>
-      {{current_user.sign}}
-      <br />
-      {{current_user.personalProfile}}
+      <div style="white-space: pre-wrap;">
+        <span>{{current_user.sign}}</span><br>
+        <span>{{current_user.personalProfile}}</span>
+      </div>
     </div>
     <div v-else class="user-information">
       <div class="information-username">不要成为欲望的奴隶，不要扼杀自己的创造力</div>
@@ -17,21 +18,23 @@
 <script>
 export default {
   name: "DemoCard",
-  props: {
-  },
+  props: {},
   data() {
     return {
-      frontCover:require("@/assets/images/background.jpg"),
+      frontCover: require("@/assets/images/login_background.jpg")
     };
   },
-  created(){
-  },
-  computed:{
-    cardImage:function(){
-      if(typeof (this.current_user.frontCover) == "undefined"||this.current_user.frontCover == null||this.current_user.frontCover == ''){
-        return this.frontCover
-      }else{
-        return this.current_user.frontCover
+  created() {},
+  computed: {
+    cardImage: function() {
+      if (
+        typeof this.current_user.frontCover == "undefined" ||
+        this.current_user.frontCover == null ||
+        this.current_user.frontCover == ""
+      ) {
+        return this.frontCover;
+      } else {
+        return this.current_user.frontCover;
       }
     },
     isLogin: function() {
@@ -55,7 +58,7 @@ export default {
   text-align: center;
   background-size: cover;
   background-color: rgb(146, 168, 170);
-  opacity: 0.9;/*  值越小越透明*/
+  opacity: 0.9; /*  值越小越透明*/
 }
 .user-avatar img {
   width: 80px;
@@ -72,7 +75,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.7);
 }
 .user-information .information-username {
-  text-align: center;
+  /* text-align: center; */
   /* color: #2196f3; */
   font-size: 20px;
   /* font-weight: bolder; */

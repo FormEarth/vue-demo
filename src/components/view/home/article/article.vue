@@ -241,8 +241,8 @@ export default {
   /* padding-top: 58px; */
   /* 覆盖掉mu-card的默认白色背景 */
   background-color: white;
-  padding-left: 20px;
-  padding-right: 20px;
+  /* padding-left: 20px; */
+  /* padding-right: 20px; */
 }
 .mu-card-text {
   padding: 0px;
@@ -283,6 +283,9 @@ input:disabled {
   bottom: 60px;
   z-index: 1501;
 }
+.mu-card1 >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content{
+    padding: 8px 3px 15px 3px;
+} 
 @media screen and (max-width: 600px) {
   .mu-card1 {
     padding-left: 0;

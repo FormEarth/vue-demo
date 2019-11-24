@@ -7,7 +7,7 @@
           @click="$router.push('/article/detail/'+ article.articleId)"
         >{{article.title}}</div>
         <div>
-          <demo-tag v-for="(tag,index) in tagArray" :key="index" random>{{tag}}</demo-tag>
+          <demo-tag v-for="(tag,index) in tagArray" :key="index" color="green">{{tag}}</demo-tag>
         </div>
       </div>
       <div class="content">{{article.content}}</div>

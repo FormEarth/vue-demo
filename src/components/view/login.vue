@@ -19,12 +19,19 @@
             :type="visibility ? 'text' : 'password'"
           ></mu-text-field>
         </mu-form-item>
-        <mu-form-item prop="remberMe" help-text="请勿在公用设备上勾选此选项" style="padding-left:16px;">
-          <mu-checkbox label="记住我" v-model="validateForm.remberMe"></mu-checkbox>
+        <mu-form-item prop="rememberMe" help-text="请勿在公用设备上勾选此选项" style="padding-left:16px;">
+          <mu-checkbox label="记住我" v-model="validateForm.rememberMe"></mu-checkbox>
         </mu-form-item>
         <div style="padding:0 15px;">
-          <mu-button full-width color="green500" v-loading="loading" :disabled=loading @click="submit"
-            data-mu-loading-size="24" data-mu-loading-overlay-color="white" data-mu-loading-text="正在登录……">
+          <mu-button
+            full-width
+            color="green500"
+            v-loading="loading"
+            :disabled="loading"
+            @click="submit"
+            data-mu-loading-size="24"
+            data-mu-loading-overlay-color="white"
+          >
             登录
             <mu-icon right value="send"></mu-icon>
           </mu-button>
@@ -97,7 +104,7 @@ export default {
       validateForm: {
         account: "",
         password: "",
-        remberMe: false
+        rememberMe: false
       },
       wechat_png: require("@/assets/images/wechat.png"),
       qq_png: require("@/assets/images/instagram.png"),
@@ -120,34 +127,45 @@ export default {
     //登录点击事件
     submit() {
       this.$refs.form.validate().then(result => {
-        if (!result) return
-        this.loading = true
-        this.$http.user.userLogin(this.validateForm)
+        if (!result) return;
+        this.loading = true;
+        this.$http.user
+          .userLogin(this.validateForm)
           .then(response => {
-            const user = response.data.data.current_user_data;
-            //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
-            sessionStorage.setItem("current_user", JSON.stringify(user));
-            this.$store.commit("save_user", user);
-            this.loading = false
-            if(this.$route.query.isRequest){
-              this.$router.go(-1)
-            }else{
-              if (this.$route.query.redirect) {
-              //如果存在参数
-              let redirect = this.$route.query.redirect;
-              this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
-            } else {
-              this.$router.replace("/mine"); //否则跳转至我的首页
+            if (response.data.code == "2000") {
+              let user = response.data.data.current_user_data;
+              //用户关注、喜欢、收藏列表
+              user.user_watch_list = response.data.data.user_watch_list;
+              user.user_like_list = response.data.data.user_like_list;
+              user.user_keep_list = response.data.data.user_keep_list;
+              //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
+              sessionStorage.setItem("current_user", JSON.stringify(user));
+              sessionStorage.setItem("Authorization-Sessionid", response.data.data.AuthorizationSessionId);
+              if(this.validateForm.rememberMe){
+                localStorage.setItem("Authorization-Sessionid", response.data.data.AuthorizationSessionId);
+              }
+              this.$store.commit("save_user", user);
+              if (this.$route.query.isRequest) {
+                this.$router.go(-1);
+              } else {
+                if (this.$route.query.redirect) {
+                  //如果存在参数
+                  let redirect = this.$route.query.redirect;
+                  this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
+                } else {
+                  this.$router.replace("/mine"); //否则跳转至我的首页
+                }
+              }
+              //取值的时候也要注意字符串转对象
+              console.log(JSON.parse(sessionStorage.getItem("current_user")));
+              console.log("Authorization-Sessionid:"+localStorage.getItem("Authorization-Sessionid"));
             }
-            }
-            
-            //取值的时候也要注意字符串转对象
-            console.log(JSON.parse(sessionStorage.getItem("current_user")));
+            this.loading = false;
           })
           .catch(error => {
-             this.loading = false
+            this.loading = false;
             console.log("出错了！");
-            console.log(error.response);
+            console.log(error);
           });
       });
     },
@@ -156,7 +174,7 @@ export default {
       this.validateForm = {
         account: "",
         password: "",
-        remberMeffalse: false
+        rememberMe: false
       };
     },
     openSimpleDialog() {
@@ -171,7 +189,7 @@ export default {
 
 <style scoped>
 a {
-  color: blue;
+  color: #2196f3;
 }
 .demo-container {
   width: 100%;
@@ -203,7 +221,7 @@ a {
   width: 25px;
   height: 25px;
 }
-/* 宽度在800px以上应用的css */
+/* 宽度在800px以上 */
 @media screen and (min-width: 800px) {
   .demo-container {
     padding-top: 50px;
@@ -216,7 +234,7 @@ a {
     display: none;
   }
 }
-/* 宽度在600px~800px应用的css */
+/* 宽度在600px~800px */
 @media screen and (min-width: 600px) and (max-width: 800px) {
   .demo-container {
     padding-top: 50px;
@@ -226,7 +244,7 @@ a {
     margin: 0 5%;
   }
 }
-/* 宽度在300px~640px应用的css */
+/* 宽度在300px~640px */
 @media screen and (min-width: 300px) and (max-width: 600px) {
   .demo-container {
     padding-top: 20px;

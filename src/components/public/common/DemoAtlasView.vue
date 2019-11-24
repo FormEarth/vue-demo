@@ -15,10 +15,10 @@
       <div
         v-for="(image,index) in images"
         :key="index"
-        :class="['each-item-'+index,'default-item',forbidOversize?'max-height':'']"
+        :class="['each-item-'+index,'default-item']"
         @click="current=index;showPreview=true;"
       >
-        <img v-lazy="image" />
+        <img v-lazy="image" :class="forbidOversize?'max-height':''"/>
       </div>
       <van-image-preview v-model="showPreview" :images="images"	:loop="false" :start-position="current"	:closeOnPopstate="true" @change="onChange">
         <template v-slot:index>第{{ current }}页</template>
@@ -92,7 +92,7 @@ export default {
 .default-item {
   width: 33.3%;
   height: 33.3vw;
-  /* max-height: 166.5px; */
+  max-height: 166.5px;
   min-height: 116.5px;
   padding-right: 3px;
   margin-bottom: 3px;
@@ -110,19 +110,18 @@ img {
   /* padding-right: 3px; */
 }
 /* 一张图片 */
-.image-item-1 {
-}
 .image-item-1 .each-item-0 {
   /* width: 100%; */
   width: 100%;
   height: 100%;
-  /* max-height: 100%; */
-  background-color: rgb(26, 24, 24);
-  text-align: center;
+  max-height: 100%;
+  /* background-color: rgb(26, 24, 24); */
+  /* text-align: center; */
   padding-right: 0;
 }
 .image-item-1 img {
   width: 100%;
+  /* height: 100%; */
   max-width: 100%;
   /* max-height: 100%; */
   object-fit: contain;
@@ -154,6 +153,7 @@ img {
 .image-item-3 .each-item-0 {
   width: 100%;
   height: 50vw;
+  max-height: 300px;
   padding-right: 0;
 }
 .image-item-3 .each-item-1 {
@@ -227,26 +227,13 @@ img {
   min-height: 175px;
   padding-right: 0;
 }
-.image-item-5 .each-item-2 {
-}
-.image-item-5 .each-item-3 {
-}
 .image-item-5 .each-item-4 {
   padding-right: 0;
 }
-/* .image-item-5 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-/* .image-item-6 {
-  overflow: hidden;
-  margin-bottom: 3px;
-} */
 .image-item-6 .each-item-0 {
   width: 100%;
   height: 40.3vw;
-  max-height: 166.5px;
+  max-height: 250px;
   min-height: 116.5px;
   padding-right: 0;
 }
@@ -263,23 +250,9 @@ img {
   min-height: 175px;
   padding-right: 0;
 }
-.image-item-6 .each-item-3 {
-}
-.image-item-6 .each-item-4 {
-}
 .image-item-6 .each-item-5 {
   padding-right: 0;
 }
-/* .image-item-6 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-/* .image-item-7 {
-  overflow: hidden;
-  width: 100%;
-  margin-bottom: 3px;
-} */
 .image-item-7 .each-item-0 {
   width: 100%;
   height: 40.3vw;
@@ -287,30 +260,12 @@ img {
   min-height: 116.5px;
   padding-right: 0;
 }
-.image-item-7 .each-item-1 {
-}
-.image-item-7 .each-item-2 {
-}
 .image-item-7 .each-item-3 {
   padding-right: 0;
-}
-.image-item-7 .each-item-4 {
-}
-.image-item-7 .each-item-5 {
 }
 .image-item-7 .each-item-6 {
   padding-right: 0;
 }
-/* .image-item-7 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-/* .image-item-8 {
-  overflow: hidden;
-  width: 100%;
-  margin-bottom: 3px;
-} */
 .image-item-8 .each-item-0 {
   width: 50%;
   height: 50vw;
@@ -324,18 +279,19 @@ img {
   min-height: 175px;
   padding-right: 0;
 }
-.image-item-8 .each-item-2 {
-}
-.image-item-8 .each-item-3 {
-}
 .image-item-8 .each-item-4 {
   padding-right: 0;
 }
-.image-item-8 .each-item-5 {
-}
-.image-item-8 .each-item-6 {
-}
 .image-item-8 .each-item-7 {
+  padding-right: 0;
+}
+.image-item-9 .each-item-2 {
+  padding-right: 0;
+}
+.image-item-9 .each-item-5 {
+  padding-right: 0;
+}
+.image-item-9 .each-item-8 {
   padding-right: 0;
 }
 </style>

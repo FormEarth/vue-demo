@@ -28,46 +28,32 @@
         <div style="width:30%;margin-top:6px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
       <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
-      <!-- <div v-if="atlas.identical">
-        <van-swipe @change="onChange" :loop="false">
-          <van-swipe-item v-for="(image, index) in atlas.atlasPictures" :key="index">
-            <img :src="image" :onerror="defaultImg" />
-          </van-swipe-item>
-          <div
-            class="custom-indicator"
-            slot="indicator"
-          >{{ current + 1 }}/{{atlas.atlasPictures.length}}</div>
-        </van-swipe>
+      <div v-if="atlas.atlasPictures.length>0" style="padding:0 10px;">
+        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
       </div>
-      <div class="img-container" v-else>
-        <div class="img-item" v-for="(image, index) in atlas.atlasPictures" :key="index">
-          <img :src="image" @click="showImagePreview(index)" :onerror="defaultImg" />
-        </div>
-      </div>-->
-      <div style="padding:0 10px;">
-        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId">{{tag.tagText}}</demo-tag>
+      <div style="white-space: pre-wrap;padding:0 5px;">
+        <span v-html="atlas.atlasContent"></span>
+        <demo-tag
+          v-show="atlas.atlasPictures.length==0"
+          v-for="tag in atlas.atlasTags"
+          :key="tag.tagId"
+          simple
+        >{{tag.tagText}}</demo-tag>
       </div>
-      <mu-card-text style="white-space: pre-wrap;">{{atlas.atlasContent}}</mu-card-text>
-      <div style="padding-left:10px;font-size:12px;">
+      <div style="margin-top:5px;padding-left:10px;font-size:12px;color:gray;">
         发布于&nbsp;{{atlas.sendTime}}&nbsp;
         <mu-icon value="place" size="16"></mu-icon>上海 浦东
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
-        <mu-badge content="12" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_up"></mu-icon>
           </mu-button>
-        </mu-badge>
-        <mu-badge content="0" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="thumb_down"></mu-icon>
           </mu-button>
-        </mu-badge>
-        <mu-badge content="1" circle class="demo-icon-badge">
           <mu-button icon>
             <mu-icon value="favorite"></mu-icon>
           </mu-button>
-        </mu-badge>
       </div>
       <!-- <mu-divider></mu-divider> -->
       <div v-if="!atlas.comment" style="text-align:center;font-size:16px;padding-top:5px;">
@@ -179,7 +165,7 @@ export default {
       this.current = index;
     },
     goInfo() {
-      this.$router.push("/mine/info");
+      this.$router.push("/" + this.atlas.user.userId + "/homepage");
     },
     showImagePreview(position) {
       const images = this.atlas.atlasPictures;
@@ -207,21 +193,6 @@ export default {
 }
 .mu-card-actions {
   padding-top: 18px;
-}
-.badge-list-wrap {
-  width: 100%;
-  max-width: 360px;
-  background-color: #fff;
-  margin: 0 auto;
-}
-.demo-icon-badge {
-  padding: 0px 15px 0px 15px;
-  margin: 0px 16px 0px 16px;
-}
-.demo-badge-content {
-  padding: 12px;
-  margin-left: 16px;
-  margin-right: 16px;
 }
 .custom-indicator {
   position: absolute;
@@ -255,9 +226,9 @@ export default {
   object-fit: cover;
 }
 @media screen and (min-width: 800px) {
-  .container {
+  /* .container {
     padding: 0 10%;
-  }
+  } */
 }
 /* 1 3 1 1 3 1 1 3 1 */
 /* 1 2 2 1 */

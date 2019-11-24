@@ -24,7 +24,9 @@
     >
       <mu-bottom-nav-item value="homePage" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="atlasList" title="图集" icon="burst_mode" replace to="/atlas"></mu-bottom-nav-item>
-      <div class="mu-bottom-item"><native-add-button></native-add-button></div>
+      <div class="mu-bottom-item">
+        <native-add-button></native-add-button>
+      </div>
       <mu-bottom-nav-item value="star" title="收藏" icon="star" replace to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
     </mu-bottom-nav>
@@ -32,7 +34,7 @@
 </template>
 
 <script>
-import NativeAddButton from "@/components/public/NativeAddButton"
+import NativeAddButton from "@/components/public/NativeAddButton";
 export default {
   name: "App",
   data() {
@@ -43,14 +45,45 @@ export default {
     showBottomNav: function() {
       const name = this.$route.name;
       console.log("name:" + name, "nav:" + this.$route.meta.nav);
-      if (name == "homePage" || name == "atlasList" || name == "mine"|| name == "star") {
+      if (
+        name == "homePage" ||
+        name == "atlasList" ||
+        name == "mine" ||
+        name == "star"
+      ) {
         return true;
       } else {
         return false;
       }
     }
   },
-  components:{
+  created() {
+    if (!this.$store.getters.isLogin) {
+      //sessionStorge中也没有用户，查看是否有记住密码记录
+      let authorization = localStorage.getItem("Authorization-Sessionid");
+      //有上次记住密码的sessionId时自动登录
+      let isLoginAutomatic = false;
+      if (authorization) {
+        sessionStorage.setItem("Authorization-Sessionid", authorization);
+        this.$http.user.userAutoLogin({}).then(response => {
+          if (response.data.code == "2000") {
+            let user = response.data.data.current_user_data;
+            //用户关注、喜欢、收藏列表
+            user.user_watch_list = response.data.data.user_watch_list;
+            user.user_like_list = response.data.data.user_like_list;
+            user.user_keep_list = response.data.data.user_keep_list;
+            //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
+            sessionStorage.setItem("current_user", JSON.stringify(user));
+            this.$store.commit("save_user", user);
+            isLoginAutomatic = true;
+          }else{
+            this.$router.push({ path: "/login", redirect: this.$route.fullPath });
+          }
+        });
+      }
+    }
+  },
+  components: {
     NativeAddButton
   }
 };

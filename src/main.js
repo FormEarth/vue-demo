@@ -8,27 +8,27 @@ import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui-loading/dist/muse-ui-loading.css'; // load css
 import Loading from 'muse-ui-loading';
-import mavonEditor from 'mavon-editor';
-import 'mavon-editor/dist/css/index.css';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import api from './axios/api'
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
 //import "@/mock/mock.js"; //引入mock
 // 引入mockjs
 //require('@/mock/mock.js')
 import VueLazyload from 'vue-lazyload'//图片懒加载
 import '@vant/touch-emulator';//vant适配PC端
 
-Vue.use(VueLazyload,{
+Vue.use(VueLazyload, {
   error: require('@/assets/broken_image.jpg'),
-  // loading: 'dist/loading.gif',
-  })
+  loading: require('@/assets/images/loading.gif'),
+})
+Vue.use(mavonEditor)
 Vue.use(MuseUI);
 //加载状态组件
 Vue.use(Loading);
-Vue.use(mavonEditor);
 Vue.use(Vant);
-Vue.prototype.$http=api
+Vue.prototype.$http = api
 Vue.config.productionTip = false
 //是否启用debug
 Vue.config.devtools = true
@@ -37,9 +37,9 @@ Vue.config.devtools = true
 //参数，指定获取哪个文件夹，是否遍历子文件夹，指定获取哪些文件
 const componentsContext = require.context('./components/public/common', false, /\.vue$/)
 componentsContext.keys().forEach(component => {
-    // 获取文件中的 default 模块
-    const componentConfig = componentsContext(component).default
-    Vue.component(componentConfig.name, componentConfig)
+  // 获取文件中的 default 模块
+  const componentConfig = componentsContext(component).default
+  Vue.component(componentConfig.name, componentConfig)
 })
 
 new Vue({

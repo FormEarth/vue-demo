@@ -120,6 +120,7 @@ export default {
       }
     },
     modifyUserInfo() {
+      console.log("sessionStorage:"+sessionStorage.getItem("Authorization-Sessionid"))
       var map = {};
       map[this.type] = this.modifyValue;
       map["userId"] = this.user.userId;
@@ -153,8 +154,8 @@ export default {
   padding-top: 10px;
 }
 @media screen and (min-width: 800px) {
-  .detail-content {
+  /* .detail-content {
     padding: 10px 10%;
-  }
+  } */
 }
 </style>

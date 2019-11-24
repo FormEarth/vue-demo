@@ -8,7 +8,7 @@
             style="cursor: pointer;"
             @click="$router.push('/'+atlas.user.userId+'/homepage')"
           >
-            <img v-lazy="atlas.user.avatar" :onerror="defaultImg" />
+            <img v-lazy="atlas.user.avatar" />
           </div>
           <div class="header-center">
             <div style="height:23px;font-size:16px;line-height:15px;padding-top:5px;">
@@ -27,12 +27,18 @@
       </div>
       <mu-divider></mu-divider>
       <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical" forbidOversize></demo-atlas-view>
-      <div>
-        <demo-tag v-if="atlas.personal" color="red">仅自己可见</demo-tag>
-        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId">{{tag.tagText}}</demo-tag>
+      <div v-if="atlas.atlasPictures.length>0">
+        <demo-tag v-if="atlas.personal" color="red" small>仅自己可见</demo-tag>
+        <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
       </div>
       <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
         <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.atlasContent"></span>
+        <demo-tag
+          v-show="atlas.atlasPictures.length==0"
+          v-for="tag in atlas.atlasTags"
+          :key="tag.tagId"
+          simple
+        >{{tag.tagText}}</demo-tag>
       </div>
       <div v-if="showButton">
         <div class="show" @click="handleFold" v-show="fold==2">展开更多</div>
@@ -40,16 +46,26 @@
       </div>
       <!-- <div style="font-size:12px;">123条评论</div> -->
       <div class="atlas-item-footer">
-        <div class="footer-left" style="width:100%;">
-          <mu-icon value="favorite_border" size="25"></mu-icon>
-          <mu-icon value="turned_in_not" size="25"></mu-icon>
-          <mu-icon value="chat_bubble_outline" size="25"></mu-icon>
+        <div
+          class="footer-left"
+          style="font-size:12px;width:100%;margin-top:4px;margin-right:3px;"
+        >123&nbsp;次喜欢</div>
+        <div style="width:100%;text-align:right;">
+          <mu-icon
+            :value="isLiked?'favorite':'favorite_border'"
+            :color="isLiked?'red700':''"
+            size="25"
+            @click="toggleLike"
+          ></mu-icon>&nbsp;
+          <mu-icon
+            :value="isKeeped?'beenhere':'turned_in_not'"
+            :color="isKeeped?'green':''"
+            size="25"
+            @click="toggleKeep"
+          ></mu-icon>&nbsp;
+          <mu-icon value="dvr" size="25"></mu-icon>&nbsp;
           <mu-icon value="open_in_new" size="25"></mu-icon>
         </div>
-        <div
-          class="footer-right"
-          style="width:100%;text-align:right;margin-top:3px;margin-right:3px;"
-        >123&nbsp;次喜欢</div>
       </div>
     </div>
     <mu-dialog
@@ -183,18 +199,32 @@ export default {
     };
   },
   computed: {
-    // 根据文本长度决定是否展示更多与收起按钮
-    //TODO 这里不严谨，不应该根据长度来判断，40在手机端会溢出，在PC端就不会溢出
-    // showButton: function() {
-    //   // let height= this.$refs.contentText;
-    //   // let height=  window.getComputedStyle(this.$refs.contentText).height;
-    //   // let width=  window.getComputedStyle(this.$refs.contentText1).width;
-    //   // console.log("content-text的高度："+height)
-    //   // console.log("content-text的高度："+width)
-    //   //44.8是两行的高度
-    //   // return height > 44.8 ? true : false;
-    //   return true
-    // },
+    //是否已喜欢
+    isLiked() {
+      if (this.$store.getters.isLogin) {
+        if (
+          this.$store.state.current_user.user_like_list.includes(
+            this.atlas.atlasId
+          )
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
+    //是否已收藏
+    isKeeped() {
+      if (this.$store.getters.isLogin) {
+        if (
+          this.$store.state.current_user.user_keep_list.includes(
+            this.atlas.atlasId
+          )
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
@@ -229,10 +259,130 @@ export default {
     test() {
       alert(width);
     },
-    // goArticle(id) {
-    //   var url = "/home/article/detail/" + id;
-    //   this.$router.push(url);
-    // },
+    //切换喜欢与取消喜欢
+    toggleLike() {
+      if (this.isLiked) {
+        //移除喜欢
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "正在移除……"
+        });
+        this.$http.user
+          .userRemoveCollection({
+            collectionType: "ATLAS_LIKE",
+            collectionId: this.atlas.atlasId
+          })
+          .then(response => {
+            if (response.data.code == "2000") {
+              this.$toast.clear();
+              this.$store.commit("remove_like_list", this.atlas.atlasId);
+              //保存数据到sessionStorage
+              sessionStorage.setItem(
+                "current_user",
+                JSON.stringify(this.$store.state.current_user)
+              );
+              this.$toast("已移除喜欢");
+            } else {
+              this.$toast.clear();
+            }
+          })
+          .catch(error => {
+            this.$toast.clear();
+          });
+      } else {
+        //添加喜欢
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "正在添加……"
+        });
+        this.$http.user
+          .userAddCollection({
+            collectionType: "ATLAS_LIKE",
+            collectionId: this.atlas.atlasId
+          })
+          .then(response => {
+            if (response.data.code == "2000") {
+              this.$toast.clear();
+              this.$store.commit("add_like_list", this.atlas.atlasId);
+              //保存数据到sessionStorage
+              sessionStorage.setItem(
+                "current_user",
+                JSON.stringify(this.$store.state.current_user)
+              );
+              this.$toast("已添加喜欢");
+            } else {
+              this.$toast.clear();
+            }
+          })
+          .catch(error => {
+            this.$toast.clear();
+          });
+      }
+    },
+    //切换收藏与取消收藏
+    toggleKeep() {
+      if (this.isKeeped) {
+        //移除收藏
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "正在移除……"
+        });
+        this.$http.user
+          .userRemoveCollection({
+            collectionType: "ATLAS_KEEP",
+            collectionId: this.atlas.atlasId
+          })
+          .then(response => {
+            if (response.data.code == "2000") {
+              this.$toast.clear();
+              this.$store.commit("remove_keep_list", this.atlas.atlasId);
+              //保存数据到sessionStorage
+              sessionStorage.setItem(
+                "current_user",
+                JSON.stringify(this.$store.state.current_user)
+              );
+              this.$toast("已移除收藏");
+            } else {
+              this.$toast.clear();
+            }
+          })
+          .catch(error => {
+            this.$toast.clear();
+          });
+      } else {
+        //添加喜欢
+        this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "正在添加……"
+        });
+        this.$http.user
+          .userAddCollection({
+            collectionType: "ATLAS_KEEP",
+            collectionId: this.atlas.atlasId
+          })
+          .then(response => {
+            if (response.data.code == "2000") {
+              this.$toast.clear();
+              this.$store.commit("add_keep_list", this.atlas.atlasId);
+              //保存数据到sessionStorage
+              sessionStorage.setItem(
+                "current_user",
+                JSON.stringify(this.$store.state.current_user)
+              );
+              this.$toast("已添加收藏");
+            } else {
+              this.$toast.clear();
+            }
+          })
+          .catch(error => {
+            this.$toast.clear();
+          });
+      }
+    },
     goInfo() {
       this.$router.push("/mine/info");
     },
@@ -334,6 +484,7 @@ export default {
   -webkit-line-clamp: 100;
   /* margin: 10px 0 10px 0; */
   font-size: 15px;
+  padding: 0 2px;
 }
 .show {
   font-size: 13px;

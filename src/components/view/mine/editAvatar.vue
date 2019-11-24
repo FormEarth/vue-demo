@@ -1,33 +1,32 @@
 <template>
   <mu-container class="main-content">
-    <img class="original-avatar" :src="$store.state.current_user.avatar" width="100%" />
+    <img
+      v-if="$route.name=='personalAvataredit'"
+      class="original-avatar"
+      :src="$store.state.current_user.avatar"
+      width="100%"
+    />
+    <img v-else class="original-avatar" :src="$store.state.current_user.frontCover" width="100%" />
     <div style="width:100%;margin-top:10px;">
-      <!-- <mu-button full-width>选择图片</mu-button> -->
-      <!-- <label
-        for="uploads"
-        style="display:inline-block;width: 70px;padding: 0;text-align: center;line-height: 28px;"
-      >选择图片</label>
-      <input
-        type="file"
-        id="uploads"
-        :value="imgFile"
-        accept="image/png, image/jpeg, image/gif, image/jpg"
-        @change="uploadImg($event, 1)"
-      />-->
-      <!-- <label for="upload" class="ui-upload">upload</label>
-  <input type="file" id="upload" style="display: none;" /> -->
       <label class="ui-upload">
-        选择新的头像
+        {{$route.name=='personalAvataredit'?'选择新的头像':'选择新的封面'}}
         <input
           type="file"
-          @change="uploadImg($event, 1)"
           :value="imgFile"
           accept="image/png, image/jpeg, image/gif, image/jpg"
+          @change="selectLocalFile($event, 1)"
           style="display: none;"
         />
       </label>
     </div>
-    <mu-dialog width="360" :padding="0" transition="slide-bottom" fullscreen scrollable :open.sync="openFullscreen">
+    <mu-dialog
+      width="360"
+      :padding="0"
+      transition="slide-bottom"
+      fullscreen
+      scrollable
+      :open.sync="openFullscreen"
+    >
       <mu-appbar color="primary" title="图片裁剪">
         <mu-button slot="left" icon @click="closeFullscreenDialog">
           <mu-icon value="close"></mu-icon>
@@ -43,35 +42,45 @@
           :canScale="false"
           centerBox
           fixed
-          :fixedNumber="[1,1]"
-        ></vueCropper>    
+          :fixedNumber="fixedNumber"
+        ></vueCropper>
       </div>
       <div style="margin:10px 20px;">
-          <mu-button full-width @click="finish('blob')">上传</mu-button>
+        <mu-button full-width @click="uploadImage">上传</mu-button>
       </div>
       <div style="margin:10px 20px;">
-          <mu-button full-width @click="closeFullscreenDialog">取消</mu-button>
+        <mu-button full-width @click="closeFullscreenDialog">取消</mu-button>
       </div>
     </mu-dialog>
   </mu-container>
 </template>
 
 <script>
+//图片裁剪插件
 import { VueCropper } from "vue-cropper";
-import { Toast } from "vant";
+// import { Toast } from "vant";
 export default {
   name: "EditAvatar",
   data() {
     return {
       openFullscreen: false,
-      image: "",
+      // image: "",
       imgFile: "",
       fileName: "",
       option: {
         img: "",
-        fixedNumber: [1, 1]
+        // fixedNumber: [1, 1]
       }
     };
+  },
+  computed:{
+    fixedNumber(){
+      if(this.$route.name=="frontcoverEdit"){
+        return [4,3]
+      }else{
+        return [1,1]
+      }
+    }
   },
   components: {
     VueCropper
@@ -79,16 +88,18 @@ export default {
   methods: {
     closeFullscreenDialog() {
       this.openFullscreen = false;
+      this.imgFile = "";
+      this.option.img = "";
     },
     //选择本地图片
-    uploadImg(e, num) {
-      console.log("uploadImg");
+    selectLocalFile(e, num) {
       var _this = this;
       //上传图片
       var file = e.target.files[0];
       _this.fileName = file.name;
-      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-        alert("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
+      if (!/\.(jpg|jpeg|png|JPEG|JPG|PNG)$/.test(e.target.value)) {
+        // alert("图片类型必须是jpeg,jpg,png中的一种");
+        this.$toast("图片类型必须是jpeg,jpg,png中的一种");
         return false;
       }
       var reader = new FileReader();
@@ -111,38 +122,37 @@ export default {
       // 转化为blob
       reader.readAsArrayBuffer(file);
       this.openFullscreen = true;
-      console.log("uploadImgEnd");
     },
     //上传图片（点击上传按钮）
-    finish(type) {
-      console.log("finish");
+    uploadImage() {
       let _this = this;
       let formData = new FormData();
+      let type = (this.$route.name == "personalAvataredit" ? "AVATAR" : "FRONTCOVER");
       // 输出
-      if (type === "blob") {
-        this.$refs.cropper.getCropBlob(data => {
-          //   let img = window.URL.createObjectURL(data);
-          //   this.model = true;
-          //   this.modelSrc = img;
-          formData.append("image", data, this.fileName);
-          _this.$http.user.modifyOwnAvatar(formData).then(response => {
+      this.$refs.cropper.getCropBlob(data => {
+        formData.append("image", data, this.fileName);
+        formData.append("type", type);
+        _this.$http.user
+          .modifyOwnAvatar(formData)
+          .then(response => {
             if (response.data.code == "2000") {
               //更新用户信息
               var user = _this.$store.state.current_user;
-              user.avatar = response.data.data.imageURL;
+              if (this.$route.name == "personalAvataredit") {
+                user.avatar = response.data.data.relativePath;
+              } else {
+                user.frontCover = response.data.data.relativePath;
+              }
               sessionStorage.setItem("current_user", JSON.stringify(user));
               _this.$store.commit("save_user", user);
               // 轻提示弹框
-              Toast({
-                message: "上传成功",
-                duration: 2000,
-                forbidClick: true
-              });
+              _this.$toast("上传成功");
               _this.$router.back(-1);
+            } else {
             }
-          });
-        });
-      }
+          })
+          .catch(error => {});
+      });
     }
   }
 };
@@ -174,9 +184,9 @@ export default {
   /* margin-left: 20px; */
 }
 @media screen and (min-width: 800px) {
-  .main-content {
+  /* .main-content {
     padding: 10px 10%;
-  }
+  } */
   .original-avatar {
     width: 30%;
   }

@@ -78,9 +78,9 @@
           </div>
           <div>
             <mu-button
+              color="info"
               small
               flat
-              color="info"
               :disabled="atlas.atlasTags.length>=10"
               @click="addAtlasTags({tagId:-1,tagText:searchText})"
             >添加新标签</mu-button>
@@ -131,11 +131,11 @@
       <mu-button
         color="info"
         full-width
-        :disabled="atlas.images.length<1"
+        :disabled="atlas.images.length<1&&atlas.atlasContent.length<1"
         @click="createNewatlas"
       >发布</mu-button>
       <p class="img-title" style="color:#666666;">
-        最多可以上传12张图片（允许的格式为jpg、png、jpeg、gif，单张不超过2M）
+        最多可以上传12张图片（允许的格式为jpg、png、jpeg、gif，单张不超过2M。除gif外的图片格式会被转换为jpg）
         <br />最多可选择或创建10个标签
         <br />若您的图片尺寸一致,将启用轮播图模式，否则将使用预览模式，了解更多请点击
         <a href>这里</a>
@@ -427,7 +427,7 @@ export default {
   color: white;
   position: absolute;
   top: 0;
-  right: 0px;
+  right: 0;
 }
 a {
   color: #2979ff;

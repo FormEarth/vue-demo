@@ -13,22 +13,22 @@
         <mu-form-item v-show="!emialOrPhone" prop="phone" :rules="phoneRules" icon="phone">
           <mu-text-field v-model="validateForm.phone" prop="phone" placeholder="您的手机号"></mu-text-field>
         </mu-form-item>
-        <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
+        <!-- <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
           <mu-text-field
             type="password"
             v-model="validateForm.password"
             prop="password"
             placeholder="密码"
           ></mu-text-field>
-        </mu-form-item>
-        <mu-form-item prop="repassword" :rules="repasswordRules" icon="vpn_key">
+        </mu-form-item> -->
+        <!-- <mu-form-item prop="repassword" :rules="repasswordRules" icon="vpn_key">
           <mu-text-field
             type="password"
             v-model="validateForm.repassword"
             prop="repassword"
             placeholder="再次输入密码"
           ></mu-text-field>
-        </mu-form-item>
+        </mu-form-item> -->
         <mu-form-item prop="password" :rules="passwordRules" icon="security">
           <mu-text-field
             type="password"
@@ -142,7 +142,7 @@ export default {
 </script>
 <style scoped>
 a {
-  color: blue;
+  color: #2196f3;
 }
 .register-container {
   width: 100%;
@@ -195,7 +195,7 @@ a {
 @media screen and (min-width: 300px) and (max-width: 600px) {
   .register-container {
     height: 100%;
-    padding-top: 20px;
+    padding-top: 80px;
   }
   .register-box {
     width: 100%;

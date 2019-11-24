@@ -23,7 +23,8 @@
         >
           <mu-list>
             <mu-sub-header>文章推荐</mu-sub-header>
-            <article-item v-for="article in articles" :key="article.articleId" :article="article"></article-item>
+            <!-- <article-item v-for="article in articles" :key="article.articleId" :article="article"></article-item> -->
+            <article-card-view v-for="article in articles" :key="article.articleId" :article="article"></article-card-view>
             <div v-if="loadedAll" style="text-align:center;">————没有更多惹╮(╯▽╰)╭————</div>
           </mu-list>
         </mu-load-more>
@@ -34,7 +35,7 @@
 </template>
 <script>
 import ArticleItem from "@/components/public/article/ArticleItem";
-
+import ArticleCardView from "@/components/public/article/ArticleCardView.vue"
 export default {
   name: "ArticleList",
   data() {
@@ -66,7 +67,8 @@ export default {
     }
   },
   components: {
-    "article-item": ArticleItem
+    ArticleItem,
+    ArticleCardView
   },
   methods: {
     change() {
@@ -142,7 +144,7 @@ export default {
 /* 大屏幕，宽度大于960px; */
 @media screen and (min-width: 800px) {
   .demo-container {
-    padding: 0 10%;
+    /* padding: 0 10%; */
   }
   .content {
     display: flex;

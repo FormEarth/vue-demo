@@ -33,8 +33,7 @@ const article = {
     uploadArticleImage(formdata) {
         return request.post(
             '/demo/api/image',
-            formdata,
-            { 'Content-Type': 'multipart/form-data' }
+            formdata
         );
     },
     //添加评论

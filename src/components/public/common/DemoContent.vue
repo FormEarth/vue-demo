@@ -54,6 +54,7 @@ export default {
     bottom: 0;
     right: 0;
     overflow-y: auto;
+    padding: 0 12%;
   }
   /*滚动条整体样式*/
   .right-panel::-webkit-scrollbar {
@@ -72,11 +73,11 @@ export default {
     border-radius: 10px;
     background: transparent;
   }
-  .link img:hover {
-    transform: scale(1.1); /* 元素放大1.4倍 */
-    transition: all 1s; /* 元素在0.5s内完成动画 */
+  /* .link img:hover {
+    transform: scale(1.1); 元素放大1.4倍
+    transition: all 1s; 元素在0.5s内完成动画
     cursor: pointer;
-  }
+  } */
 }
 /* 中等屏幕，宽度640px~960px; */
 @media screen and (min-width: 600px) and (max-width: 800px) {

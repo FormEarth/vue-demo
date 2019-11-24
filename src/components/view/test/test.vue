@@ -57,7 +57,7 @@
     <div style="width:30%;position:fixed;" >123</div>
     <div style="width:70%;position:fixed;right:0;top:75px;bottom:0;overflow-y: auto;">123</div>
   </div>-->
-  <div style="padding:20px;">
+  <div class="root">
     <div class="test-shadow">
       <div
         class="text-ellipsis"
@@ -71,7 +71,7 @@
     </div>
     <div style="with:100%;background-color:green;padding:10px;">
       <img
-        src="http://192.168.149.110:9090/static/upload/images/thumbnail/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
+        src="http://192.168.2.105:9090/static/thumbnail/atlas/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
         style="max-width:100%;max-height:300px;vertical-align: middle;"
       />
     </div>
@@ -80,15 +80,15 @@
         <div class="footer">
           <div style="display:flex;justify-content: space-around;">
             <div>
-                <mu-icon value="post_add" color="red700"></mu-icon>
+              <mu-icon value="post_add" color="red700"></mu-icon>
               <p>发布长文</p>
             </div>
             <div>
-                <mu-icon value="burst_mode" color="Green"></mu-icon>
+              <mu-icon value="burst_mode" color="Green"></mu-icon>
               <p>发布图集</p>
             </div>
             <div>
-                <mu-icon value="notes" color="Orange"></mu-icon>
+              <mu-icon value="notes" color="Orange"></mu-icon>
               <p>发布动态</p>
             </div>
           </div>
@@ -99,9 +99,25 @@
     <mu-button fab @click="show=!show">
       <mu-icon value="add" size="38"></mu-icon>
     </mu-button>
+    <div style="width:100%;height:200px;border: 1px black solid;padding:10px;">
+      <div
+        style="width:100px;height:100px;border-radius:50%;background-color:gray;position:relative;"
+      >
+        <div
+          style="width:25px;height:25px;border-radius:50%;background-color:red;position:absolute;bottom:4px;right:4px;padding:3px 0 0 5px;"
+        >V8</div>
+      </div>
+    </div>
+    <div>
+      路末丶长安
+      <span class="level-block">Lv.3</span>
+    </div>
+    <!-- <article-card-view></article-card-view> -->
+    <div style="margin:20px;">123</div>
   </div>
 </template>
 <script>
+import ArticleCardView from "@/components/public/article/ArticleCardView.vue"
 export default {
   data() {
     return {
@@ -181,10 +197,27 @@ export default {
     // afterEnter(dom) {
     //   dom.classList.remove("list-enter-to", "list-enter-active");
     // }
+  },
+  components:{
+    ArticleCardView
   }
 };
 </script>
 <style scoped>
+.root {
+  background: #d9d9d9;
+}
+.level-block {
+  vertical-align: middle;
+  letter-spacing: 0.2em;
+  border-radius: 3px;
+  font-family: "Times New Roman";
+  margin-left: 0.25em;
+  padding: 0.1em;
+  font-size: 10px;
+  color: white;
+  background-color: hsl(240, 75%, 58%);
+}
 .blur-effect {
   position: fixed;
   left: 0;
@@ -246,9 +279,6 @@ export default {
 }
 .unfold {
   -webkit-line-clamp: 10;
-}
-div {
-  /* border: 1px red solid; */
 }
 html,
 .box-container {
