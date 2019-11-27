@@ -8,7 +8,7 @@
               <mu-icon value="post_add" color="red700"></mu-icon>
               <p>发布长文</p>
             </div>
-            <div @click="$router.push('/home/atlas/add');show=false;">
+            <div @click="$router.push('/atlas/add');show=false;">
               <mu-icon value="burst_mode" color="Green"></mu-icon>
               <p>发布图集</p>
             </div>

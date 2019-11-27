@@ -13,7 +13,27 @@
     </div>
   </div>
   <div v-else class="demo-container">
-    <mu-load-more
+    <van-list
+      v-model="loading"
+      :finished="loadedAll"
+      :immediate-check="false"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
+      finished-text="没有更多了"
+      @load="load"
+      style="background-color:rgba(128, 128, 128, 0.5);"
+    >
+      <mu-sub-header style="background-color: white">图集推荐</mu-sub-header>
+      <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
+        <atlas-item
+          style="margin-bottom:3px;"
+          :atlas="atlas"
+          :arrayIndex="index"
+          @remove="removeAtlasFromArray"
+        ></atlas-item>
+      </div>
+    </van-list>
+    <!-- <mu-load-more
       :loading="loading"
       :refreshing="refreshing"
       :loaded-all="loadedAll"
@@ -23,14 +43,16 @@
       <mu-list textline="three-line" dense style="background-color:rgba(128, 128, 128, 0.5);">
         <mu-sub-header style="background-color: white">图集推荐</mu-sub-header>
         <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
-          <atlas-item style="margin-bottom:3px;" :atlas="atlas" :arrayIndex="index" @remove="removeAtlasFromArray"></atlas-item>
+          <atlas-item
+            style="margin-bottom:3px;"
+            :atlas="atlas"
+            :arrayIndex="index"
+            @remove="removeAtlasFromArray"
+          ></atlas-item>
         </div>
       </mu-list>
-      <div
-        v-if="loadedAll"
-        style="text-align:center;"
-      >————没有更多惹╮(╯▽╰)╭————</div>
-    </mu-load-more>
+      <div v-if="loadedAll" style="text-align:center;">————没有更多惹╮(╯▽╰)╭————</div>
+    </mu-load-more>-->
   </div>
 </template>
 
@@ -38,10 +60,10 @@
 import AtlasItem from "@/components/public/AtlasItem.vue";
 export default {
   name: "AtlasList",
-  props:{
-    withUser:{
-      type:Boolean,
-      default:false
+  props: {
+    withUser: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -54,7 +76,8 @@ export default {
       atlases: [], //图集列表数据
       refreshTime: "", //初始化加载数据的时间，下次加载时上送
       initLoading: false, //初始化是否显示加载遮罩层
-      dataIsLoaded: false //初始化请求页面是否成功
+      dataIsLoaded: false, //初始化请求页面是否成功
+      error: false
     };
   },
   created() {
@@ -69,7 +92,11 @@ export default {
     loadInitData() {
       this.initLoading = true;
       this.$http.atlas
-        .queryAllAtlas(this.currentPage,this.withUser,this.$route.params.userId)
+        .queryAllAtlas(
+          this.currentPage,
+          this.withUser,
+          this.$route.params.userId
+        )
         .then(response => {
           if (response.data.code == "2000") {
             console.log(response.data);
@@ -127,10 +154,14 @@ export default {
       this.loading = true;
       //图集分页加载
       this.$http.atlas
-        .queryAllAtlas(this.currentPage,this.withUser,this.$route.params.userId)
+        .queryAllAtlas(
+          this.currentPage,
+          this.withUser,
+          this.$route.params.userId
+        )
         .then(response => {
           if (response.data.code == "2000") {
-            if(response.data.data.atlases.length==0){
+            if (response.data.data.atlases.length == 0) {
               this.loadedAll = true;
             }
             for (let i = 0; i < response.data.data.atlases.length; i++) {
@@ -140,15 +171,21 @@ export default {
               this.loadedAll = true;
             }
             this.loading = false;
+          } else {
+            this.loading = false;
+            this.error = true;
+            this.currentPage = this.currentPage - 1;
           }
         })
         .catch(error => {
           this.loading = false;
+          this.error = true;
+          this.currentPage = this.currentPage - 1;
         });
     },
     //将图集从数组中移除
     removeAtlasFromArray(index) {
-      console.log("移除了："+index)
+      console.log("移除了：" + index);
       this.atlases.splice(index, 1);
     }
   }

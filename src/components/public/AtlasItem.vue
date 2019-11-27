@@ -117,9 +117,10 @@
           <mu-list-item-title>举报</mu-list-item-title>
         </mu-list-item>
         <mu-list-item
-          button
-          :ripple="false"
           v-show="this.$store.state.current_user.userId==this.atlas.creater"
+          :ripple="false"
+          button
+          @click="openAlert=false;$router.push('/atlas/edit/'+atlas.atlasId)"
         >
           <mu-list-item-action>
             <mu-icon value="edit"></mu-icon>
@@ -127,9 +128,9 @@
           <mu-list-item-title>重新编辑</mu-list-item-title>
         </mu-list-item>
         <mu-list-item
-          button
-          :ripple="false"
           v-show="this.$store.state.current_user.userId==this.atlas.creater"
+          :ripple="false"
+          button
           @click="openAlert=false;showDialog=true;"
         >
           <mu-list-item-action>

@@ -13,7 +13,7 @@
           </mu-list>
           <div class="addButton">
             <mu-slide-left-transition>
-              <mu-button v-show="this.open" to="/home/atlas/add" style="margin-bottom:8px;">
+              <mu-button v-show="this.open" to="/atlas/add" style="margin-bottom:8px;">
                 发布图集
                 <!-- <mu-icon right value="edit" color="redA700"></mu-icon> -->
               </mu-button>

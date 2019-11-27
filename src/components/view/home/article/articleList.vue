@@ -15,19 +15,21 @@
   <mu-container class="demo-container" fluid v-else>
     <div class="detail-content">
       <div v-if="articles.length!=0">
-        <mu-load-more
-          :loading="loading"
-          :refreshing="refreshing"
-          :loaded-all="loadedAll"
+        <van-list
+          v-model="loading"
+          :finished="loadedAll"
+          :immediate-check="false"
+          :error.sync="error"
+          error-text="请求失败，点击重新加载"
+          finished-text="没有更多了"
           @load="getMoreArticleData"
         >
-          <mu-list>
-            <mu-sub-header>文章推荐</mu-sub-header>
-            <!-- <article-item v-for="article in articles" :key="article.articleId" :article="article"></article-item> -->
-            <article-card-view v-for="article in articles" :key="article.articleId" :article="article"></article-card-view>
-            <div v-if="loadedAll" style="text-align:center;">————没有更多惹╮(╯▽╰)╭————</div>
-          </mu-list>
-        </mu-load-more>
+          <article-card-view
+            v-for="article in articles"
+            :key="article.articleId"
+            :article="article"
+          ></article-card-view>
+        </van-list>
       </div>
       <div class="no-articles" v-else>空空如也……@￥%#</div>
     </div>
@@ -35,13 +37,12 @@
 </template>
 <script>
 import ArticleItem from "@/components/public/article/ArticleItem";
-import ArticleCardView from "@/components/public/article/ArticleCardView.vue"
+import ArticleCardView from "@/components/public/article/ArticleCardView.vue";
 export default {
   name: "ArticleList",
   data() {
     return {
       loading: false, //是否显示加载遮罩层
-      open: false, //写文章按钮是否展开,
       articles: [],
       total: 0, //数据总条数
       current: 1,
@@ -50,7 +51,8 @@ export default {
       loadedAll: false, //下拉加载数据时，数据是否已加载完毕
       loading: false, //上滑加载更多时是否在加载状态
       refreshing: false, //下拉更新时是否在加载状态
-      refreshTime: "" //每次更新数据时记录
+      refreshTime: "", //每次更新数据时记录
+      error: false
     };
   },
   created: function() {
@@ -71,9 +73,6 @@ export default {
     ArticleCardView
   },
   methods: {
-    change() {
-      this.open ? (this.open = false) : (this.open = true);
-    },
     //页面加载时显示的初始化数据
     getInitArticlesData() {
       this.initLoading = true;
@@ -86,7 +85,7 @@ export default {
             this.dataIsLoaded = true;
             this.initLoading = false;
             this.refreshTime = response.data.time;
-          }else{
+          } else {
             this.initLoading = false;
           }
         })
@@ -97,6 +96,7 @@ export default {
     //滑动到底部时加载更多数据
     getMoreArticleData() {
       this.current = this.current + 1;
+      console.log("当前加载文章页数：" + this.current);
       this.loading = true;
       this.$http.article
         .getHomePageArticles(this.current)
@@ -110,10 +110,16 @@ export default {
               this.loadedAll = true;
             }
             this.loading = false;
+          } else {
+            this.loading = false;
+            this.error = true;
+            this.current = this.current - 1;
           }
         })
         .catch(error => {
           this.loading = false;
+          this.error = true;
+          this.current = this.current - 1;
         });
     }
   }

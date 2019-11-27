@@ -3,9 +3,9 @@
     <div class="dynamic-imgs">
       <div>
         <div style="display:inline-block;">
-          <p class="img-title">添加图片({{atlas.images.length}}/12)</p>
+          <p class="img-title">添加图片({{atlas.atlasPictures.length}}/9)</p>
         </div>
-        <div v-show="atlas.images.length>1" style="display:inline-block;float:right;">
+        <div v-show="atlas.atlasPictures.length>1" style="display:inline-block;float:right;">
           <p class="delete-text" @click="deleteAll">全部删除</p>
         </div>
       </div>
@@ -13,11 +13,11 @@
       <!-- 清除浮动，否则float会对之后的布局产生影响 -->
       <div class="table-list">
         <!-- 显示图片 -->
-        <div class="img-div" v-for="(img,index) in atlas.images" :key="index">
+        <div class="img-div" v-for="(img,index) in atlas.atlasPictures" :key="index">
           <div class="delete">
             <mu-icon value="clear" color="white" size="20" @click="deleteImg(index)"></mu-icon>
           </div>
-          <img class="img-content" :src="getObjectURL(img)" />
+          <img class="img-content" :src="$route.name=='atlasEdit'?img:getObjectURL(img)" />
         </div>
         <!-- 这里就是那个加号图片，isAddImg控制是否显示 -->
         <div class="add-div" v-show="isAddImg">
@@ -40,7 +40,7 @@
       <mu-text-field
         v-model="atlas.atlasContent"
         :rows="2"
-        :rowsMax="10"
+        :rowsMax="20"
         max-length="255"
         full-width
         multi-line
@@ -48,9 +48,7 @@
         solo
       ></mu-text-field>
       <div v-if="atlas.atlasContent.length>=255" style="text-align:center;color:red;">字数已达上限</div>
-      <!-- <div v-else style="text-align:right;">{{atlas.atlasContent.length}}/255字</div> -->
     </div>
-    <!-- TODO mu-select在手机端表现很糟糕 -->
     <div class="dynamic-imgs">
       <p class="img-title">添加标签</p>
       <div>
@@ -129,13 +127,22 @@
     </div>
     <div class="dynamic-imgs">
       <mu-button
+        v-if="$route.name=='atlasEdit'"
         color="info"
         full-width
-        :disabled="atlas.images.length<1&&atlas.atlasContent.length<1"
+        :disabled="atlas.atlasPictures.length<1&&atlas.atlasContent.length<1"
+        @click="editAtlas"
+      >编辑完成</mu-button>
+      <mu-button
+        v-else
+        color="info"
+        full-width
+        :disabled="atlas.atlasPictures.length<1&&atlas.atlasContent.length<1"
         @click="createNewatlas"
       >发布</mu-button>
+
       <p class="img-title" style="color:#666666;">
-        最多可以上传12张图片（允许的格式为jpg、png、jpeg、gif，单张不超过2M。除gif外的图片格式会被转换为jpg）
+        最多可以上传9张图片（允许的格式为jpg、png、jpeg、gif，单张不超过5M。除gif外的图片格式会被转换为jpg）
         <br />最多可选择或创建10个标签
         <br />若您的图片尺寸一致,将启用轮播图模式，否则将使用预览模式，了解更多请点击
         <a href>这里</a>
@@ -171,7 +178,7 @@
 import util from "@/util/util";
 import { Toast } from "vant";
 export default {
-  name: "atlas-add",
+  name: "atlasAdd",
   data() {
     return {
       searchText: "", //tag搜素输入的内容
@@ -180,7 +187,7 @@ export default {
       autosize: { minheight: 50 },
       releaseSucessDialog: false, //发送弹框是否打开
       atlas: {
-        images: [], //存放添加图片
+        atlasPictures: [], //存放添加图片
         atlasContent: "",
         comment: true, //允许评论
         atlasTags: [],
@@ -194,12 +201,28 @@ export default {
     };
   },
   created() {
+    //初始化热门标签
     this.searchTagsWithText(true);
+    //若是编辑，加载指定编辑的内容
+    if (this.$route.name == "atlasEdit") {
+      this.$http.atlas
+        .queryAtlasById(this.$route.params.atlasId)
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.atlas = response.data.data.atlas;
+            if (this.atlas.atlasTags == null) {
+              this.atlas.atlasTags = [];
+            }
+          } else {
+          }
+        })
+        .catch(error => {});
+    }
   },
   computed: {
     isAddImg() {
-      //如果已经12张了，isAddImg为false，隐藏加号
-      if (this.atlas.images.length >= 12) {
+      //如果已经9张了，isAddImg为false，隐藏加号
+      if (this.atlas.atlasPictures.length >= 9) {
         return false;
       } else {
         return true;
@@ -216,7 +239,7 @@ export default {
       if (this.searchText) {
         this.timer = setTimeout(() => {
           this.searchTagsWithText(false);
-        }, 300);
+        }, 500);
         // util._debounce(this.searchTagsWithText(false), 3000);
       } else {
         // 输入框中的内容被删为空时触发，此时会展示页面初始化加载的搜索结果
@@ -226,7 +249,7 @@ export default {
     //点击列表中的某项后将该标签加入输入框
     addAtlasTags(tag) {
       console.log(tag.tagId);
-      this.atlas.atlasTags.push({tagId:tag.tagId,tagText:tag.tagText});
+      this.atlas.atlasTags.push({ tagId: tag.tagId, tagText: tag.tagText });
     },
     //将file对象转换成可本地预览的ObjectURL
     getObjectURL(file) {
@@ -245,17 +268,17 @@ export default {
     },
     addFile(event) {
       var fileList = event.target.files; // (利用console.log输出看file文件对象)
-      console.log(this.atlas.images.length + fileList.length);
+      console.log(this.atlas.atlasPictures.length + fileList.length);
       let allowNum = 0;
-      //最多只能选择12张，超出的不要了
-      if (this.atlas.images.length + fileList.length > 12) {
+      //最多只能选择9张，超出的不要了
+      if (this.atlas.atlasPictures.length + fileList.length > 9) {
         // 轻提示弹框
         Toast({
-          message: "最多可选择12张图片",
+          message: "最多可选择9张图片",
           duration: 2000,
           forbidClick: true
         });
-        allowNum = 12 - this.atlas.images.length;
+        allowNum = 9 - this.atlas.atlasPictures.length;
       } else {
         allowNum = fileList.length;
       }
@@ -283,33 +306,41 @@ export default {
         }
       }
       for (let i = 0; i < allowNum; i++) {
-        this.atlas.images.push(fileList[i]);
+        this.atlas.atlasPictures.push(fileList[i]);
       }
-      event.target.value="";//清空内容，解决无法二次上传同一文件问题
+      event.target.value = ""; //清空内容，解决无法二次上传同一文件问题
     },
     //删除图片
     deleteImg(index) {
-      this.atlas.images.splice(index, 1); //删除起始下标为index，长度为1的一个值
+      this.atlas.atlasPictures.splice(index, 1); //删除起始下标为index，长度为1的一个值
     },
     //删除全部
     deleteAll() {
-      this.atlas.images = [];
+      this.atlas.atlasPictures = [];
     },
-    //发布
+    //发布新图集
     createNewatlas() {
-      console.log("createNewatlas");
+      // 有图片上传，组装数据
       let formData = new FormData();
-      for (let i = 0; i < this.atlas.images.length; i++) {
-        formData.append("images", this.atlas.images[i]);
+      for (let i = 0; i < this.atlas.atlasPictures.length; i++) {
+        formData.append("images", this.atlas.atlasPictures[i]);
       }
       formData.append("atlasContent", this.atlas.atlasContent);
       formData.append("comment", this.atlas.comment);
       formData.append("personal", this.atlas.personal);
       for (let i = 0; i < this.atlas.atlasTags.length; i++) {
         // formData.append("atlasTags", this.atlas.atlasTags[i]);
-        formData.append("atlasTags["+i+"].tagId", this.atlas.atlasTags[i].tagId);
-        formData.append("atlasTags["+i+"].tagText", this.atlas.atlasTags[i].tagText);
+        formData.append(
+          "atlasTags[" + i + "].tagId",
+          this.atlas.atlasTags[i].tagId
+        );
+        formData.append(
+          "atlasTags[" + i + "].tagText",
+          this.atlas.atlasTags[i].tagText
+        );
       }
+      //组装数据结束
+
       this.releaseSucessDialog = true;
       this.$http.atlas
         .createNewAtlas(formData, this)
@@ -317,7 +348,7 @@ export default {
           if (response.data.code == "2000") {
             this.atlasId = response.data.data.id;
             this.isRecommend = true;
-          }else{
+          } else {
             this.releaseSucessDialog = false;
           }
         })
@@ -330,8 +361,8 @@ export default {
       this.releaseSucessDialog = false;
       //刷新当前页面
       //this.$router.go(0);
-      //清空数据
-      this.atlas.images = [];
+      //清空之前数据
+      this.atlas.atlasPictures = [];
       this.atlas.atlasContent = "";
       this.atlas.atlasTags = [];
       this.releaseSucessDialog = false;
@@ -355,6 +386,10 @@ export default {
           }
         })
         .catch(error => {});
+    },
+    //编辑图集
+    editAtlas(){
+      
     }
   }
 };
