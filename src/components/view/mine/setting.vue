@@ -13,6 +13,12 @@
           <mu-switch v-model="events" :ripple="false" readonly></mu-switch>
         </mu-list-item-action>
       </mu-list-item>
+      <mu-list-item button :ripple="false" @click="events = !events" color="primary">
+        <mu-list-item-title>保存位置信息</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-switch v-model="events" :ripple="false" readonly></mu-switch>
+        </mu-list-item-action>
+      </mu-list-item>
       <mu-list-item button :ripple="false" @click="calls = !calls">
         <mu-list-item-title>图片水印</mu-list-item-title>
         <mu-list-item-action>
@@ -80,7 +86,7 @@
     </mu-list>
     <mu-list>
       <mu-sub-header>其它</mu-sub-header>
-       <mu-list-item button :ripple="false" to="/mine/tag/add">
+      <mu-list-item button :ripple="false" to="/mine/tag/add">
         <mu-list-item-action>
           <mu-icon value="local_offer" color="info"></mu-icon>
         </mu-list-item-action>
@@ -157,5 +163,4 @@ export default {
 .mu-appbar {
   width: 100%;
 }
-
 </style>

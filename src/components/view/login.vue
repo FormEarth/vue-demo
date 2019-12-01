@@ -41,8 +41,8 @@
           登录
           <mu-icon right value="send"></mu-icon>
         </mu-button>-->
-        <hr />
-        <div style="text-align: center;color: grey;">——更多登录方式——</div>
+        <!-- <mu-divider></mu-divider> -->
+        <div style="text-align: center;color: grey;padding:4px 0">——更多登录方式——</div>
         <div class="login-otherway">
           <div class="otherway-item">
             <img :src="wechat_png" alt />
@@ -140,9 +140,15 @@ export default {
               user.user_keep_list = response.data.data.user_keep_list;
               //sessionStorage只能存储string类型，不能直接存对象，所以存的时候对象要转为字符串
               sessionStorage.setItem("current_user", JSON.stringify(user));
-              sessionStorage.setItem("Authorization-Sessionid", response.data.data.AuthorizationSessionId);
-              if(this.validateForm.rememberMe){
-                localStorage.setItem("Authorization-Sessionid", response.data.data.AuthorizationSessionId);
+              sessionStorage.setItem(
+                "Authorization-Sessionid",
+                response.data.data.AuthorizationSessionId
+              );
+              if (this.validateForm.rememberMe) {
+                localStorage.setItem(
+                  "Authorization-Sessionid",
+                  response.data.data.AuthorizationSessionId
+                );
               }
               this.$store.commit("save_user", user);
               if (this.$route.query.isRequest) {
@@ -158,7 +164,10 @@ export default {
               }
               //取值的时候也要注意字符串转对象
               console.log(JSON.parse(sessionStorage.getItem("current_user")));
-              console.log("Authorization-Sessionid:"+localStorage.getItem("Authorization-Sessionid"));
+              console.log(
+                "Authorization-Sessionid:" +
+                  localStorage.getItem("Authorization-Sessionid")
+              );
             }
             this.loading = false;
           })
@@ -229,6 +238,10 @@ a {
   .login-box {
     width: 40%;
     margin-left: 30%;
+    border-radius: 5px;
+  }
+  .mu-appbar {
+    border-radius: 5px;
   }
   .back-button {
     display: none;

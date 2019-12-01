@@ -49,7 +49,7 @@
           <div style="margin:20px 0 0px 0;letter-spacing:0.1em;">
             <div class="user-name">{{user.userName}}</div>
             <div>{{user.sign}}</div>
-            <div style="white-space: pre-wrap;">个人简介:{{user.personalProfile}}</div>
+            <div class="personal-profile">个人简介:{{user.personalProfile}}</div>
             <!-- <span style="white-space: pre-wrap;">{{user.personalProfile}}</span> -->
           </div>
           <div v-if="loginAndIsSelf">
@@ -312,5 +312,13 @@ export default {
   font-size: 16px;
   display: inline-block;
   margin-right: 10px;
+}
+.personal-profile {
+  white-space: pre-wrap;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

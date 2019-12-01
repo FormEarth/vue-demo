@@ -1,7 +1,7 @@
 <template>
   <mu-container>
     <mu-paper :z-depth="0" class="home-paper">
-      <mu-appbar color="primary">
+      <mu-appbar color="primary" z-depth=0>
         <mu-button icon slot="left">
           <mu-icon value="whatshot"></mu-icon>
         </mu-button>
@@ -9,31 +9,7 @@
           <mu-icon value="search"></mu-icon>
         </mu-button>
       </mu-appbar>
-      <mu-card style="width: 100%; margin: 0 auto;">
-        <mu-card-header title="Myron Avatar" sub-title="sub title">
-          <mu-avatar slot="avatar">
-            <img :src="picture">
-          </mu-avatar>
-        </mu-card-header>
-        <mu-card-media title="Image Title" sub-title="Image Sub Title">
-          <img :src="picture">
-        </mu-card-media>
-        <mu-card-title title="Content Title" sub-title="Content Title"></mu-card-title>
-        <mu-card-text>
-          散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。
-          调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。
-          似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，
-          找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
-          散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。
-          调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。
-          似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，
-          找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
-        </mu-card-text>
-        <mu-card-actions>
-          <mu-button flat>Action 1</mu-button>
-          <mu-button flat>Action 2</mu-button>
-        </mu-card-actions>
-      </mu-card>
+      <recommend-user-list></recommend-user-list>
     </mu-paper>
     <mu-dialog
       width="360"
@@ -76,6 +52,7 @@
   </mu-container>
 </template>
 <script>
+import RecommendUserList from "@/components/public/user/RecommendUserList.vue";
 export default {
   name: "star",
   data() {
@@ -139,6 +116,9 @@ export default {
         this.$router.back(-1)
       }
     }
+  },
+  components:{
+    RecommendUserList
   }
 };
 </script>
@@ -147,7 +127,7 @@ export default {
   /* background-color: azure; */
   padding-left: 0px;
   padding-right: 0px;
-  max-width: 500px;
+  max-width: 800px;
   /* min-width: 350px; */
 }
 .home-paper {
@@ -155,7 +135,7 @@ export default {
   padding-bottom: 56px;
   width: 100%;
   /* max-width可能会导致大屏幕填充不满的情况 */
-  max-width: 500px;
+  /* max-width: 500px; */
   overflow: hidden;
 }
 .hot-search{

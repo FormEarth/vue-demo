@@ -24,6 +24,30 @@
           @click="$router.push('/album')"
         >相册</div>
         <div
+          class="nav-item"
+          :class="$route.meta.nav=='discover'?'active-item':''"
+          @click="$router.push('/star')"
+        >发现</div>
+        <div class="nav-item">
+          <mu-menu placement="bottom" open-on-hover>
+            发布
+            <mu-list slot="content">
+              <mu-list-item button to="/home/article/add">
+                <mu-icon value="post_add" color="red700"></mu-icon>
+                <mu-list-item-title>发布长文</mu-list-item-title>
+              </mu-list-item>
+              <mu-list-item button to="/atlas/add">
+                <mu-icon value="burst_mode" color="Green"></mu-icon>
+                <mu-list-item-title>发布图集</mu-list-item-title>
+              </mu-list-item>
+              <mu-list-item button>
+                <mu-icon value="notes" color="Orange"></mu-icon>
+                <mu-list-item-title>发布动态</mu-list-item-title>
+              </mu-list-item>
+            </mu-list>
+          </mu-menu>
+        </div>
+        <div
           v-if="isLogin"
           :class="$route.meta.nav=='mine'?'active-item':''"
           class="nav-item"
@@ -75,8 +99,8 @@ export default {
       if (
         routeName == "homePage" ||
         routeName == "atlasList" ||
-        routeName == "mine"|| 
-        routeName == "star"||
+        routeName == "mine" ||
+        routeName == "star" ||
         routeName == "info"
       ) {
         return false;
@@ -120,10 +144,10 @@ export default {
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 800px) {
   .nav-title {
-    width: 70%;
+    width: 60%;
   }
   .nav-content {
-    width: 25%;
+    width: 40%;
   }
   .nav-item:hover {
     /* color: rgb(255, 0, 0); */

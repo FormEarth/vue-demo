@@ -28,37 +28,48 @@
         <div style="width:30%;margin-top:6px;text-align:right;padding-right:10px;">123 阅读</div>
       </div>
       <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
-      <div v-if="atlas.atlasPictures.length>0" style="padding:0 10px;">
+      <div v-if="atlas.atlasPictures.length>0" style="padding:0 5px;">
+        <demo-tag  v-show="atlas.personal" color="red" small>仅自己可见</demo-tag>
         <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
       </div>
-      <div style="white-space: pre-wrap;padding:0 5px;">
-        <span v-html="atlas.atlasContent"></span>
-        <demo-tag
-          v-show="atlas.atlasPictures.length==0"
-          v-for="tag in atlas.atlasTags"
-          :key="tag.tagId"
-          simple
-        >{{tag.tagText}}</demo-tag>
+      <div v-for="(content,index) in reverseContent" :key="index" style="padding:0 5px;">
+        <div v-if="index==0">
+          <span class="atlas-content" v-show="content!=''" v-html="content"></span>
+          <demo-tag
+            v-show="atlas.atlasPictures.length==0"
+            v-for="tag in atlas.atlasTags"
+            :key="tag.tagId"
+            simple
+          >{{tag.tagText}}</demo-tag>
+        </div>
+        <div v-else v-show="showHistory" style="color:gray;">
+          <mu-divider style="margin-bottom:5px;"></mu-divider>
+          <span class="atlas-content" v-html="content"></span>
+        </div>
       </div>
-      <div style="margin-top:5px;padding-left:10px;font-size:12px;color:gray;">
+      <div class="small-text">
         发布于&nbsp;{{atlas.sendTime}}&nbsp;
         <mu-icon value="place" size="16"></mu-icon>上海 浦东
       </div>
+      <div
+        class="small-text"
+        v-show="atlas.atlasContent.length>1"
+      >已编辑·最后编辑于&nbsp;{{atlas.updateTime}}&nbsp;<span @click="showHistory=!showHistory">{{showHistory?"收起编辑历史":"展开编辑历史"}}</span></div>
       <div style="display:flex;justify-content:center;padding-top:15px">
-          <mu-button icon>
-            <mu-icon value="thumb_up"></mu-icon>
-          </mu-button>
-          <mu-button icon>
-            <mu-icon value="thumb_down"></mu-icon>
-          </mu-button>
-          <mu-button icon>
-            <mu-icon value="favorite"></mu-icon>
-          </mu-button>
+        <mu-button icon>
+          <mu-icon value="thumb_up"></mu-icon>
+        </mu-button>
+        <mu-button icon>
+          <mu-icon value="thumb_down"></mu-icon>
+        </mu-button>
+        <mu-button icon>
+          <mu-icon value="favorite"></mu-icon>
+        </mu-button>
       </div>
       <!-- <mu-divider></mu-divider> -->
       <div v-if="!atlas.comment" style="text-align:center;font-size:16px;padding-top:5px;">
-        <mu-icon value="speaker_notes_off"></mu-icon>
-        <br />评论已被作者关闭
+        <!-- <mu-icon value="speaker_notes_off"></mu-icon> -->
+        评论已被作者关闭
       </div>
       <div v-else style="padding:0 10px;">
         <demo-input placeholder="添加评论" v-model="comment" />
@@ -72,7 +83,7 @@
         </div>
       </div>
       <!-- <mu-divider></mu-divider> -->
-      <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>
+      <!-- <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div> -->
     </div>
     <!-- <app-footer param="home"></app-footer> -->
     <mu-bottom-sheet :open.sync="open">
@@ -108,7 +119,8 @@ export default {
       atlas: {},
       comment: "",
       loading: true, //是否显示加载遮罩层
-      dataIsLoaded: false
+      dataIsLoaded: false,
+      showHistory:false//是否展开编辑历史
     };
   },
   created() {
@@ -121,6 +133,9 @@ export default {
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
+    },
+    reverseContent(){
+      return this.atlas.atlasContent.reverse()
     }
   },
   methods: {
@@ -224,6 +239,16 @@ export default {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+.atlas-content {
+  white-space: pre-wrap;
+  /* padding: 0 5px; */
+}
+.small-text {
+  margin-top: 5px;
+  padding-left: 5px;
+  font-size: 12px;
+  color: gray;
 }
 @media screen and (min-width: 800px) {
   /* .container {

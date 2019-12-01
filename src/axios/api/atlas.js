@@ -55,6 +55,13 @@ const atlas = {
             "/demo/api/atlas/" + atlasId,
             {}
         )
+    },
+    //修改图集
+    modifyAtlas(data){
+        return request.put(
+            "/demo/api/atlas",
+            data
+        )
     }
 }
 

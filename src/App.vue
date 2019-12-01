@@ -12,7 +12,10 @@
         <keep-alive>
           <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath" solt="detail-content"></router-view>
         </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
+
+        <demo-transition>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+        </demo-transition>
       </div>
     </demo-content>
 
@@ -76,8 +79,11 @@ export default {
             sessionStorage.setItem("current_user", JSON.stringify(user));
             this.$store.commit("save_user", user);
             isLoginAutomatic = true;
-          }else{
-            this.$router.push({ path: "/login", redirect: this.$route.fullPath });
+          } else {
+            this.$router.push({
+              path: "/login",
+              redirect: this.$route.fullPath
+            });
           }
         });
       }

@@ -32,7 +32,7 @@
         <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
       </div>
       <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
-        <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.atlasContent"></span>
+        <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.atlasContent[atlas.atlasContent.length-1]"></span>
         <demo-tag
           v-show="atlas.atlasPictures.length==0"
           v-for="tag in atlas.atlasTags"

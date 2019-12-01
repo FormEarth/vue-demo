@@ -33,26 +33,6 @@
         ></atlas-item>
       </div>
     </van-list>
-    <!-- <mu-load-more
-      :loading="loading"
-      :refreshing="refreshing"
-      :loaded-all="loadedAll"
-      @load="load"
-      @refresh="refresh"
-    >
-      <mu-list textline="three-line" dense style="background-color:rgba(128, 128, 128, 0.5);">
-        <mu-sub-header style="background-color: white">图集推荐</mu-sub-header>
-        <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
-          <atlas-item
-            style="margin-bottom:3px;"
-            :atlas="atlas"
-            :arrayIndex="index"
-            @remove="removeAtlasFromArray"
-          ></atlas-item>
-        </div>
-      </mu-list>
-      <div v-if="loadedAll" style="text-align:center;">————没有更多惹╮(╯▽╰)╭————</div>
-    </mu-load-more>-->
   </div>
 </template>
 

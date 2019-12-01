@@ -36,7 +36,6 @@
   </mu-container>
 </template>
 <script>
-import ArticleItem from "@/components/public/article/ArticleItem";
 import ArticleCardView from "@/components/public/article/ArticleCardView.vue";
 export default {
   name: "ArticleList",
@@ -69,8 +68,7 @@ export default {
     }
   },
   components: {
-    ArticleItem,
-    ArticleCardView
+    ArticleCardView,
   },
   methods: {
     //页面加载时显示的初始化数据
@@ -95,6 +93,7 @@ export default {
     },
     //滑动到底部时加载更多数据
     getMoreArticleData() {
+      if (this.loadedAll) return; //已加载完毕不再进行任何操作
       this.current = this.current + 1;
       console.log("当前加载文章页数：" + this.current);
       this.loading = true;

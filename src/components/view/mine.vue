@@ -18,7 +18,7 @@
           <mu-button icon>
             <mu-icon value="arrow_forward_ios"></mu-icon>
           </mu-button>
-        </mu-list-item-action> -->
+        </mu-list-item-action>-->
       </mu-list-item>
       <mu-list-item v-else avatar button :ripple="false" to="/login">
         <mu-list-item-action>
@@ -118,6 +118,12 @@
         </mu-list-item-action>
       </mu-list-item>
       <mu-list-item button :ripple="false">
+        <mu-list-item-title>反馈</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-icon value="info" color="primary"></mu-icon>
+        </mu-list-item-action>
+      </mu-list-item>
+      <mu-list-item button :ripple="false">
         <mu-list-item-title>关于</mu-list-item-title>
         <mu-list-item-action>
           <mu-icon value="info" color="primary"></mu-icon>
@@ -177,7 +183,7 @@ export default {
         this.$store.commit("remove_user");
         //移除localStorage中的sessionId
         sessionStorage.removeItem("Authorization-Sessionid");
-        localStorage.removeItem("Authorization-Sessionid")
+        localStorage.removeItem("Authorization-Sessionid");
         //TODO 发后台登出api
         this.openAlert = false;
         this.$notify({
@@ -198,16 +204,16 @@ export default {
 .demo-list {
   width: 100%;
 }
-.level-block{
-  vertical-align:middle;
+.level-block {
+  vertical-align: middle;
   letter-spacing: 0.2em;
   border-radius: 3px;
-  font-family:"Times New Roman";
-  margin-left:0.25em;
-  padding:0.1em;
-  font-size:10px;
-  color:white;
-  background-color:hsl(240, 75%, 58%);
+  font-family: "Times New Roman";
+  margin-left: 0.25em;
+  padding: 0.1em;
+  font-size: 10px;
+  color: white;
+  background-color: hsl(240, 75%, 58%);
 }
 .demo-list-wrap {
   width: 100%;

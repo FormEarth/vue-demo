@@ -6,7 +6,8 @@
     <div v-if="isLogin" class="user-information" style="text-align:left;">
       <div class="information-username">{{current_user.userName}}</div>
       <div style="white-space: pre-wrap;">
-        <span>{{current_user.sign}}</span><br>
+        <span>{{current_user.sign}}</span>
+        <br />
         <span>{{current_user.personalProfile}}</span>
       </div>
     </div>
@@ -15,6 +16,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "DemoCard",
@@ -24,7 +26,6 @@ export default {
       frontCover: require("@/assets/images/login_background.jpg")
     };
   },
-  created() {},
   computed: {
     cardImage: function() {
       if (
@@ -51,6 +52,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .information-card {
   /* background-color: rgb(255, 255, 255); */

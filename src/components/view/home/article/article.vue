@@ -120,21 +120,27 @@ export default {
   },
   //created()在页面生成之前调用，一般是加载页面所需要的数据
   created() {
-    var _this = this;
-    window.onscroll = function() {
-      //鼠标滚轮滚动距离超过10像素时，回到顶部按钮才显示
-      if (document.documentElement.scrollTop > 10) {
-        _this.toTopIsShow = true;
-      } else {
-        _this.toTopIsShow = false;
-      }
-    };
+    // var _this = this;
+    // window.onscroll = function() {
+    //   //鼠标滚轮滚动距离超过10像素时，回到顶部按钮才显示
+    //   if (document.documentElement.scrollTop > 10) {
+    //     _this.toTopIsShow = true;
+    //   } else {
+    //     _this.toTopIsShow = false;
+    //   }
+    // };
     this.$http.article
       .articleDetail(this.$route.params.articleId)
       .then(response => {
         this.article = response.data.data.article;
         this.comments = response.data.data.comments;
       });
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scroll, 1000);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.scroll, false);
   },
   computed: {
     //已登录用户信息
@@ -153,6 +159,13 @@ export default {
     }
   },
   methods: {
+    scroll() {
+      if (document.documentElement.scrollTop > 10) {
+        this.toTopIsShow = true;
+      } else {
+        this.toTopIsShow = false;
+      }
+    },
     starArticle() {
       console.log(this.star);
       if (this.star) {
@@ -283,9 +296,9 @@ input:disabled {
   bottom: 60px;
   z-index: 1501;
 }
-.mu-card1 >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content{
-    padding: 8px 3px 15px 3px;
-} 
+.mu-card1 >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content {
+  padding: 8px 3px 15px 3px;
+}
 @media screen and (max-width: 600px) {
   .mu-card1 {
     padding-left: 0;

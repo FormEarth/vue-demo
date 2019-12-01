@@ -12,7 +12,8 @@ import article from '@/components/view/home/article/article'
 import articleAdd from '@/components/view/home/article/edit'
 import atlasList from '@/components/view/home/atlas/atlasList'
 import atlas from '@/components/view/home/atlas/atlas'
-import atlasAdd from '@/components/view/home/atlas/edit'
+import atlasAdd from '@/components/view/home/atlas/create'
+import atlasEdit from '@/components/view/home/atlas/edit'
 
 import star from '@/components/view/star'
 
@@ -49,7 +50,7 @@ const router = new Router({
     { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: true, nav: "atlas" }, component: atlasList },
     { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false, nav: "atlas" }, component: atlas },
     { path: '/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true, nav: "atlas" }, component: atlasAdd },
-    { path: '/atlas/edit/:atlasId', name: 'atlasEdit', meta: { title: "编辑图集", requireLogin: true, nav: "atlas" }, component: atlasAdd },
+    { path: '/atlas/edit/:atlasId', name: 'atlasEdit', meta: { title: "编辑图集", requireLogin: true, nav: "atlas" }, component: atlasEdit },
     { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false, nav: "atlas" }, component: star },
     { path: '/mine', name: 'mine', meta: { title: "我的", requireLogin: false, nav: "mine" }, component: mine },
     { path: '/mine/personal', name: 'personal', meta: { title: "个人信息", requireLogin: true, nav: "mine" }, component: personal },

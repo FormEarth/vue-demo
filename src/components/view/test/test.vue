@@ -114,6 +114,16 @@
     </div>
     <!-- <article-card-view></article-card-view> -->
     <div style="margin:20px;">123</div>
+    <div style="with:100%;background-color:pink;padding:10px;">
+      <div style="background-color:#fff;border-radius:5px;width:145px;text-align:center;padding:7px 0;">
+        <img src="http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg" style="width:50px;height:50px;border-radius:50%;"><br>
+        <label>路末丶长安</label>
+        <h5 style="margin:10px 0;">悲喜总无泪也，是人间白发，剑胆成灰</h5>
+        <!-- <mu-button :ripple="false" round small>关注</mu-button> -->
+        <van-button type="info" size="mini" round plain style="width:45%;">关注</van-button><br>
+        <van-button type="info" size="mini" round style="width:45%;">已关注</van-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -205,7 +215,7 @@ export default {
 </script>
 <style scoped>
 .root {
-  background: #d9d9d9;
+  /* background: #d9d9d9; */
 }
 .level-block {
   vertical-align: middle;

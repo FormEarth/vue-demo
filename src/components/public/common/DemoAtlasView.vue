@@ -124,7 +124,7 @@ img {
   /* height: 100%; */
   max-width: 100%;
   /* max-height: 100%; */
-  object-fit: contain;
+  /* object-fit: contain; */
   vertical-align: middle;
 }
 .max-height {
