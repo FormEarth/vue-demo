@@ -1,9 +1,10 @@
 <template>
   <div style="padding-bottom:10px;">
     <div class="article-item">
-      <div class="left-image">
-        <img :src="article.frontCover" />
+      <div class="left-image" :style="{backgroundImage: 'url(' + article.frontCover + ')'}">
+        <!-- <img :src="article.frontCover" /> -->
       </div>
+      <!-- <img class="left-img" :src="article.frontCover" /> -->
       <div class="right-content">
         <div class="title">
           <span>{{article.title}}</span>
@@ -63,10 +64,11 @@ export default {
   display: flex;
   border-radius: 5px;
   background-color: #fff;
-  border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
+  /* border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
 .left-image {
   width: 30%;
@@ -74,17 +76,16 @@ export default {
   max-height: 168px;
   overflow: hidden;
   background-color: aquamarine;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-.left-image img {
-  /* width: 100%;
-  height: 100%;
-  vertical-align: top; */
-    object-fit: cover;
+/* .left-image img {
+  object-fit: cover;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  width:100%;
-	height:100%;
-}
+  width: 100%;
+  height: 100%;
+} */
 .right-content {
   width: 70%;
   /* flex:1; */
@@ -98,7 +99,9 @@ export default {
   color: gray;
   margin-bottom: 6px;
   padding-left: 3px;
-  -webkit-box-orient: vertical;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical; /** 这个属性在build时会被删除，需要特别处理 */
+  /* autoprefixer: on */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;

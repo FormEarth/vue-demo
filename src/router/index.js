@@ -6,7 +6,6 @@ import api from '@/axios/api'
 import login from '@/components/view/login'
 import register from '@/components/view/register'
 
-import home from '@/components/view/home'
 import articles from '@/components/view/home/article/articleList'
 import article from '@/components/view/home/article/article'
 import articleAdd from '@/components/view/home/article/edit'
@@ -33,8 +32,9 @@ import notfound from '@/components/view/error/404'
 Vue.use(Router)
 
 const router = new Router({
-  //去掉路径中的#
-  mode: 'history',
+  base: 'demooo',
+  //使用history模式在部署时会有除根路径外的页面不能刷新，因为router页面跳转的并不是真实路径
+  // mode: 'history',
   routes: [
     { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: articles },
     { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: articles },
@@ -45,7 +45,7 @@ const router = new Router({
 
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
     { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },
-    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, nav: "none" }, component: test },
+    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, keepAlive: true, nav: "test" }, component: test },
     { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" }, component: album },
     { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: true, nav: "atlas" }, component: atlasList },
     { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false, nav: "atlas" }, component: atlas },
@@ -57,13 +57,20 @@ const router = new Router({
     { path: '/mine/personal/edit', name: 'personalinfoedit', meta: { title: "信息修改", requireLogin: true, nav: "mine" }, component: infoEdit },
     { path: '/mine/personal/avatar', name: 'personalAvataredit', meta: { title: "头像修改", requireLogin: true, nav: "mine" }, component: editAvatar },
     { path: '/mine/personal/frontcover', name: 'frontcoverEdit', meta: { title: "封面修改", requireLogin: true, nav: "mine" }, component: editAvatar },
-    { path: '/:userId/homepage', name: 'info', meta: { title: "个人主页", requireLogin: false, keepAlive: true,nav: "mine" }, component: info },
+    { path: '/:userId/homepage', name: 'info', meta: { title: "个人主页", requireLogin: false, keepAlive: true, nav: "mine" }, component: info },
     { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true, nav: "mine" }, component: setting },
     { path: '/mine/tag/add', name: 'tagAdd', meta: { title: "添加标签", requireLogin: true, nav: "mine" }, component: tagAdd },
 
     // 404页面在最下面
     { path: '*', name: 'notfound', meta: { title: "404 not found", requireLogin: false, nav: "atlas" }, component: notfound }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 //导航守卫（navigation-guards）
 //beforeEach是router的钩子函数，在进入路由前执行
@@ -92,7 +99,7 @@ router.beforeEach((to, from, next) => {
     //vuex中的数据在页面刷新的时候会重置，在登陆时将用户信息保存在sessionStorge,
     //若刷新页面从sessionStorge中重新获取当前用户信息给vuex赋值
     let current_user = JSON.parse(sessionStorage.getItem("current_user"));
-    if(current_user){
+    if (current_user) {
       store.commit("save_user", current_user);
     }
   }
@@ -102,13 +109,13 @@ router.beforeEach((to, from, next) => {
     //从vuex中获取是否已登录,刷新页面时由于vuex数据丢失,所以在这里重新从sessionStorage加载数据到vuex
     // console.log(store.getters.isLogin)
     // console.log(store.state.current_user)
-    if(!store.getters.isLogin) {
+    if (!store.getters.isLogin) {
       next({
         path: '/login',
         query: { redirect: to.fullPath }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
       })
     }
-  }else {
+  } else {
     next();
   }
   next();

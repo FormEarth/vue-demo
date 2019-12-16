@@ -26,7 +26,8 @@ export default {
       backgroundImage:
         "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
     };
-  }
+  },
+
 };
 </script>
 
@@ -59,7 +60,7 @@ export default {
   /*滚动条整体样式*/
   .right-panel::-webkit-scrollbar {
     width: 5px;
-    height: 8px;/*这个高度是用来定义底部攻读条高度的 */
+    height: 8px; /*这个高度是用来定义底部攻读条高度的 */
   }
   /*滚动条滑块*/
   .right-panel::-webkit-scrollbar-thumb {

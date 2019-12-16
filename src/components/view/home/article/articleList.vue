@@ -51,11 +51,21 @@ export default {
       loading: false, //上滑加载更多时是否在加载状态
       refreshing: false, //下拉更新时是否在加载状态
       refreshTime: "", //每次更新数据时记录
-      error: false
+      error: false,
+      scroll: 0 //页面滚动位置
     };
   },
-  created: function() {
+  created() {
     this.getInitArticlesData();
+  },
+  //keep-alive页面进入触发
+  activated() {
+    document.querySelector(".right-panel").scrollTo(0, this.scroll);
+    document.querySelector(".right-panel").addEventListener("scroll", this.handleScroll);
+  },
+  //keep-alive页面销毁触发
+  deactivated() {
+    document.querySelector(".right-panel").removeEventListener("scroll", this.handleScroll);
   },
   computed: {
     //已登录用户信息
@@ -68,9 +78,14 @@ export default {
     }
   },
   components: {
-    ArticleCardView,
+    ArticleCardView
   },
   methods: {
+    handleScroll() {
+      let scrollTo = document.querySelector(".right-panel").scrollTop
+      // console.log("scrollTop:" + scrollTo);
+      this.scroll = scrollTo;
+    },
     //页面加载时显示的初始化数据
     getInitArticlesData() {
       this.initLoading = true;

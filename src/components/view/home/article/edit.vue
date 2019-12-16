@@ -4,15 +4,6 @@
       <mu-form-item prop="input" label="文章标题">
         <mu-text-field v-model="form.title" placeholder="您的文章标题（必填项）" max-length="30"></mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="textarea" label="摘要">
-        <mu-text-field
-          v-model="form.summary"
-          :rows-max="3"
-          placeholder="您的文章摘要（必填项）"
-          max-length="200"
-          multi-line
-        ></mu-text-field>
-      </mu-form-item>
       <mavon-editor
         ref="md"
         @imgAdd="$imgAdd"
@@ -26,13 +17,15 @@
       <mu-form-item prop="checkbox" label="隐私设置">
         <mu-checkbox v-model="form.personal" :ripple="false" label="仅自己可见"></mu-checkbox>
         <mu-checkbox v-model="form.comment" :ripple="false" label="允许评论"></mu-checkbox>
+        <mu-checkbox v-model="form.saveToFile" :ripple="false" label="生成静态页面"></mu-checkbox>
         <mu-checkbox v-model="form.anonymous" label="匿名文章" disabled></mu-checkbox>
       </mu-form-item>
-      <mu-form-item label="选择标签">
+      <!-- <mu-form-item label="选择标签">
         <mu-select v-model="form.tags" chips tags filerable>
           <mu-option v-for="style in tags" :key="style" :label="style" :value="style"></mu-option>
         </mu-select>
-      </mu-form-item>
+      </mu-form-item> -->
+      <demo-tag-select :selectTags.sync="form.tags"></demo-tag-select>
       <mu-paper style="text-align:center">
         <mu-button flat color="#1565c0" @click="openPreview">
           <mu-icon value="visibility"></mu-icon>预览
@@ -50,16 +43,18 @@
         </mu-button>
       </mu-paper>
       <div>
-        <div>文章封面,（默认为你的个人封面，点击图片右上角可自定义）</div>
+        <div>文章封面,（默认为你的个人封面，点击图片右上角可重新选取）</div>
         <div style="position: relative;width:60%;">
           <div class="image-edit">
-            <mu-icon value="edit"></mu-icon>
+            <demo-image-upload @setBlobData="setFrontCoverBlob">
+              <mu-icon value="edit"></mu-icon>
+            </demo-image-upload>
           </div>
-          <img :src="$store.state.current_user.frontCover" width="100%" />
+          <img :src="previewCover" width="100%" />
         </div>
       </div>
     </mu-form>
-    <mu-dialog max-width="500" transition="scale" fullscreen :open.sync="preview">
+    <mu-dialog max-width="500" transition="scale" :open.sync="preview" fullscreen scrollable>
       <mu-appbar title="文章预览" color="white" z-depth="1" textColor="black">
         <mu-button slot="left" icon @click="closePreview">
           <mu-icon value="close"></mu-icon>
@@ -99,19 +94,18 @@ export default {
       newArticleId: "", //新增文章后返回的文章Id
       form: {
         title: "", //题目
-        summary: "", //摘要
         content: "", //内容
         personal: false, //仅自己可见
         anonymous: false, //匿名
+        saveToFile: true, 
         comment: true, //允许评论
         codeStyle: "googlecode",
-        tags: "" //标签
-        // status: ""
+        tags: [], //标签
+        frontCoverBlob: ""
       }
     };
   },
   created() {
-    console.log("store.getters.isLogin:" + this.$store.getters.isLogin);
     if (this.$route.name == "articleEdit") {
       this.type = "edit";
       articleDetail().then(response => {
@@ -130,9 +124,19 @@ export default {
       } else {
         return "编辑文章";
       }
+    },
+    //封面的展示
+    previewCover() {
+      return this.form.frontCoverBlob == ""
+        ? this.$store.state.current_user.frontCover
+        : window.URL.createObjectURL(this.form.frontCoverBlob);
     }
   },
   methods: {
+    //设置裁剪后图片数据
+    setFrontCoverBlob(data) {
+      this.form.frontCoverBlob = data;
+    },
     openPreview() {
       this.preview = true;
     },
@@ -141,13 +145,39 @@ export default {
     },
     // 发布文章
     craeatArticle() {
-      this.form.status = "1";
-      this.$http.article.releaseArticle(this.form).then(response => {
-        // alert("发布成功！")
-        this.newArticleId = response.data.data.articleId;
-        this.releaseSucessDialog = true;
+      // data.frontCoverBlob = "";
+      //若是用户选择了本地封面，组装FormData进行图片上传
+      let formData = new FormData();
+      Object.keys(this.form).forEach(key => {
+        formData.append(key, this.form[key]);
       });
-      // axios.post('http://192.168.149.110:9092/demo/api/article',this.form,{withCredentials:true});
+      //重新组装数组数据
+      formData.delete("tags");
+      for (let i = 0; i < this.form.tags.length; i++) {
+        formData.append(
+          "tags[" + i + "].tagId",
+          this.form.tags[i].tagId
+        );
+        formData.append(
+          "tags[" + i + "].tagText",
+          this.form.tags[i].tagText
+        );
+      }
+      if (this.form.frontCoverBlob != "") {
+        formData.delete("frontCoverBlob");
+        formData.append("image", this.form.frontCoverBlob, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
+        
+      }
+      this.$http.article
+        .releaseArticle(formData)
+        .then(response => {
+          if (response.data.code == "2000") {
+            this.newArticleId = response.data.data.articleId;
+            this.releaseSucessDialog = true;
+          } else {
+          }
+        })
+        .catch(error => {});
     },
     // 再写一篇
     writeAnother() {
@@ -203,9 +233,9 @@ export default {
 }
 .image-edit {
   cursor: pointer;
-  position:absolute;
-  top:5px;
-  right:10px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
 .image-edit:hover {
   color: #fff;

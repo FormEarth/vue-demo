@@ -315,7 +315,9 @@ export default {
 }
 .personal-profile {
   white-space: pre-wrap;
-  -webkit-box-orient: vertical;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;/** 这个属性在build时会被删除，需要特别处理 */
+  /* autoprefixer: on */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   text-overflow: ellipsis;

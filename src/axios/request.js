@@ -44,8 +44,8 @@ instance.interceptors.response.use(
         sessionStorage.removeItem("Authorization-Sessionid");
         localStorage.removeItem("Authorization-Sessionid")
         //因为无法获取route.path，在这截取下,需要跳过http://
-        let currentPath = window.location.href.substring(8)
-        currentPath = currentPath.substring(currentPath.indexOf('/'))
+        let currentPath = window.location.href
+        currentPath = currentPath.substring(currentPath.indexOf('#')+1)
         console.log("currentPath:" + currentPath)
         router.push({
           path: '/login',

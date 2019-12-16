@@ -182,7 +182,7 @@ export default {
         atlasContent: [],
         comment: true, //允许评论
         atlasTags: [],
-        personal: false //仅自己可见
+        personal: false, //仅自己可见
       },
       initTags: [], //初始化加载的推荐tags数组，即在输入框为空时显示的列表
       tags: ["日记", "原创", "123", "2333"],
@@ -203,7 +203,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     //输入内容改变时，请求服务端进行模糊搜索
@@ -452,11 +452,6 @@ a {
 }
 .label-upload:hover {
   cursor: pointer;
-}
-@media screen and (max-width: 800px) {
-  .container {
-    /* padding: 10px 10%; */
-  }
 }
 </style>
 

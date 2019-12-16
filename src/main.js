@@ -1,8 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
-import router from './router'
 import store from './store'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
@@ -18,6 +16,8 @@ import 'mavon-editor/dist/css/index.css';
 //require('@/mock/mock.js')
 import VueLazyload from 'vue-lazyload'//图片懒加载
 import '@vant/touch-emulator';//vant适配PC端
+import App from './App'
+import router from './router'
 
 Vue.use(VueLazyload, {
   error: require('@/assets/broken_image.jpg'),

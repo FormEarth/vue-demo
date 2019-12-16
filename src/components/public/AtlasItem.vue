@@ -479,7 +479,9 @@ export default {
 }
 .atlas-content {
   display: -webkit-box;
-  -webkit-box-orient: vertical;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;/** 这个属性在build时会被删除，需要特别处理 */
+  /* autoprefixer: on */
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 100;

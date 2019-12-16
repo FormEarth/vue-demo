@@ -115,19 +115,29 @@
     <!-- <article-card-view></article-card-view> -->
     <div style="margin:20px;">123</div>
     <div style="with:100%;background-color:pink;padding:10px;">
-      <div style="background-color:#fff;border-radius:5px;width:145px;text-align:center;padding:7px 0;">
-        <img src="http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg" style="width:50px;height:50px;border-radius:50%;"><br>
+      <div
+        style="background-color:#fff;border-radius:5px;width:145px;text-align:center;padding:7px 0;"
+      >
+        <img
+          src="http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg"
+          style="width:50px;height:50px;border-radius:50%;"
+        />
+        <br />
         <label>路末丶长安</label>
         <h5 style="margin:10px 0;">悲喜总无泪也，是人间白发，剑胆成灰</h5>
         <!-- <mu-button :ripple="false" round small>关注</mu-button> -->
-        <van-button type="info" size="mini" round plain style="width:45%;">关注</van-button><br>
+        <van-button type="info" size="mini" round plain style="width:45%;">关注</van-button>
+        <br />
         <van-button type="info" size="mini" round style="width:45%;">已关注</van-button>
       </div>
     </div>
+    <demo-image-upload></demo-image-upload>
+    <demo-tag-select :selectTags.sync="selectTags"></demo-tag-select>
+    <div contenteditable="true" style="border:1px solid #000">123</div>
   </div>
 </template>
 <script>
-import ArticleCardView from "@/components/public/article/ArticleCardView.vue"
+import ArticleCardView from "@/components/public/article/ArticleCardView.vue";
 export default {
   data() {
     return {
@@ -139,7 +149,9 @@ export default {
         '> 没有什么是永恒的\n\n散落在指尖的阳光，我试着轻了四月的心帘，温暖如约的歌声渐起。似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！\n```Java\n\nString str = "Hello World!" \n\nSystem.out.println(str);\n```\n> 没有什么是永恒的\n\n**文字加粗了**',
       converter: null,
       showButton: false,
-      fold: true
+      fold: true,
+      scroll: 0,
+      selectTags:[]
     };
   },
   watch: {
@@ -154,6 +166,7 @@ export default {
       this.showButton = true;
       this.line = 2;
     }
+    // window.addEventListener("scroll", this.handleScroll);
     //监听页面变化时是否溢出
     // window.onresize = () => {
     //   console.log("页面宽度改变了");
@@ -167,7 +180,27 @@ export default {
     //   }
     // };
   },
+  //keep-alive页面进入触发
+  activated() {
+    console.log("in:"+this.scroll)
+    // if (this.scroll > 0) {
+      // window.scrollTo(0, this.scroll);
+      // this.scroll = 0;
+      window.addEventListener("scroll", this.handleScroll);
+    // }
+  },
+  //keep-alive页面销毁触发
+  deactivated() {
+    console.log("out:"+this.scroll)
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      this.scroll =
+        document.documentElement && document.documentElement.scrollTop;
+
+      console.log(this.scroll);
+    },
     handleFold() {
       this.line = this.line == 100 ? 2 : 100;
     },
@@ -208,7 +241,7 @@ export default {
     //   dom.classList.remove("list-enter-to", "list-enter-active");
     // }
   },
-  components:{
+  components: {
     ArticleCardView
   }
 };
@@ -267,7 +300,9 @@ export default {
   padding-bottom: 10px;
 }
 .text-ellipsis {
-  -webkit-box-orient: vertical;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical; /** 这个属性在build时会被删除，需要特别处理 */
+  /* autoprefixer: on */
   display: -webkit-box;
   -webkit-line-clamp: 10;
   text-overflow: ellipsis;

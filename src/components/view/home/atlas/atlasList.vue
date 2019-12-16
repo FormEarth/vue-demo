@@ -57,17 +57,36 @@ export default {
       refreshTime: "", //初始化加载数据的时间，下次加载时上送
       initLoading: false, //初始化是否显示加载遮罩层
       dataIsLoaded: false, //初始化请求页面是否成功
-      error: false
+      error: false,
+      scroll: 0
     };
   },
   created() {
     //图集初始化加载
     this.loadInitData();
   },
+  //keep-alive页面进入触发
+  activated() {
+    document.querySelector(".right-panel").scrollTo(0, this.scroll);
+    document
+      .querySelector(".right-panel")
+      .addEventListener("scroll", this.handleScroll);
+  },
+  //keep-alive页面销毁触发
+  deactivated() {
+    document
+      .querySelector(".right-panel")
+      .removeEventListener("scroll", this.handleScroll);
+  },
   components: {
     "atlas-item": AtlasItem
   },
   methods: {
+    handleScroll() {
+      let scrollTo = document.querySelector(".right-panel").scrollTop;
+      // console.log("scrollTop:" + scrollTo);
+      this.scroll = scrollTo;
+    },
     //初始化数据加载
     loadInitData() {
       this.initLoading = true;

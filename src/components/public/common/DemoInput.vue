@@ -1,9 +1,9 @@
 <template>
   <div>
     <input
+      ref="input"
       :type="type"
       :placeholder="placeholder"
-      ref="input"
       :value="value"
       :maxlength="max"
       @input="$emit('input', $event.target.value)"
