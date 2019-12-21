@@ -21,9 +21,9 @@
       error-text="请求失败，点击重新加载"
       finished-text="没有更多了"
       @load="load"
-      style="background-color:rgba(128, 128, 128, 0.5);"
+
     >
-      <mu-sub-header style="background-color: white">图集推荐</mu-sub-header>
+      <!-- <mu-sub-header style="background-color: white">图集推荐</mu-sub-header> -->
       <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
         <atlas-item
           style="margin-bottom:3px;"
@@ -197,12 +197,13 @@ export default {
 .mu-list {
   padding-bottom: 0;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .demo-container {
-    width: 100%;
+    /* width: 100%; */
+    padding: 0 15%;
   }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
   .demo-container {
     padding-bottom: 56px;
   }

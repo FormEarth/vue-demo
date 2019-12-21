@@ -231,7 +231,7 @@ a {
   height: 25px;
 }
 /* 宽度在800px以上 */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .demo-container {
     padding-top: 50px;
   }
@@ -248,7 +248,7 @@ a {
   }
 }
 /* 宽度在600px~800px */
-@media screen and (min-width: 600px) and (max-width: 800px) {
+@media screen and (max-width: 769px) and (max-width: 992px) {
   .demo-container {
     padding-top: 50px;
   }
@@ -258,7 +258,7 @@ a {
   }
 }
 /* 宽度在300px~640px */
-@media screen and (min-width: 300px) and (max-width: 600px) {
+@media screen and (min-width: 300px) and (max-width: 769px) {
   .demo-container {
     padding-top: 20px;
   }

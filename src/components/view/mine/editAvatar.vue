@@ -183,7 +183,7 @@ export default {
 
   /* margin-left: 20px; */
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   /* .main-content {
     padding: 10px 10%;
   } */

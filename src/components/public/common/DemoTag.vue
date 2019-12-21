@@ -126,7 +126,7 @@ export default {
   margin: 0 0 0 0.3em;
   font-size: 14px;
 }
-@media screen and (min-width: 800px){
+@media screen and (min-width: 993px){
   
 }
 </style>

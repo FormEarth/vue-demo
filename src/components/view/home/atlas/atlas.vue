@@ -250,7 +250,7 @@ export default {
   font-size: 12px;
   color: gray;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   /* .container {
     padding: 0 10%;
   } */

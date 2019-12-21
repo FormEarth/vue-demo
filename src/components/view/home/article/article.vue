@@ -299,7 +299,7 @@ input:disabled {
 .mu-card1 >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content {
   padding: 8px 3px 15px 3px;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
   .mu-card1 {
     padding-left: 0;
     padding-right: 0;

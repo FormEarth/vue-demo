@@ -65,7 +65,7 @@
       color="primary"
       v-if="showMobileAppbar"
       class="headerAppbar"
-      z-depth="1"
+      z-depth="0"
     >
       <mu-button icon slot="left" @click="$router.back(-1)">
         <mu-icon value="arrow_back"></mu-icon>
@@ -149,7 +149,7 @@ export default {
   display: none;
 }
 /* 大屏幕，宽度大于800px; */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .nav-title {
     width: 70%;
   }
@@ -164,7 +164,7 @@ export default {
   }
 }
 /* 中等屏幕，宽度600px~800px; */
-@media screen and (min-width: 600px) and (max-width: 800px) {
+@media screen and (min-width: 769px) and (max-width: 992px) {
   .nav-title {
     width: 50%;
   }
@@ -173,7 +173,10 @@ export default {
   }
 }
 /* 小屏幕，宽度在300px~600px */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
+  .root {
+  position: relative;
+}
   .header {
     display: none;
   }

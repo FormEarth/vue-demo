@@ -231,12 +231,12 @@ export default {
   max-width: 500px;
   overflow: hidden;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   /* .container {
     padding: 10px 10%;
   } */
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
   .demo-card {
     display: none;
   }

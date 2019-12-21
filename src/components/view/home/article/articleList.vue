@@ -149,11 +149,6 @@ export default {
 <style scoped>
 .demo-container {
   width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-}
-.detail-content {
-  padding: 10px;
 }
 .no-articles {
   background-color: whitesmoke;
@@ -168,7 +163,7 @@ export default {
   /* color:white; */
 }
 /* 大屏幕，宽度大于960px; */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .content {
     display: flex;
   }
@@ -179,16 +174,16 @@ export default {
   }
 }
 /* 中等屏幕，宽度640px~960px; */
-@media screen and (min-width: 600px) and (max-width: 800px) {
+@media screen and (max-width: 769px) and (max-width: 992px) {
   .content {
     margin-top: 15px;
   }
 }
 /* 小屏幕，宽度在300px~640px */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
   .detail-content {
     /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
-    background-color: #f6f7f8;
+    /* background-color: #f6f7f8; */
     padding: 10px 10px 56px 10px;
   }
   /* .content {

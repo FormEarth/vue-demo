@@ -2,17 +2,20 @@
   <div class="content">
     <!-- 顶部导航栏 -->
     <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
-    <div class="main-contents">
+    <!-- <div class="main-contents"> -->
       <!-- 左侧部分 -->
       <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
-      <div class="left-panel">
+      <!-- <div class="left-panel">
         <slot name="demo-card"></slot>
-      </div>
+      </div>-->
       <!-- 右侧部分 -->
       <div class="right-panel">
+        <div class="left-panel">
+          <slot name="demo-card"></slot>
+        </div>
         <slot name="detail-content"></slot>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -35,44 +38,6 @@ export default {
 </script>
 
 <style scoped>
-/* 大屏幕，宽度大于800px; */
-@media screen and (min-width: 800px) {
-  .main-contents {
-    display: flex;
-    /* position: fixed;
-    top: 75px;
-    bottom: 0; */
-    margin: 75px 10% 0 ;
-    overflow-y: auto;
-  }
-  .content {
-    /* display: flex; */
-    /* margin-top: 60px; */
-  }
-  .content .left-panel {
-    /* width: 25%; */
-    width: 350px;
-    /* min-width: 200px; */
-    /* height: 100%; */
-    position: fixed;
-    top: 75px;
-    /* bottom: 0; */
-    left: 10%;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  .content .right-panel {
-    padding-left: 370px;
-    width: 100%;
-    /* flex: 1; */
-    /* position: fixed;
-    top: 75px;
-    bottom: 0;
-    right: 0; */
-    /* overflow-y: auto; */
-    /* padding: 0 12%; */
-    /* max-width: 860px; */
-  }
   /*滚动条整体样式*/
   .right-panel::-webkit-scrollbar {
     width: 5px;
@@ -90,17 +55,42 @@ export default {
     border-radius: 10px;
     background: transparent;
   }
+/* 桌面，宽度>=993px */
+@media screen and (min-width: 993px) {
+  .content .left-panel {
+    /* width: 25%; */
+    width: 350px;
+    /* min-width: 200px; */
+    /* height: 100%; */
+    position: fixed;
+    top: 75px;
+    /* bottom: 0; */
+    left: 10%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .content .right-panel {
+    margin-left: calc(10% + 370px);
+    /* padding-left: 350px;
+    margin:  0 10%; */
+    /* width: 100%; */
+    padding-right: 10%;
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+  }
   /* .link img:hover {
     transform: scale(1.1); 元素放大1.4倍
     transition: all 1s; 元素在0.5s内完成动画
     cursor: pointer;
   } */
 }
-/* 中等屏幕，宽度640px~960px; */
-@media screen and (min-width: 600px) and (max-width: 800px) {
-  .content {
-    margin-top: 15px;
-  }
+/* 平板，宽度[769px,992px]; */
+@media screen and (min-width: 769px) and (max-width: 992px) {
+
   .content .left-panel {
     width: 28%;
     /* min-width: 200px; */
@@ -114,19 +104,20 @@ export default {
   .content .right-panel {
     width: 72%;
     position: fixed;
-    top: 75px;
+    top: 80px;
     bottom: 0;
     right: 0;
     overflow-y: auto;
   }
 }
-/* 小屏幕，宽度在300px~640px */
-@media screen and (max-width: 600px) {
+/* 手机，宽度<=768px */
+@media screen and (max-width: 768px) {
   /* .content {
     margin-top: 15px;
   } */
   .content .right-panel {
     margin-bottom: 5px;
+    /* top: 100px; */
   }
   .left-panel {
     display: none;

@@ -113,7 +113,7 @@ export default {
   border-radius: 50%;
 }
 /* 大屏幕，宽度大于960px; */
-@media screen and (min-width: 600px) {
+@media screen and (max-width: 769px) {
   .information-card {
     /* position: fixed;
     bottom: 0;
@@ -129,7 +129,7 @@ export default {
     cursor: pointer;
   }
 }
-@media screen and (min-width: 600px) and (max-width: 800px) {
+@media screen and (max-width: 769px) and (max-width: 992px) {
   .information-card {
     position: fixed;
     bottom: 0;
@@ -140,7 +140,7 @@ export default {
     padding-top: 150px;
   }
 }
-@media screen and (min-width: 300px) and (max-width: 600px) {
+@media screen and (min-width: 300px) and (max-width: 769px) {
   /* .information-card {
     margin-top: 10px;
   } */

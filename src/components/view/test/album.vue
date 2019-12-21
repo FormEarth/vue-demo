@@ -105,7 +105,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .show-container {
     margin-top: 3%;
     width: 60%;
@@ -124,7 +124,7 @@ export default {
     cursor: pointer;
   }
 }
-@media screen and (min-width: 600px) and (max-width: 800px) {
+@media screen and (max-width: 769px) and (max-width: 992px) {
   .show-container {
     margin-top: 12%;
     width: 80%;
@@ -138,7 +138,7 @@ export default {
     margin: 1%;
   }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 769px) {
   .album-container {
     height: 130%;
   }

@@ -1,6 +1,6 @@
 <template>
-  <div style="padding-bottom:10px;">
-    <div class="article-item">
+  <div class="root">
+    <div class="article-item" @click="$router.push('/article/detail/'+ article.articleId)">
       <div class="left-image" :style="{backgroundImage: 'url(' + article.frontCover + ')'}">
         <!-- <img :src="article.frontCover" /> -->
       </div>
@@ -15,11 +15,10 @@
             :key="index"
             color="green"
             small
-            simple
           >{{tag.tagText}}</demo-tag>
           
         </div>
-        <span style="padding-left: 3px;">{{article.authorName}}|{{article.sendTime}}</span>
+        <span style="padding-left: 3px;">{{article.authorName}}&nbsp;&nbsp;{{article.sendTime}}</span>
         <div class="sub-title">{{article.summary}}</div>
         <!-- <img class="front-cover" :src="article.frontCover" /> -->
         <!-- <div class="footer">
@@ -72,12 +71,16 @@ export default {
 </script>
 
 <style scoped>
+.root{
+  padding-bottom:10px;
+  max-width: 800px;
+}
 .article-item {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
   /* border-radius: 5px; */
-  /* background-color: #fff; */
+  background-color: #fff;
   /* border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
@@ -158,12 +161,13 @@ export default {
   content: ">>";
 }
 /* 注意这里的空格 >=800px*/
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .front-cover {
     display: none;
   }
   .article-item {
     transition: all 0.3s;
+    cursor: pointer;
   }
   .right-content {
     padding-left: 10px;
@@ -177,7 +181,7 @@ export default {
     box-shadow: 0px 4px 5px 3px rgba(33, 150, 243, 0.4);
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
 
   .left-image {
     /* display: none; */
@@ -190,9 +194,6 @@ export default {
   /* .title .title-tag {
     display: inline-block;
   } */
-  .title{
-    text-align: center;
-  }
   .sub-title {
     -webkit-line-clamp: 4;
   }

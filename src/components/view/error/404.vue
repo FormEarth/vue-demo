@@ -42,7 +42,7 @@ export default {
   left: 0;
   right: 0;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .container {
     padding: 10px 10%;
   }

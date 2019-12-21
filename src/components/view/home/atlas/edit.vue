@@ -316,7 +316,7 @@ a {
 .label-upload:hover {
   cursor: pointer;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   .container {
     padding: 10px 10%;
   }

@@ -69,11 +69,15 @@
         <div class="show" @click="handleFold" v-show="line==100">收起</div>
       </div>
     </div>
-    <div style="with:100%;background-color:green;padding:10px;">
-      <img
+    <div style="with:100%;background-color:green;padding:10px;display:flex;flex-wrap:wrap;
+            flex-direction:row;">
+      <!-- <img
         src="http://192.168.2.105:9090/static/thumbnail/atlas/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
         style="max-width:100%;max-height:300px;vertical-align: middle;"
-      />
+      /> -->
+      <div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+      <div>22222222222222222222222222222222222222</div>
+      <div>3333333333333</div>
     </div>
     <transition name="bottom-top">
       <div v-show="show" class="blur-effect">

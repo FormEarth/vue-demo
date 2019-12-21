@@ -173,7 +173,7 @@ export default {
   min-width: 350px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 993px) {
   /* .detail-content {
     padding: 0 10%;
   } */

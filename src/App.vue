@@ -122,7 +122,7 @@ body,
   position: fixed;
   bottom: 0px;
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 769px) {
   #bottomNav {
     display: none;
   }
