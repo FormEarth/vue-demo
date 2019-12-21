@@ -1,13 +1,17 @@
 <template>
   <div class="content">
-    <!-- 左侧部分 -->
-    <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
-    <div class="left-panel">
-      <slot name="demo-card"></slot>
-    </div>
-    <!-- 右侧部分 -->
-    <div class="right-panel">
-      <slot name="detail-content"></slot>
+    <!-- 顶部导航栏 -->
+    <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
+    <div class="main-contents">
+      <!-- 左侧部分 -->
+      <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
+      <div class="left-panel">
+        <slot name="demo-card"></slot>
+      </div>
+      <!-- 右侧部分 -->
+      <div class="right-panel">
+        <slot name="detail-content"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -26,36 +30,48 @@ export default {
       backgroundImage:
         "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
     };
-  },
-
+  }
 };
 </script>
 
 <style scoped>
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 800px) {
-  .content {
+  .main-contents {
     display: flex;
+    /* position: fixed;
+    top: 75px;
+    bottom: 0; */
+    margin: 75px 10% 0 ;
+    overflow-y: auto;
+  }
+  .content {
+    /* display: flex; */
+    /* margin-top: 60px; */
   }
   .content .left-panel {
-    width: 25%;
+    /* width: 25%; */
+    width: 350px;
     /* min-width: 200px; */
     /* height: 100%; */
     position: fixed;
     top: 75px;
-    bottom: 0;
-    left: 0;
+    /* bottom: 0; */
+    left: 10%;
     background-repeat: no-repeat;
     background-size: cover;
   }
   .content .right-panel {
-    width: 75%;
-    position: fixed;
+    padding-left: 370px;
+    width: 100%;
+    /* flex: 1; */
+    /* position: fixed;
     top: 75px;
     bottom: 0;
-    right: 0;
-    overflow-y: auto;
-    padding: 0 12%;
+    right: 0; */
+    /* overflow-y: auto; */
+    /* padding: 0 12%; */
+    /* max-width: 860px; */
   }
   /*滚动条整体样式*/
   .right-panel::-webkit-scrollbar {

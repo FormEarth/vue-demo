@@ -134,6 +134,9 @@
     <demo-image-upload></demo-image-upload>
     <demo-tag-select :selectTags.sync="selectTags"></demo-tag-select>
     <div contenteditable="true" style="border:1px solid #000">123</div>
+    <div>
+      <span class="qwerty">1234</span>
+    </div>
   </div>
 </template>
 <script>
@@ -249,6 +252,14 @@ export default {
 <style scoped>
 .root {
   /* background: #d9d9d9; */
+}
+.qwerty{
+  background-color: blue;
+  color: white;
+  opacity: 0.35;
+}
+.qwerty:hover{
+  opacity: 1.0;
 }
 .level-block {
   vertical-align: middle;

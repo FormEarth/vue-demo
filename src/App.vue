@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- 顶部导航栏 -->
-    <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
     <!-- 内容区域 -->
     <router-view v-if="this.$route.meta.nav=='none'" :key="$route.fullPath"></router-view>
     <demo-content v-else>
@@ -114,6 +112,8 @@ body,
   padding: 0;
   /* 从坐上到右下的渐变色 */
   /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
+  /* background-image: linear-gradient(38deg, #29bdd9 45%, #d4e3f1 33%); */
+  background-color: #d4e3f1;
 }
 .mu-bottom-nav {
   width: 100%;

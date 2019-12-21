@@ -8,23 +8,31 @@
       <div class="right-content">
         <div class="title">
           <span>{{article.title}}</span>
-          <div class="title-tag">
-            <demo-tag v-for="(tag,index) in tagArray" :key="index" color="green" small>{{tag}}</demo-tag>
-          </div>
         </div>
+        <div class="title-tag">
+          <demo-tag
+            v-for="(tag,index) in article.tags"
+            :key="index"
+            color="green"
+            small
+            simple
+          >{{tag.tagText}}</demo-tag>
+          
+        </div>
+        <span style="padding-left: 3px;">{{article.authorName}}|{{article.sendTime}}</span>
         <div class="sub-title">{{article.summary}}</div>
-        <img class="front-cover" :src="article.frontCover" />
-        <div class="footer">
+        <!-- <img class="front-cover" :src="article.frontCover" /> -->
+        <!-- <div class="footer">
           <div class="avatar">
             <img
-              src="http://192.168.2.105:9090/static/thumbnail/atlas/1d37298774524299892bcd0e05d754b4.jpg"
+              :src="picture"
             />
             <span>{{article.authorName}}|{{article.sendTime|time}}</span>
           </div>
           <div class="detail-sign">
             <span @click="$router.push('/article/detail/'+ article.articleId)">文章详情</span>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -34,6 +42,11 @@
 import util from "@/util/util";
 export default {
   name: "ArticleCardView",
+  data() {
+    return {
+      picture: require("@/assets/images/test5.jpg")
+    };
+  },
   props: {
     article: {}
   },
@@ -62,18 +75,19 @@ export default {
 .article-item {
   height: 100%;
   display: flex;
-  border-radius: 5px;
-  background-color: #fff;
+  flex-wrap: wrap;
+  /* border-radius: 5px; */
+  /* background-color: #fff; */
   /* border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4); */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 .left-image {
   width: 30%;
   height: auto;
-  max-height: 168px;
+  max-height: 300px;
   overflow: hidden;
   background-color: aquamarine;
   background-size: cover;
@@ -88,16 +102,20 @@ export default {
 } */
 .right-content {
   width: 70%;
+  color: black;
   /* flex:1; */
 }
 .title {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 300;
   padding-top: 7px;
   padding-left: 3px;
 }
 .sub-title {
   color: gray;
-  margin-bottom: 6px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  line-height: 1.5;
   padding-left: 3px;
   /*! autoprefixer: off */
   -webkit-box-orient: vertical; /** 这个属性在build时会被删除，需要特别处理 */
@@ -121,8 +139,8 @@ export default {
   padding-left: 3px;
 }
 .avatar img {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
   vertical-align: middle;
@@ -145,7 +163,7 @@ export default {
     display: none;
   }
   .article-item {
-    transition: all 0.1s;
+    transition: all 0.3s;
   }
   .right-content {
     padding-left: 10px;
@@ -154,19 +172,29 @@ export default {
     padding: 0 7px;
   }
   .article-item:hover {
-    /* transform: translateX(-10px); */
+    transform: translateX(-10px);
+    z-index: 100;
     box-shadow: 0px 4px 5px 3px rgba(33, 150, 243, 0.4);
   }
 }
 @media screen and (max-width: 800px) {
+
   .left-image {
-    display: none;
+    /* display: none; */
+    height: 400px;
+    width: 100%;
   }
   .right-content {
     width: 100%;
   }
-  .title .title-tag {
+  /* .title .title-tag {
     display: inline-block;
+  } */
+  .title{
+    text-align: center;
+  }
+  .sub-title {
+    -webkit-line-clamp: 4;
   }
 }
 </style>

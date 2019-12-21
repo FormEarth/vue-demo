@@ -91,8 +91,8 @@ export default {
   display: inline-block;
   margin: 0 0 3px 0.3em;
   padding: 0.3em 1em;
-  color: rgb(0, 140, 255);
-  background: rgba(33, 150, 243, 0.08);
+  /* color: rgb(0, 140, 255);
+  background: rgba(33, 150, 243, 0.08); */
   /* opacity:0.08; */
   font-size: 12px;
   /* 换行时保证标签完整性 */
@@ -125,5 +125,8 @@ export default {
   padding: 0;
   margin: 0 0 0 0.3em;
   font-size: 14px;
+}
+@media screen and (min-width: 800px){
+  
 }
 </style>

@@ -431,6 +431,7 @@ export default {
 <style scoped>
 .main-content {
   min-width: 350px;
+  /* max-width: 860px; */
   width: 100%;
   background-color: #fff;
 }

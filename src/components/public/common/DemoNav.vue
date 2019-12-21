@@ -1,6 +1,6 @@
 <template>
   <!-- 顶部导航栏组件 -->
-  <div>
+  <div class="root">
     <div class="header">
       <div class="nav-title">
         <div class="title">
@@ -28,9 +28,14 @@
           :class="$route.meta.nav=='discover'?'active-item':''"
           @click="$router.push('/star')"
         >发现</div>
-        <div class="nav-item">
+        <div
+          class="nav-item"
+          v-if="isLogin"
+          :class="$route.meta.nav=='mine'?'active-item':''"
+          @click="$router.push('/mine')"
+        >
           <mu-menu placement="bottom" open-on-hover>
-            发布
+            {{user.userName}}
             <mu-list slot="content">
               <mu-list-item button to="/home/article/add">
                 <mu-icon value="post_add" color="red700"></mu-icon>
@@ -47,12 +52,6 @@
             </mu-list>
           </mu-menu>
         </div>
-        <div
-          v-if="isLogin"
-          :class="$route.meta.nav=='mine'?'active-item':''"
-          class="nav-item"
-          @click="$router.push('/mine')"
-        >{{user.userName}}</div>
         <div
           v-else
           class="nav-item"
@@ -82,7 +81,7 @@ export default {
   data() {
     return {
       style: true,
-      logo_png: require("@/assets/images/logo.png")
+      logo_png: require("@/assets/images/logo.png"),
     };
   },
   computed: {
@@ -113,12 +112,20 @@ export default {
 </script>
 
 <style scoped>
+.root {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
 .header {
   display: flex;
   justify-content: center;
   /* color: aliceblue; */
   height: 60px;
   min-width: 300px;
+  /* background-color: #fff; */
+  background-color: #d4e3f1;
 }
 .title img {
   padding-top: 10px;
@@ -144,10 +151,10 @@ export default {
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 800px) {
   .nav-title {
-    width: 60%;
+    width: 70%;
   }
   .nav-content {
-    width: 40%;
+    width: 30%;
   }
   .nav-item:hover {
     /* color: rgb(255, 0, 0); */

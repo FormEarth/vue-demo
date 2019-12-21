@@ -61,11 +61,17 @@ export default {
   //keep-alive页面进入触发
   activated() {
     document.querySelector(".right-panel").scrollTo(0, this.scroll);
-    document.querySelector(".right-panel").addEventListener("scroll", this.handleScroll);
+    document
+      .querySelector(".right-panel")
+      .addEventListener("scroll", this.handleScroll);
   },
   //keep-alive页面销毁触发
   deactivated() {
-    document.querySelector(".right-panel").removeEventListener("scroll", this.handleScroll);
+    if (document.querySelector(".right-panel")!=null) {
+      document
+        .querySelector(".right-panel")
+        .removeEventListener("scroll", this.handleScroll);
+    }
   },
   computed: {
     //已登录用户信息
@@ -82,7 +88,7 @@ export default {
   },
   methods: {
     handleScroll() {
-      let scrollTo = document.querySelector(".right-panel").scrollTop
+      let scrollTo = document.querySelector(".right-panel").scrollTop;
       // console.log("scrollTop:" + scrollTo);
       this.scroll = scrollTo;
     },
@@ -163,9 +169,6 @@ export default {
 }
 /* 大屏幕，宽度大于960px; */
 @media screen and (min-width: 800px) {
-  .demo-container {
-    /* padding: 0 10%; */
-  }
   .content {
     display: flex;
   }
@@ -184,8 +187,9 @@ export default {
 /* 小屏幕，宽度在300px~640px */
 @media screen and (max-width: 600px) {
   .detail-content {
-    background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7);
-    padding: 10px 5px 56px 5px;
+    /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
+    background-color: #f6f7f8;
+    padding: 10px 10px 56px 10px;
   }
   /* .content {
     margin-top: 15px;

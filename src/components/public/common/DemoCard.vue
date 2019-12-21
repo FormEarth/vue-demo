@@ -1,29 +1,43 @@
 <template>
-  <div class="information-card" :style="{backgroundImage: 'url(' + cardImage + ')'}">
-    <div class="user-avatar">
-      <img :src="current_user.avatar" />
-    </div>
-    <div v-if="isLogin" class="user-information" style="text-align:left;">
+  <!-- <div class="information-card" :style="{backgroundImage: 'url(' + cardImage + ')'}"> -->
+  <div class="information-card">
+    <div v-if="isLogin">
+      <!-- <div v-if="isLogin" class="user-information" style="text-align:left;"> -->
+      <!-- <div class="user-avatar">
+        <img :src="current_user.avatar" />
+      </div>
       <div class="information-username">{{current_user.userName}}</div>
       <div style="white-space: pre-wrap;">
         <span>{{current_user.sign}}</span>
         <br />
         <span>{{current_user.personalProfile}}</span>
-      </div>
+      </div>-->
+      <user-card :user="current_user"></user-card>
     </div>
-    <div v-else class="user-information">
-      <div class="information-username">不要成为欲望的奴隶，不要扼杀自己的创造力</div>
-    </div>
+    <!-- <div v-else> -->
+    <user-card :icons="icons" :title="'常用功能'"></user-card>
+    <user-card>不要成为欲望的奴隶，不要扼杀自己的想象力</user-card>
+    <user-card>虞美人·听雨  蒋捷
+      少年听雨歌楼上，红烛昏罗帐。壮年听雨客舟中，江阔云低，断雁叫西风。
+      而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。
+    </user-card>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
+import UserCard from "@/components/public/user/UserCard.vue";
 export default {
   name: "DemoCard",
   props: {},
   data() {
     return {
-      frontCover: require("@/assets/images/login_background.jpg")
+      frontCover: require("@/assets/images/login_background.jpg"),
+      icons: [
+        { icon: "post_add", text: "发布长文", link: "/home/article/add" },
+        { icon: "burst_mode", text: "发布图集", link: "/atlas/add" },
+        { icon: "repeat", text: "BeyondHere", link: "" }
+      ]
     };
   },
   computed: {
@@ -45,6 +59,9 @@ export default {
       return this.$store.state.current_user;
     }
   },
+  components: {
+    UserCard
+  },
   methods: {
     toLink(url) {
       window.open(url);
@@ -57,9 +74,9 @@ export default {
 .information-card {
   /* background-color: rgb(255, 255, 255); */
   /* border-radius: 5px; */
-  text-align: center;
+  /* text-align: center; */
   background-size: cover;
-  background-color: rgb(146, 168, 170);
+  /* background-color: rgb(146, 168, 170); */
   opacity: 0.9; /*  值越小越透明*/
 }
 .user-avatar img {
@@ -98,10 +115,10 @@ export default {
 /* 大屏幕，宽度大于960px; */
 @media screen and (min-width: 600px) {
   .information-card {
-    position: fixed;
+    /* position: fixed;
     bottom: 0;
     top: 75px;
-    width: 25%;
+    width: 25%; */
   }
   .user-avatar {
     padding-top: 150px;

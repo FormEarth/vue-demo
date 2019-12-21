@@ -74,9 +74,11 @@ export default {
   },
   //keep-alive页面销毁触发
   deactivated() {
-    document
-      .querySelector(".right-panel")
-      .removeEventListener("scroll", this.handleScroll);
+    if (!document.querySelector(".right-panel")) {
+      document
+        .querySelector(".right-panel")
+        .removeEventListener("scroll", this.handleScroll);
+    }
   },
   components: {
     "atlas-item": AtlasItem
@@ -196,9 +198,9 @@ export default {
   padding-bottom: 0;
 }
 @media screen and (min-width: 800px) {
-  /* .demo-container {
-    padding: 10px 16%;
-  } */
+  .demo-container {
+    width: 100%;
+  }
 }
 @media screen and (max-width: 600px) {
   .demo-container {

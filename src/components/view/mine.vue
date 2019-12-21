@@ -104,6 +104,17 @@
           </mu-button>
         </mu-list-item-action>
       </mu-list-item>
+      <mu-list-item button :ripple="false" to="#">
+        <mu-list-item-action>
+          <mu-icon value="all_inclusive" color="yellow"></mu-icon>
+        </mu-list-item-action>
+        <mu-list-item-title>实验室</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-button icon>
+            <mu-icon value="arrow_forward_ios"></mu-icon>
+          </mu-button>
+        </mu-list-item-action>
+      </mu-list-item>
       <mu-list-item button :ripple="false" @click="openAlertDialog" v-show="isLogin">
         <mu-list-item-action>
           <mu-icon value="exit_to_app" color="black"></mu-icon>

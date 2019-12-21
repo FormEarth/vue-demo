@@ -17,7 +17,7 @@
           <div style="margin-top:6px;text-align:right;padding-right:10px;">{{article.readerNum}} 阅读</div>
         </div>
         <div style="padding:5px 10px 5px 10px;">
-          <demo-tag v-for="(tag,index) in tagArray" :key="index">{{tag}}</demo-tag>
+          <demo-tag v-for="(tag,index) in article.tags" :key="index">{{tag.tagText}}</demo-tag>
         </div>
         <article-content :content="article.content" :article-style="article.style"></article-content>
         <mu-card-actions style="white-space: nowrap">
