@@ -23,9 +23,11 @@ import editAvatar from '@/components/view/mine/editAvatar'
 import info from '@/components/view/mine/info'
 import setting from '@/components/view/mine/setting'
 import tagAdd from '@/components/view/mine/tagAdd'
+import modifyPassword from '@/components/view/mine/setting/modifyPassword'
 
 import test from '@/components/view/test/test'
 import album from '@/components/view/test/album'
+import beyondhere from '@/components/view/tools/beyondhere'
 
 import notfound from '@/components/view/error/404'
 
@@ -60,6 +62,8 @@ const router = new Router({
     { path: '/:userId/homepage', name: 'info', meta: { title: "个人主页", requireLogin: false, keepAlive: true, nav: "mine" }, component: info },
     { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true, nav: "mine" }, component: setting },
     { path: '/mine/tag/add', name: 'tagAdd', meta: { title: "添加标签", requireLogin: true, nav: "mine" }, component: tagAdd },
+    { path: '/mine/password/modify', name: 'modifyPassword', meta: { title: "密码修改", requireLogin: true, nav: "mine" }, component: modifyPassword },
+    { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
 
     // 404页面在最下面
     { path: '*', name: 'notfound', meta: { title: "404 not found", requireLogin: false, nav: "atlas" }, component: notfound }
@@ -68,7 +72,9 @@ const router = new Router({
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      if(!to.meta.keepAlive){
+        return { x: 0, y: 0 }
+      }
     }
   }
 })

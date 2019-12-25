@@ -248,7 +248,7 @@ a {
   }
 }
 /* 宽度在600px~800px */
-@media screen and (max-width: 769px) and (max-width: 992px) {
+@media screen and (min-width: 769px) and (max-width: 992px) {
   .demo-container {
     padding-top: 50px;
   }
@@ -258,12 +258,12 @@ a {
   }
 }
 /* 宽度在300px~640px */
-@media screen and (min-width: 300px) and (max-width: 769px) {
+@media screen and (max-width: 768px) {
   .demo-container {
     padding-top: 20px;
   }
   .login-box {
-    width: 100%;
+    /* width: 100%; */
     /* margin: 0 5%; */
   }
 }

@@ -36,7 +36,7 @@ export default {
       icons: [
         { icon: "post_add", text: "发布长文", link: "/home/article/add" },
         { icon: "burst_mode", text: "发布图集", link: "/atlas/add" },
-        { icon: "repeat", text: "BeyondHere", link: "" }
+        { icon: "repeat", text: "BeyondHere", link: "/beyondhere" }
       ]
     };
   },
@@ -114,12 +114,6 @@ export default {
 }
 /* 大屏幕，宽度大于960px; */
 @media screen and (max-width: 769px) {
-  .information-card {
-    /* position: fixed;
-    bottom: 0;
-    top: 75px;
-    width: 25%; */
-  }
   .user-avatar {
     padding-top: 150px;
   }

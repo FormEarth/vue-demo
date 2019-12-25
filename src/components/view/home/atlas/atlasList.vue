@@ -74,7 +74,7 @@ export default {
   },
   //keep-alive页面销毁触发
   deactivated() {
-    if (!document.querySelector(".right-panel")) {
+    if (document.querySelector(".right-panel")!=null) {
       document
         .querySelector(".right-panel")
         .removeEventListener("scroll", this.handleScroll);
@@ -86,7 +86,7 @@ export default {
   methods: {
     handleScroll() {
       let scrollTo = document.querySelector(".right-panel").scrollTop;
-      // console.log("scrollTop:" + scrollTo);
+      console.log(scrollTo);
       this.scroll = scrollTo;
     },
     //初始化数据加载

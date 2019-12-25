@@ -60,6 +60,13 @@ const user = {
                 params: data
             }
         )
+    },
+    //修改密码
+    modifyOwnPassword(data) {
+        return request.put(
+            baseAPI + '/password',
+            data
+        )
     }
 }
 

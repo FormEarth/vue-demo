@@ -33,9 +33,8 @@
           v-if="isLogin"
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.push('/mine')"
-        >
-          <mu-menu placement="bottom" open-on-hover>
-            {{user.userName}}
+        > {{user.userName}}
+          <!-- <mu-menu placement="bottom" open-on-hover>           
             <mu-list slot="content">
               <mu-list-item button to="/home/article/add">
                 <mu-icon value="post_add" color="red700"></mu-icon>
@@ -50,7 +49,7 @@
                 <mu-list-item-title>发布动态</mu-list-item-title>
               </mu-list-item>
             </mu-list>
-          </mu-menu>
+          </mu-menu> -->
         </div>
         <div
           v-else

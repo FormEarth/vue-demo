@@ -97,11 +97,22 @@
           </mu-button>
         </mu-list-item-action>
       </mu-list-item>
-      <mu-list-item button :ripple="false">
+      <mu-list-item button :ripple="false" to="/mine/password/modify">
         <mu-list-item-action>
           <mu-icon value="vpn_key" color="primary"></mu-icon>
         </mu-list-item-action>
         <mu-list-item-title>修改我的密码</mu-list-item-title>
+        <mu-list-item-action>
+          <mu-button icon>
+            <mu-icon value="arrow_forward_ios"></mu-icon>
+          </mu-button>
+        </mu-list-item-action>
+      </mu-list-item>
+      <mu-list-item button :ripple="false" to>
+        <mu-list-item-action>
+          <mu-icon value="near_me" color="primary"></mu-icon>
+        </mu-list-item-action>
+        <mu-list-item-title>注销</mu-list-item-title>
         <mu-list-item-action>
           <mu-button icon>
             <mu-icon value="arrow_forward_ios"></mu-icon>

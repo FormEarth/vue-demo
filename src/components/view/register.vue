@@ -181,7 +181,7 @@ a {
   }
 }
 /* 宽度在600px~800px应用的css */
-@media screen and (max-width: 769px) and (max-width: 992px) {
+@media screen and (min-width: 769px) and (max-width: 992px) {
   .register-container {
     height: 100%;
     padding-top: 50px;
@@ -192,7 +192,7 @@ a {
   }
 }
 /* 宽度在300px~640px应用的css */
-@media screen and (min-width: 300px) and (max-width: 769px) {
+@media screen and (max-width: 769px) {
   .register-container {
     height: 100%;
     padding-top: 80px;

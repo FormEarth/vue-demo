@@ -55,15 +55,15 @@
           </div>
           <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
           <demo-input placeholder="添加评论" v-model="comment" />
-          <div style="margin-top:10px;">
+          <!-- <div style="margin-top:10px;"> -->
             <input
               :disabled="comment.length==0"
               type="submit"
               value="提交"
               @click="commentArticle"
-              style="border:none;width:100%;background-color:#5db2ff;height:30px;"
+              style="border:none;background-color:#5db2ff;height:30px;"
             />
-          </div>
+          <!-- </div> -->
         </mu-card-actions>
         <!-- <mu-divider></mu-divider> -->
         <mu-card-actions
