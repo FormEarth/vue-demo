@@ -7,18 +7,9 @@
     <div v-show="transmitText">
       <textarea name id cols="30" rows="10"></textarea>
     </div>
-    <div class="multi-line">
-      <div
-        class="edit-area"
-        contenteditable="true"
-        placeholder="写下你的评论……"
-        @focus="focusEvent"
-        @blur="blurEvent"
-      ><h5>123</h5></div>
-      <div v-show="showButton" class="submit-button">
-        <mu-button color="info" :ripple="false" small>发布</mu-button>
-      </div>
-    </div>
+    <demo-text-editor :originContent="text" @change="modifyText"></demo-text-editor>
+    {{text}}
+    <div>{{appName}}</div>
   </div>
 </template>
 
@@ -32,32 +23,19 @@ export default {
       showButton: false
     };
   },
-  methods: {
-    focusEvent() {
-      this.showButton = true;
-    },
-    blurEvent() {
-      this.showButton = false;
+  computed:{
+    appName(){
+      return navigator.appName+","+navigator.platform+","+navigator.userAgent;
+    }
+  },
+  methods:{
+    modifyText(content){
+      this.text = content;
     }
   }
 };
 </script>
 
 <style scoped>
-.multi-line {
-  display: flex;
-}
-.edit-area {
-  background-color: #fff;
-  padding: 5px;
-  flex: 8;
-  margin: 0 5px;
-  width: 100%;
-}
-.edit-area:focus {
-  width: 80%;
-}
-.submit-button {
-  width: 88px;
-}
+
 </style>

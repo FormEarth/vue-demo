@@ -23,7 +23,7 @@
       @load="load"
 
     >
-      <!-- <mu-sub-header style="background-color: white">图集推荐</mu-sub-header> -->
+      <mu-sub-header>图集推荐</mu-sub-header>
       <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
         <atlas-item
           style="margin-bottom:3px;"

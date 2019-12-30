@@ -1,20 +1,20 @@
 <template>
   <div class="content">
     <!-- 顶部导航栏 -->
-    <demo-nav v-show="this.$route.meta.nav!='none'"></demo-nav>
+    <demo-nav v-show="$route.meta.nav!='none'"></demo-nav>
     <!-- <div class="main-contents"> -->
-      <!-- 左侧部分 -->
-      <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
-      <!-- <div class="left-panel">
+    <!-- 左侧部分 -->
+    <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
+    <!-- <div class="left-panel">
         <slot name="demo-card"></slot>
-      </div>-->
-      <!-- 右侧部分 -->
-      <div class="right-panel">
-        <div class="left-panel">
-          <slot name="demo-card"></slot>
-        </div>
-        <slot name="detail-content"></slot>
+    </div>-->
+    <!-- 右侧部分 -->
+    <div :class="['right-panel',showMobileAppbar?'clear-top':'']">
+      <div class="left-panel">
+        <slot name="demo-card"></slot>
       </div>
+      <slot name="detail-content"></slot>
+    </div>
     <!-- </div> -->
   </div>
 </template>
@@ -33,81 +33,87 @@ export default {
       backgroundImage:
         "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
     };
+  },
+  computed: {
+    showMobileAppbar: function() {
+      var routeName = this.$route.name;
+      if (
+        routeName == "homePage" ||
+        routeName == "atlasList" ||
+        routeName == "mine" ||
+        routeName == "star" ||
+        routeName == "info"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
-  /*滚动条整体样式*/
-  .right-panel::-webkit-scrollbar {
-    width: 5px;
-    height: 8px; /*这个高度是用来定义底部攻读条高度的 */
-  }
-  /*滚动条滑块*/
-  .right-panel::-webkit-scrollbar-thumb {
-    /* border-radius: 10px; */
-    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-    background: rgb(110, 189, 253);
-  }
-  /*滚动条轨道*/
-  .right-panel::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
-    border-radius: 10px;
-    background: transparent;
-  }
+/*滚动条整体样式*/
+.right-panel::-webkit-scrollbar {
+  /* width: 5px; */
+  width: 0;
+  height: 8px; /*这个高度是用来定义底部攻读条高度的 */
+}
+/*滚动条滑块*/
+.right-panel::-webkit-scrollbar-thumb {
+  /* border-radius: 10px; */
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  background: rgb(110, 189, 253);
+}
+/*滚动条轨道*/
+.right-panel::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
+  border-radius: 10px;
+  background: transparent;
+}
 /* 桌面，宽度>=993px */
 @media screen and (min-width: 993px) {
   .content .left-panel {
-    /* width: 25%; */
     width: 350px;
-    /* min-width: 200px; */
-    /* height: 100%; */
     position: fixed;
     top: 75px;
-    /* bottom: 0; */
     left: 10%;
     background-repeat: no-repeat;
     background-size: cover;
   }
   .content .right-panel {
-    margin-left: calc(10% + 370px);
-    /* padding-left: 350px;
-    margin:  0 10%; */
-    /* width: 100%; */
+    padding-left: calc(10% + 370px);
     padding-right: 10%;
     position: fixed;
-    top: 80px;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     overflow-y: auto;
+    padding-top: 80px;
   }
-  /* .link img:hover {
-    transform: scale(1.1); 元素放大1.4倍
-    transition: all 1s; 元素在0.5s内完成动画
-    cursor: pointer;
-  } */
 }
 /* 平板，宽度[769px,992px]; */
 @media screen and (min-width: 769px) and (max-width: 992px) {
-
   .content .left-panel {
-    width: 28%;
-    /* min-width: 200px; */
+    width: 330px;
     position: fixed;
     top: 75px;
-    bottom: 0;
-    left: 0;
+    left: 5%;
     background-repeat: no-repeat;
     background-size: cover;
   }
   .content .right-panel {
-    width: 72%;
+    padding-left: calc(5% + 350px);
+    padding-right: 5%;
     position: fixed;
-    top: 80px;
+    top: 0;
     bottom: 0;
+    left: 0;
     right: 0;
     overflow-y: auto;
+    padding-top: 80px;
   }
 }
 /* 手机，宽度<=768px */
@@ -118,9 +124,18 @@ export default {
   .content .right-panel {
     margin-bottom: 5px;
     /* top: 100px; */
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
   }
   .left-panel {
     display: none;
+  }
+  .content .clear-top {
+    top: 0;
   }
 }
 </style>

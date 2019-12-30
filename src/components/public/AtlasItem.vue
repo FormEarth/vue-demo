@@ -11,8 +11,8 @@
             <img v-lazy="atlas.user.avatar" />
           </div>
           <div class="header-center">
-            <div style="height:23px;font-size:16px;line-height:15px;padding-top:5px;">
-              <span style="color:red;">{{atlas.user.userName}}</span>
+            <div class="header-username">
+              <span>{{atlas.user.userName}}</span>
               <!-- <span class="follow-button">关注</span> -->
             </div>
             <div style="height:23px;line-height:16px;padding-top:2px;">
@@ -32,7 +32,10 @@
         <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
       </div>
       <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
-        <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.atlasContent[atlas.atlasContent.length-1]"></span>
+        <span
+          style="font-size:14px;white-space: pre-wrap;"
+          v-html="atlas.atlasContent[atlas.atlasContent.length-1]"
+        ></span>
         <demo-tag
           v-show="atlas.atlasPictures.length==0"
           v-for="tag in atlas.atlasTags"
@@ -478,10 +481,19 @@ export default {
 .mu-dialog-wrapper >>> .mu-dialog-body {
   padding: 0;
 }
+.header-username {
+  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  height: 23px;
+  font-size: 16px;
+  line-height: 15px;
+  padding-top: 5px;
+  color: red;
+}
 .atlas-content {
   display: -webkit-box;
   /*! autoprefixer: off */
-  -webkit-box-orient: vertical;/** 这个属性在build时会被删除，需要特别处理 */
+  -webkit-box-orient: vertical; /** 这个属性在build时会被删除，需要特别处理 */
   /* autoprefixer: on */
   overflow: hidden;
   text-overflow: ellipsis;

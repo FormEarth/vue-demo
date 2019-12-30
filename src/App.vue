@@ -94,6 +94,7 @@ export default {
 </script>
 
 <style>
+@import './assets/fonts/font.css';
 #app {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /*-webkit-font-smoothing: antialiased;

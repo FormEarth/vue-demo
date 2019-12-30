@@ -32,7 +32,7 @@
         v-model="atlas.atlasContent[atlas.atlasContent.length-1]"
         :rows="2"
         :rowsMax="20"
-        max-length="255"
+        max-length="300"
         full-width
         multi-line
         placeholder="文字描述（可选）"
