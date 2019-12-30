@@ -86,7 +86,7 @@ export default {
   methods: {
     handleScroll() {
       let scrollTo = document.querySelector(".right-panel").scrollTop;
-      console.log(scrollTo);
+      // console.log(scrollTo);
       this.scroll = scrollTo;
     },
     //初始化数据加载
