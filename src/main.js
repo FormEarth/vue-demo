@@ -18,6 +18,7 @@ import VueLazyload from 'vue-lazyload'//图片懒加载
 import '@vant/touch-emulator';//vant适配PC端
 import App from './App'
 import router from './router'
+import DemoNotify from '@/components/public/notify'
 
 Vue.use(VueLazyload, {
   error: require('@/assets/broken_image.jpg'),
@@ -28,6 +29,9 @@ Vue.use(MuseUI);
 //加载状态组件
 Vue.use(Loading);
 Vue.use(Vant);
+//全局提示组件
+Vue.use(DemoNotify)
+
 Vue.prototype.$http = api
 Vue.config.productionTip = false
 //是否启用debug

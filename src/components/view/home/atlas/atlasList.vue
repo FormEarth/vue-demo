@@ -23,7 +23,7 @@
       @load="load"
 
     >
-      <mu-sub-header>图集推荐</mu-sub-header>
+      <mu-sub-header style="background:#fff;">图集推荐</mu-sub-header>
       <div v-for="(atlas,index) in atlases" :key="atlas.atlasId">
         <atlas-item
           style="margin-bottom:3px;"
@@ -200,7 +200,7 @@ export default {
 @media screen and (min-width: 993px) {
   .demo-container {
     /* width: 100%; */
-    padding: 0 15%;
+    padding: 0 10%;
   }
 }
 @media screen and (max-width: 769px) {

@@ -12,7 +12,7 @@
         <br />
         <span>{{current_user.personalProfile}}</span>
       </div>-->
-      <user-card :user="current_user"></user-card>
+      <user-card :user="$store.state.current_user"></user-card>
     </div>
     <!-- <div v-else> -->
     <user-card :icons="icons" :title="'常用功能'"></user-card>

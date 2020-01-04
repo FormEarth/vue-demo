@@ -10,6 +10,7 @@
     <demo-text-editor :originContent="text" @change="modifyText"></demo-text-editor>
     {{text}}
     <div>{{appName}}</div>
+    <mu-button color="info" @click="showNotify">点我</mu-button>
   </div>
 </template>
 
@@ -23,19 +24,23 @@ export default {
       showButton: false
     };
   },
-  computed:{
-    appName(){
-      return navigator.appName+","+navigator.platform+","+navigator.userAgent;
+  computed: {
+    appName() {
+      return (
+        navigator.appName + "," + navigator.platform + "," + navigator.userAgent
+      );
     }
   },
-  methods:{
-    modifyText(content){
+  methods: {
+    modifyText(content) {
       this.text = content;
+    },
+    showNotify() {
+      this.$demo_notify( "操作成功");
     }
   }
 };
 </script>
 
 <style scoped>
-
 </style>

@@ -9,16 +9,35 @@
         <div class="title">
           <span>{{article.title}}</span>
         </div>
-        <div class="title-tag">
+        <!-- <div class="title-tag">
           <demo-tag
             v-for="(tag,index) in article.tags"
             :key="index"
             color="green"
             small
           >{{tag.tagText}}</demo-tag>
-          
+        </div>-->
+        <div style="padding-left: 3px;">
+          <span>{{article.authorName}}&nbsp;&nbsp;</span>
+          <span>
+            <mu-icon value="schedule" size="16" style="vertical-align: text-top;"></mu-icon>
+            {{article.sendTime|time}}&nbsp;&nbsp;
+          </span>
+          <span>
+            <mu-icon value="remove_red_eye" size="16" style="vertical-align: text-top;"></mu-icon>
+            {{article.readerNum}}&nbsp;阅读&nbsp;&nbsp;
+          </span>
+          <span v-if="article.tags.length>0">
+            <mu-icon value="local_offer" size="16" style="vertical-align: text-top;"></mu-icon>
+            <demo-tag
+              v-for="(tag,index) in article.tags"
+              :key="index"
+              color="green"
+              small
+              simple
+            >{{tag.tagText}}</demo-tag>
+          </span>
         </div>
-        <span style="padding-left: 3px;">{{article.authorName}}&nbsp;&nbsp;{{article.sendTime}}</span>
         <div class="sub-title">{{article.summary}}</div>
         <!-- <img class="front-cover" :src="article.frontCover" /> -->
         <!-- <div class="footer">
@@ -71,23 +90,26 @@ export default {
 </script>
 
 <style scoped>
-.root{
-  padding-bottom:10px;
+.root {
+  padding-bottom: 10px;
   max-width: 800px;
 }
 .article-item {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  /* border-radius: 5px; */
+  border-radius: 7px;
   background-color: #fff;
   /* border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
   border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4); */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
 }
 .left-image {
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
   width: 30%;
   height: auto;
   max-height: 300px;
@@ -106,15 +128,16 @@ export default {
 .right-content {
   width: 70%;
   color: black;
+  padding: 0 10px;
   /* flex:1; */
 }
 .title {
   font-size: 24px;
   font-weight: 300;
-  padding-top: 7px;
-  padding-left: 3px;
+  padding: 7px 3px;
 }
 .sub-title {
+  font-size: 15px;
   color: gray;
   margin-top: 5px;
   margin-bottom: 12px;
@@ -124,7 +147,7 @@ export default {
   -webkit-box-orient: vertical; /** 这个属性在build时会被删除，需要特别处理 */
   /* autoprefixer: on */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -182,11 +205,12 @@ export default {
   }
 }
 @media screen and (max-width: 768px) {
-
   .left-image {
     /* display: none; */
-    height: 400px;
+    height: 250px;
     width: 100%;
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 0;
   }
   .right-content {
     width: 100%;

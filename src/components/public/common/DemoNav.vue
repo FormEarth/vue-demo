@@ -125,7 +125,6 @@ export default {
   height: 60px;
   min-width: 300px;
   /* background-color: #fff; */
-  background-color: #d4e3f1;
 }
 .title img {
   padding-top: 10px;

@@ -67,10 +67,11 @@ export default {
   width: 4px;
   height: 22px;
   vertical-align: -6px;
-  background-color: rgb(221, 24, 57);
+  background-color: #5e72e4;
 }
 .default:hover {
-  background-color: rgb(221, 24, 57);
+  /* background-color: rgb(221, 24, 57); */
+  background-color: #5e72e4;
   color: white;
 }
 .demo-card {

@@ -265,6 +265,10 @@ export default {
     },
     //切换喜欢与取消喜欢
     toggleLike() {
+      if (!this.$store.getters.isLogin) {
+        this.$router.push("/login");
+        return;
+      }
       if (this.isLiked) {
         //移除喜欢
         this.$toast.loading({
@@ -286,7 +290,7 @@ export default {
                 "current_user",
                 JSON.stringify(this.$store.state.current_user)
               );
-              this.$toast("已移除喜欢");
+              this.$demo_notify("已移除喜欢");
             } else {
               this.$toast.clear();
             }
@@ -315,7 +319,7 @@ export default {
                 "current_user",
                 JSON.stringify(this.$store.state.current_user)
               );
-              this.$toast("已添加喜欢");
+              this.$demo_notify("已添加喜欢");
             } else {
               this.$toast.clear();
             }
@@ -327,6 +331,10 @@ export default {
     },
     //切换收藏与取消收藏
     toggleKeep() {
+      if (!this.$store.getters.isLogin) {
+        this.$router.push("/login");
+        return;
+      }
       if (this.isKeeped) {
         //移除收藏
         this.$toast.loading({
@@ -348,7 +356,7 @@ export default {
                 "current_user",
                 JSON.stringify(this.$store.state.current_user)
               );
-              this.$toast("已移除收藏");
+              this.$demo_notify("已移除收藏");
             } else {
               this.$toast.clear();
             }
@@ -377,7 +385,7 @@ export default {
                 "current_user",
                 JSON.stringify(this.$store.state.current_user)
               );
-              this.$toast("已添加收藏");
+              this.$demo_notify("已添加收藏");
             } else {
               this.$toast.clear();
             }
@@ -391,8 +399,6 @@ export default {
       this.$router.push("/mine/info");
     },
     openAlertDialog() {
-      console.log(this.$store.state.current_user.userId);
-      console.log(this.atlas.creater);
       this.openAlert = true;
     },
     closeAlertDialog() {
@@ -434,7 +440,7 @@ export default {
 <style scoped>
 .main-content {
   min-width: 350px;
-  max-width: 800px;
+  /* max-width: 800px; */
   width: 100%;
   background-color: #fff;
 }

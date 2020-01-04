@@ -56,8 +56,8 @@ export default {
 <style scoped>
 /*滚动条整体样式*/
 .right-panel::-webkit-scrollbar {
-  /* width: 5px; */
-  width: 0;
+  width: 5px;
+  /* width: 0; */
   height: 8px; /*这个高度是用来定义底部攻读条高度的 */
 }
 /*滚动条滑块*/
@@ -86,17 +86,17 @@ export default {
     padding-left: calc(10% + 370px);
     padding-right: 10%;
     position: fixed;
-    top: 0;
+    top: 80px;
     bottom: 0;
     left: 0;
     right: 0;
     overflow-y: auto;
-    padding-top: 80px;
   }
 }
 /* 平板，宽度[769px,992px]; */
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .content .left-panel {
+    display: none;
     width: 330px;
     position: fixed;
     top: 75px;
@@ -105,15 +105,16 @@ export default {
     background-size: cover;
   }
   .content .right-panel {
-    padding-left: calc(5% + 350px);
+    /* padding-left: calc(5% + 350px); */
+    padding-left: 5%;
     padding-right: 5%;
     position: fixed;
-    top: 0;
+    top: 80px;
     bottom: 0;
     left: 0;
     right: 0;
     overflow-y: auto;
-    padding-top: 80px;
+    /* padding-top: 80px; */
   }
 }
 /* 手机，宽度<=768px */
