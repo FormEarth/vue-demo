@@ -36,7 +36,8 @@ export default {
       icons: [
         { icon: "post_add", text: "发布长文", link: "/home/article/add" },
         { icon: "burst_mode", text: "发布图集", link: "/atlas/add" },
-        { icon: "repeat", text: "BeyondHere", link: "/beyondhere" }
+        { icon: "repeat", text: "BeyondHere", link: "/beyondhere" },
+        { icon: "bookmarks", text: "书签", link: "/beyondhere" }
       ]
     };
   },

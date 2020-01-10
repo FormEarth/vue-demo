@@ -3,11 +3,16 @@
   <div class="root">
     <div class="header">
       <div class="nav-title">
-        <div class="title">
-          <img :src="logo_png" />
+        <!-- <div class="title"> -->
+        <!-- <img :src="logo_png" /> -->
+        DEMOOO
+        <!-- </div> -->
+        <div class="nav-menu">
+          <mu-icon value="menu" size="30" style="vertical-align: middle;" @click="showMobileNav"></mu-icon>
         </div>
       </div>
-      <div class="nav-content">
+
+      <div class="nav-content" id="nav-content">
         <div
           class="nav-item"
           :class="$route.meta.nav=='article'?'active-item':''"
@@ -23,54 +28,28 @@
           :class="$route.meta.nav=='album'?'active-item':''"
           @click="$router.push('/album')"
         >相册</div>
-        <div
+        <!-- <div
           class="nav-item"
           :class="$route.meta.nav=='discover'?'active-item':''"
           @click="$router.push('/star')"
-        >发现</div>
+        >发现</div>-->
         <div
           class="nav-item"
           v-if="isLogin"
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.push('/mine')"
-        > {{user.userName}}
-          <!-- <mu-menu placement="bottom" open-on-hover>           
-            <mu-list slot="content">
-              <mu-list-item button to="/home/article/add">
-                <mu-icon value="post_add" color="red700"></mu-icon>
-                <mu-list-item-title>发布长文</mu-list-item-title>
-              </mu-list-item>
-              <mu-list-item button to="/atlas/add">
-                <mu-icon value="burst_mode" color="Green"></mu-icon>
-                <mu-list-item-title>发布图集</mu-list-item-title>
-              </mu-list-item>
-              <mu-list-item button>
-                <mu-icon value="notes" color="Orange"></mu-icon>
-                <mu-list-item-title>发布动态</mu-list-item-title>
-              </mu-list-item>
-            </mu-list>
-          </mu-menu> -->
-        </div>
+        >{{user.userName}}</div>
         <div
           v-else
           class="nav-item"
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.push('/login')"
         >登录</div>
+        <div class="nav-item nav-toggle">
+          <mu-icon value="close" size="30" style="vertical-align: middle;" @click="hiddenMobileNav"></mu-icon>
+        </div>
       </div>
     </div>
-    <mu-appbar
-      style="width: 100%;"
-      color="primary"
-      v-if="showMobileAppbar"
-      class="headerAppbar"
-      z-depth="0"
-    >
-      <mu-button icon slot="left" @click="$router.back(-1)">
-        <mu-icon value="arrow_back"></mu-icon>
-      </mu-button>
-      {{$route.meta.title}}
-    </mu-appbar>
   </div>
 </template>
 
@@ -80,8 +59,18 @@ export default {
   data() {
     return {
       style: true,
-      logo_png: require("@/assets/images/logo.png"),
+      logo_png: require("@/assets/images/logo.png")
     };
+  },
+  methods: {
+    showMobileNav() {
+      // document.getElementById("nav-content").style.display="block";
+      // document.querySelector(".nav-content").style.display = "block";
+      document.getElementById("nav-content").classList.add("show-item");
+    },
+    hiddenMobileNav() {
+      document.getElementById("nav-content").classList.remove("show-item");
+    }
   },
   computed: {
     //已登录用户信息
@@ -117,6 +106,7 @@ export default {
   /* right: 5px; */
   width: 100%;
   z-index: 100;
+  background-color: #f4f5f7;
 }
 .header {
   display: flex;
@@ -125,6 +115,14 @@ export default {
   height: 60px;
   min-width: 300px;
   /* background-color: #fff; */
+  
+  line-height: 60px;
+}
+.nav-title {
+  font-family: "Dressedless Three", sans-serif;
+  font-weight: 500;
+  font-size: 3.5rem;
+  font-size: 28px;
 }
 .title img {
   padding-top: 10px;
@@ -133,54 +131,94 @@ export default {
 .nav-content {
   display: flex;
   justify-content: space-around;
+  /* background-color: #fff; */
 }
 .nav-content .nav-item {
-  /* display: inline-block; */
   /* width: 60px; */
   text-align: center;
-  padding-top: 35px;
   transition: all 1s;
 }
-.active-item {
+/* .active-item {
   border-bottom: 3px rgb(255, 0, 0) solid;
+} */
+.nav-title {
+  width: 50%;
 }
-.headerAppbar {
-  display: none;
+.nav-content {
+  width: 50%;
 }
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 993px) {
   .nav-title {
     width: 70%;
+    padding-left: 40px;
   }
   .nav-content {
+    display: flex;
+    /* position: static; */
     width: 30%;
   }
   .nav-item:hover {
-    /* color: rgb(255, 0, 0); */
-    border-bottom: 3px rgb(255, 0, 0) solid;
+    color: rgb(255, 0, 0);
+    /* border-bottom: 3px rgb(255, 0, 0) solid; */
     cursor: pointer;
     transition: all 1s;
+  }
+  .nav-menu {
+    display: none;
+  }
+  .nav-toggle {
+    display: none;
   }
 }
 /* 中等屏幕，宽度600px~800px; */
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .nav-title {
-    width: 50%;
+    padding-left: 30px;
   }
   .nav-content {
-    width: 50%;
+    display: flex;
+    /* position: static; */
+  }
+  .nav-menu {
+    display: none;
+  }
+  .nav-toggle {
+    display: none;
   }
 }
 /* 小屏幕，宽度在300px~600px */
 @media screen and (max-width: 769px) {
   .root {
-  position: relative;
-}
-  .header {
-    display: none;
+    position: relative;
   }
-  .headerAppbar {
+  .header {
+    display: block;
+    justify-content: space-between;
+    /* padding: 0 20px; */
+  }
+  .nav-content {
+    display: none;
+    width: auto;
+    /* position: absolute;
+    top: 10px;
+    width: 100%; */
+  }
+  .nav-title {
+    width: 100%;
+    padding: 0 15px;
+  }
+  .nav-menu {
+    float: right;
+    font-weight: bold;
+    /* background-color: #fff; */
+  }
+  .show-item {
+    background-color: #fff;
     display: flex;
+    flex-direction: column;
+    line-height: 30px;
+    /* font-weight: bold; */
   }
 }
 </style>

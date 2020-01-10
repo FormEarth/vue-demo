@@ -75,7 +75,7 @@
         src="http://192.168.2.105:9090/static/thumbnail/atlas/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
         style="max-width:100%;max-height:300px;vertical-align: middle;"
       /> -->
-      <div>111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+      <div>1111111111111111111111111111111111</div>
       <div>22222222222222222222222222222222222222</div>
       <div>3333333333333</div>
     </div>
@@ -123,7 +123,7 @@
         style="background-color:#fff;border-radius:5px;width:145px;text-align:center;padding:7px 0;"
       >
         <img
-          src="http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg"
+          src="http://192.168.149.108:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg"
           style="width:50px;height:50px;border-radius:50%;"
         />
         <br />

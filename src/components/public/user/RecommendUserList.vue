@@ -15,19 +15,19 @@ export default {
       users: [
         {
           avatar:
-            "http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
+            "http://192.168.149.108:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
           userName: "raining_heavily",
           sign: "something for nothing"
         },
         {
           avatar:
-            "http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
+            "http://192.168.149.108:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
           userName: "raining_heavily",
           sign: "something for nothing"
         },
         {
           avatar:
-            "http://192.168.2.105:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
+            "http://192.168.149.108:9090/static/thumbnail/avatar/bd940c1f374a4111b5856fa7404d92f2.jpg",
           userName: "raining_heavily",
           sign: "something for nothing"
         }

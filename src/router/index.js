@@ -47,7 +47,7 @@ const router = new Router({
 
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
     { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },
-    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, keepAlive: true, nav: "test" }, component: test },
+    { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, nav: "none" }, component: test },
     { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" }, component: album },
     { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: true, nav: "atlas" }, component: atlasList },
     { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false, nav: "atlas" }, component: atlas },
