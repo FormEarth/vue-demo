@@ -151,9 +151,10 @@ export default {
                 );
               }
               this.$store.commit("save_user", user);
-              if (this.$route.query.isRequest) {
-                this.$router.go(-1);
-              } else {
+              this.$demo_notify("登陆成功")
+              // if (this.$route.query.isRequest) {
+              //   this.$router.go(-1);
+              // } else {
                 if (this.$route.query.redirect) {
                   //如果存在参数
                   let redirect = this.$route.query.redirect;
@@ -161,7 +162,7 @@ export default {
                 } else {
                   this.$router.replace("/mine"); //否则跳转至我的首页
                 }
-              }
+              // }
               //取值的时候也要注意字符串转对象
               console.log(JSON.parse(sessionStorage.getItem("current_user")));
               console.log(

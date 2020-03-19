@@ -199,7 +199,7 @@ export default {
     padding: 0 7px;
   }
   .article-item:hover {
-    transform: translateX(-10px);
+    /* transform: translateX(-10px); */
     z-index: 100;
     box-shadow: 0px 4px 5px 3px rgba(33, 150, 243, 0.4);
   }
@@ -219,7 +219,11 @@ export default {
     display: inline-block;
   } */
   .sub-title {
+    display: none;
     -webkit-line-clamp: 4;
+  }
+  .article-item{
+    padding-bottom: 10px;
   }
 }
 </style>
