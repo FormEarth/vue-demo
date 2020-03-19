@@ -17,7 +17,7 @@
       </div>
     </demo-content>
 
-    <mu-bottom-nav
+    <!-- <mu-bottom-nav
       v-show="showBottomNav"
       :value.sync="this.$route.name"
       color="primary"
@@ -30,7 +30,7 @@
       </div>
       <mu-bottom-nav-item value="star" title="收藏" icon="star" replace to="/star"></mu-bottom-nav-item>
       <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
-    </mu-bottom-nav>
+    </mu-bottom-nav> -->
   </div>
 </template>
 

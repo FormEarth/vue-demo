@@ -1,6 +1,12 @@
 @font-face {
     font-family: 方正隶变简体; 
-    src: url("方正隶变简体.ttf");
+    src: url("./方正隶变简体.ttf");
     font-weight: normal;
     font-style: normal; 
   }
+@font-face {
+    font-family: "Dressedless Three";
+    src: url("./Dressedless_Three.ttf");
+    font-weight: normal;
+    font-style: normal; 
+}

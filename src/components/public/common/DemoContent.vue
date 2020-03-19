@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <!-- 顶部导航栏 -->
-    <demo-nav v-show="$route.meta.nav!='none'"></demo-nav>
+    <demo-nav></demo-nav>
     <!-- <div class="main-contents"> -->
     <!-- 左侧部分 -->
     <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
@@ -56,8 +56,8 @@ export default {
 <style scoped>
 /*滚动条整体样式*/
 .right-panel::-webkit-scrollbar {
-  width: 5px;
-  /* width: 0; */
+  /* width: 5px; */
+  width: 0;
   height: 8px; /*这个高度是用来定义底部攻读条高度的 */
 }
 /*滚动条滑块*/
@@ -77,7 +77,7 @@ export default {
   .content .left-panel {
     width: 350px;
     position: fixed;
-    top: 75px;
+    top: 65px;
     left: 10%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -86,7 +86,7 @@ export default {
     padding-left: calc(10% + 370px);
     padding-right: 10%;
     position: fixed;
-    top: 80px;
+    top: 70px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -135,8 +135,8 @@ export default {
   .left-panel {
     display: none;
   }
-  .content .clear-top {
+  /* .content .clear-top {
     top: 0;
-  }
+  } */
 }
 </style>
