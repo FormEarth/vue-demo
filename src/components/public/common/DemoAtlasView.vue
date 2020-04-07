@@ -1,7 +1,7 @@
 <template>
   <!-- 根节点 -->
   <div class="main-view">
-    <!-- 比例一致使用轮播图展示（图片过高会带来展示问题） -->
+    <!-- 比例一致使用轮播图展示（图片过高会带来展示问题） 
     <div v-if="identical">
       <van-swipe @change="onChange" :loop="false">
         <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -9,50 +9,47 @@
         </van-swipe-item>
         <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{images.length}}</div>
       </van-swipe>
-    </div>
+    </div>-->
     <!-- 比例不一致则自定义 -->
-    <div v-else :class="['image-item-'+imgLength,'show-view']">
+    <div :class="['image-item-'+imgLength,'show-view']">
       <div
         v-for="(image,index) in images"
         :key="index"
         :class="['each-item-'+index,'default-item']"
         @click="current=index;showPreview=true;"
       >
-        <img v-lazy="image" :class="forbidOversize?'max-height':''"/>
+        <img v-lazy="image" />
       </div>
-      <van-image-preview v-model="showPreview" :images="images"	:loop="false" :start-position="current"	:closeOnPopstate="true" @change="onChange">
+      <van-image-preview
+        v-model="showPreview"
+        :images="images"
+        :loop="false"
+        :start-position="current"
+        :closeOnPopstate="true"
+        @change="onChange"
+      >
         <template v-slot:index>第{{ current }}页</template>
         <div slot="cover">text</div>
       </van-image-preview>
     </div>
   </div>
 </template>
-//图集图片数组的展览组件
 <script>
 import { ImagePreview } from "vant";
 
 export default {
-  name: "DemoAtlasView",
+  name: "DemoAtlasView", //图集图片数组的展览组件
   props: {
     images: {
       type: Array,
       default: []
-    },
-    identical: {
-      type: Boolean,
-      default: false
-    },
-    forbidOversize: {
-      //单张图片是否限制长度，设置false原样展示
-      type: Boolean,
-      default: false
     }
   },
   data() {
     return {
       //图片预览组件是否打开
-      showPreview:false,
-      current: 0,
+      showPreview: false,
+      current: 0
     };
   },
   computed: {
@@ -63,7 +60,7 @@ export default {
   methods: {
     onChange(index) {
       this.current = index;
-    },
+    }
     // showImagePreview(position) {
     //   if (this.images.length == 1) return;
     //   const images = this.images;
@@ -92,24 +89,27 @@ export default {
 .default-item {
   width: 33.3%;
   height: 33.3vw;
-  max-height: 166.5px;
-  min-height: 116.5px;
+  /* max-height: 166.5px; */
+  max-height: 200px;
+  /* min-height: 116.5px; */
   padding-right: 3px;
-  margin-bottom: 3px;
+  margin-bottom: 1%;
 }
 .show-view {
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  margin-bottom: 3px;
+  /* margin-bottom: 3px; */
 }
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* padding-right: 3px; */
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0 5px 0;
+  border-radius: 4px;
+  cursor: zoom-in;
 }
-/* 一张图片 */
+/* 1张图片 */
 .image-item-1 .each-item-0 {
   /* width: 100%; */
   width: 100%;
@@ -117,181 +117,140 @@ img {
   max-height: 100%;
   /* background-color: rgb(26, 24, 24); */
   /* text-align: center; */
-  padding-right: 0;
 }
 .image-item-1 img {
   width: 100%;
   /* height: 100%; */
+  /* max-width: 100%; */
   max-width: 100%;
   /* max-height: 100%; */
   /* object-fit: contain; */
   vertical-align: middle;
 }
-.max-height {
-  max-height: 300px;
+/* 2张图片 */
+.image-item-2,
+.image-item-4,
+.image-item-5,
+.image-item-6,
+.image-item-7,
+.image-item-8,
+.image-item-9
+ {
+  max-width: 500px;
 }
-/* .image-item-2 {
-} */
-.image-item-2 .each-item-0 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  /* padding-right: 3px; */
-}
-.image-item-2 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-/* .image-item-3 {
-  overflow: hidden;
-  margin-bottom: 3px;
-} */
-.image-item-3 .each-item-0 {
+.image-item-7 .each-item-0{
+  position: relative;
   width: 100%;
-  height: 50vw;
-  max-height: 300px;
-  padding-right: 0;
+  height: 0;
+  padding-top: 35%;
 }
-.image-item-3 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  /* padding-right: 3px; */
+.image-item-2 .each-item-0,
+.image-item-2 .each-item-1,
+.image-item-4 .each-item-0,
+.image-item-4 .each-item-1,
+.image-item-4 .each-item-2,
+.image-item-4 .each-item-3,
+.image-item-5 .each-item-0,
+.image-item-5 .each-item-1,
+.image-item-8 .each-item-0,
+.image-item-8 .each-item-1
+ {
+  position: relative;
+  width: 49.5%;
+  height: 0;
+  padding-top: 49.5%;
 }
-.image-item-3 .each-item-2 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
+.image-item-2 .each-item-0,
+.image-item-3 .each-item-0,
+.image-item-3 .each-item-1,
+.image-item-4 .each-item-0,
+.image-item-4 .each-item-2,
+.image-item-5 .each-item-0,
+.image-item-5 .each-item-2,
+.image-item-5 .each-item-3,
+.image-item-6 .each-item-0,
+.image-item-6 .each-item-1,
+.image-item-6 .each-item-3,
+.image-item-6 .each-item-4,
+.image-item-7 .each-item-1,
+.image-item-7 .each-item-2,
+.image-item-7 .each-item-4,
+.image-item-7 .each-item-5,
+.image-item-8 .each-item-0,
+.image-item-8 .each-item-2,
+.image-item-8 .each-item-3,
+.image-item-8 .each-item-5,
+.image-item-8 .each-item-6,
+.image-item-9 .each-item-0,
+.image-item-9 .each-item-1,
+.image-item-9 .each-item-3,
+.image-item-9 .each-item-4,
+.image-item-9 .each-item-6,
+.image-item-9 .each-item-7
+ {
+  margin-right: 1%;
 }
-/* .image-item-3 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-/* .image-item-4 {
-  overflow: hidden;
-  margin-bottom: 3px;
-} */
-.image-item-4 .each-item-0 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-}
-.image-item-4 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-.image-item-4 .each-item-2 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-}
-.image-item-4 .each-item-3 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-/* .image-item-4 img {
+.image-item-2 img,
+.image-item-3 img,
+.image-item-4 img,
+.image-item-5 img,
+.image-item-6 img,
+.image-item-7 img,
+.image-item-8 img,
+.image-item-9 img
+{
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-} */
-/* .image-item-5 {
-  overflow: hidden;
-  margin-bottom: 3px;
-} */
-.image-item-5 .each-item-0 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
+} 
+/* 3张图片 */
+.image-item-3 .each-item-0,
+.image-item-3 .each-item-1,
+.image-item-3 .each-item-2,
+.image-item-5 .each-item-2,
+.image-item-5 .each-item-3,
+.image-item-5 .each-item-4,
+.image-item-6 .each-item-0,
+.image-item-6 .each-item-1,
+.image-item-6 .each-item-2,
+.image-item-6 .each-item-3,
+.image-item-6 .each-item-4,
+.image-item-6 .each-item-5,
+.image-item-7 .each-item-1,
+.image-item-7 .each-item-2,
+.image-item-7 .each-item-3,
+.image-item-7 .each-item-4,
+.image-item-7 .each-item-5,
+.image-item-7 .each-item-6,
+.image-item-8 .each-item-2,
+.image-item-8 .each-item-3,
+.image-item-8 .each-item-4,
+.image-item-8 .each-item-5,
+.image-item-8 .each-item-6,
+.image-item-8 .each-item-7,
+.image-item-9 .each-item-0,
+.image-item-9 .each-item-1,
+.image-item-9 .each-item-2,
+.image-item-9 .each-item-3,
+.image-item-9 .each-item-4,
+.image-item-9 .each-item-5,
+.image-item-9 .each-item-6,
+.image-item-9 .each-item-7,
+.image-item-9 .each-item-8
+ {
+  position: relative;
+  width: 32.66%;
+  height: 0;
+  padding-top: 32.66%;
 }
-.image-item-5 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-.image-item-5 .each-item-4 {
-  padding-right: 0;
-}
-.image-item-6 .each-item-0 {
-  width: 100%;
-  height: 40.3vw;
-  max-height: 250px;
-  min-height: 116.5px;
-  padding-right: 0;
-}
-.image-item-6 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-}
-.image-item-6 .each-item-2 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-.image-item-6 .each-item-5 {
-  padding-right: 0;
-}
-.image-item-7 .each-item-0 {
-  width: 100%;
-  height: 40.3vw;
-  max-height: 166.5px;
-  min-height: 116.5px;
-  padding-right: 0;
-}
-.image-item-7 .each-item-3 {
-  padding-right: 0;
-}
-.image-item-7 .each-item-6 {
-  padding-right: 0;
-}
-.image-item-8 .each-item-0 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-}
-.image-item-8 .each-item-1 {
-  width: 50%;
-  height: 50vw;
-  max-height: 250px;
-  min-height: 175px;
-  padding-right: 0;
-}
-.image-item-8 .each-item-4 {
-  padding-right: 0;
-}
-.image-item-8 .each-item-7 {
-  padding-right: 0;
-}
-.image-item-9 .each-item-2 {
-  padding-right: 0;
-}
-.image-item-9 .each-item-5 {
-  padding-right: 0;
-}
-.image-item-9 .each-item-8 {
-  padding-right: 0;
+/* 4张图片（同2） */
+/* 5张图片 */
+@media screen and (min-width: 768px) {
+  .image-item-1 img {
+    max-width: 225px;
+    cursor: zoom-in;
+  }
 }
 </style>

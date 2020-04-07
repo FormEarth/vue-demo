@@ -69,12 +69,14 @@
         <div class="show" @click="handleFold" v-show="line==100">收起</div>
       </div>
     </div>
-    <div style="with:100%;background-color:green;padding:10px;display:flex;flex-wrap:wrap;
-            flex-direction:row;">
+    <div
+      style="with:100%;background-color:green;padding:10px;display:flex;flex-wrap:wrap;
+            flex-direction:row;"
+    >
       <!-- <img
         src="http://192.168.2.105:9090/static/thumbnail/atlas/a7d8fefa9e2b44619e3c0a558bb505c8.jpg"
         style="max-width:100%;max-height:300px;vertical-align: middle;"
-      /> -->
+      />-->
       <div>1111111111111111111111111111111111</div>
       <div>22222222222222222222222222222222222222</div>
       <div>3333333333333</div>
@@ -141,6 +143,20 @@
     <div>
       <span class="qwerty">1234</span>
     </div>
+    <mu-button @click="open=!open">toggle</mu-button>
+    <mu-drawer :open.sync="open" :docked=false>
+      <mu-list>
+        <mu-list-item button>
+          <mu-list-item-title>Menu Item 1</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button>
+          <mu-list-item-title>Menu Item 2</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item @click="open = false" button>
+          <mu-list-item-title>Close</mu-list-item-title>
+        </mu-list-item>
+      </mu-list>
+    </mu-drawer>
   </div>
 </template>
 <script>
@@ -158,7 +174,8 @@ export default {
       showButton: false,
       fold: true,
       scroll: 0,
-      selectTags:[]
+      selectTags: [],
+      open: false
     };
   },
   watch: {
@@ -189,16 +206,16 @@ export default {
   },
   //keep-alive页面进入触发
   activated() {
-    console.log("in:"+this.scroll)
+    console.log("in:" + this.scroll);
     // if (this.scroll > 0) {
-      // window.scrollTo(0, this.scroll);
-      // this.scroll = 0;
-      window.addEventListener("scroll", this.handleScroll);
+    // window.scrollTo(0, this.scroll);
+    // this.scroll = 0;
+    window.addEventListener("scroll", this.handleScroll);
     // }
   },
   //keep-alive页面销毁触发
   deactivated() {
-    console.log("out:"+this.scroll)
+    console.log("out:" + this.scroll);
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
@@ -257,13 +274,13 @@ export default {
 .root {
   /* background: #d9d9d9; */
 }
-.qwerty{
+.qwerty {
   background-color: blue;
   color: white;
   opacity: 0.35;
 }
-.qwerty:hover{
-  opacity: 1.0;
+.qwerty:hover {
+  opacity: 1;
 }
 .level-block {
   vertical-align: middle;

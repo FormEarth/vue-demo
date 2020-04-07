@@ -151,18 +151,18 @@ export default {
                 );
               }
               this.$store.commit("save_user", user);
-              this.$demo_notify("登陆成功")
-              // if (this.$route.query.isRequest) {
-              //   this.$router.go(-1);
-              // } else {
-                if (this.$route.query.redirect) {
+              this.$demo_notify("登陆成功");
+              //延迟1s后跳转
+              var _that = this;
+              setTimeout(function() {
+                if (_that.$route.query.redirect) {
                   //如果存在参数
-                  let redirect = this.$route.query.redirect;
-                  this.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
+                  let redirect = _that.$route.query.redirect;
+                  _that.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
                 } else {
-                  this.$router.replace("/mine"); //否则跳转至我的首页
+                  _that.$router.replace("/mine");
                 }
-              // }
+              }, 1000);
               //取值的时候也要注意字符串转对象
               console.log(JSON.parse(sessionStorage.getItem("current_user")));
               console.log(

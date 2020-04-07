@@ -6,7 +6,7 @@ import api from '@/axios/api'
 import login from '@/components/view/login'
 import register from '@/components/view/register'
 
-import articles from '@/components/view/home/article/articleList'
+import writings from '@/components/view/home/Writing'
 import article from '@/components/view/home/article/article'
 import articleAdd from '@/components/view/home/article/edit'
 import atlasList from '@/components/view/home/atlas/atlasList'
@@ -25,6 +25,9 @@ import setting from '@/components/view/mine/setting'
 import tagAdd from '@/components/view/mine/tagAdd'
 import modifyPassword from '@/components/view/mine/setting/modifyPassword'
 
+import writing from '@/components/view/home/Writing'
+import writingList from '@/components/view/home/WritingList'
+
 import test from '@/components/view/test/test'
 import album from '@/components/view/test/album'
 import beyondhere from '@/components/view/tools/beyondhere'
@@ -38,11 +41,12 @@ const router = new Router({
   //使用history模式在部署时会有除根路径外的页面不能刷新，因为router页面跳转的并不是真实路径
   // mode: 'history',
   routes: [
-    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: articles },
-    { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: articles },
+    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: writingList },
+    { path: '/writing/detail/:writingId', name: 'writing', meta: { title: "动态详情", requireLogin: false, nav: "atlas" }, component: writing },
+    // { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: info },
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
     { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false, nav: "article" }, component: article },
-    { path: '/home/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true, nav: "article" }, component: articleAdd },
+    { path: '/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true, nav: "article" }, component: articleAdd },
     { path: '/home/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleAdd },
 
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
@@ -50,7 +54,7 @@ const router = new Router({
     { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, nav: "none" }, component: test },
     { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" }, component: album },
     { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: true, nav: "atlas" }, component: atlasList },
-    { path: '/atlas/detail/:atlasId', name: 'atlas', meta: { title: "图集详情", requireLogin: false, nav: "atlas" }, component: atlas },
+    
     { path: '/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true, nav: "atlas" }, component: atlasAdd },
     { path: '/atlas/edit/:atlasId', name: 'atlasEdit', meta: { title: "编辑图集", requireLogin: true, nav: "atlas" }, component: atlasEdit },
     { path: '/star', name: 'star', meta: { title: "关注", requireLogin: false, nav: "atlas" }, component: star },

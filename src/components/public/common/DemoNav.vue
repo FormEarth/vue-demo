@@ -1,17 +1,13 @@
 <template>
   <!-- 顶部导航栏组件 -->
-  <div class="root">
+  <div class="root-node">
     <div class="header">
       <div class="nav-title">
-        <!-- <div class="title"> -->
-        <!-- <img :src="logo_png" /> -->
         DEMOOO
-        <!-- </div> -->
         <div class="nav-menu">
-          <mu-icon value="menu" size="30" style="vertical-align: middle;" @click="showMobileNav"></mu-icon>
+          <mu-icon value="menu" size="30" style="vertical-align: middle;" @click="showDrawer"></mu-icon>
         </div>
       </div>
-
       <div class="nav-content" id="nav-content">
         <div
           class="nav-item"
@@ -20,19 +16,9 @@
         >首页</div>
         <div
           class="nav-item"
-          :class="$route.meta.nav=='atlas'?'active-item':''"
-          @click="$router.push('/atlas')"
-        >图集</div>
-        <div
-          class="nav-item"
           :class="$route.meta.nav=='album'?'active-item':''"
           @click="$router.push('/album')"
         >相册</div>
-        <!-- <div
-          class="nav-item"
-          :class="$route.meta.nav=='discover'?'active-item':''"
-          @click="$router.push('/star')"
-        >发现</div>-->
         <div
           class="nav-item"
           v-if="isLogin"
@@ -45,9 +31,6 @@
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.push('/login')"
         >登录</div>
-        <div class="nav-item nav-toggle">
-          <mu-icon value="close" size="30" style="vertical-align: middle;" @click="hiddenMobileNav"></mu-icon>
-        </div>
       </div>
     </div>
   </div>
@@ -58,18 +41,14 @@ export default {
   name: "DemoNav",
   data() {
     return {
+      
       style: true,
-      logo_png: require("@/assets/images/logo.png")
+      logo_png: require("@/assets/images/logo.png"),
     };
   },
   methods: {
-    showMobileNav() {
-      // document.getElementById("nav-content").style.display="block";
-      // document.querySelector(".nav-content").style.display = "block";
-      document.getElementById("nav-content").classList.add("show-item");
-    },
-    hiddenMobileNav() {
-      document.getElementById("nav-content").classList.remove("show-item");
+    showDrawer() {
+      this.$emit('toggle');
     }
   },
   computed: {
@@ -100,13 +79,13 @@ export default {
 </script>
 
 <style scoped>
-.root {
-  position: fixed;
+.root-node {
+  position: sticky;
+  position: -webkit-sticky;
   top: 0;
-  /* right: 5px; */
   width: 100%;
-  z-index: 100;
-  background-color: #f4f5f7;
+  z-index: 1;
+  background-color: #fff;
 }
 .header {
   display: flex;
@@ -115,7 +94,7 @@ export default {
   height: 60px;
   min-width: 300px;
   /* background-color: #fff; */
-  
+
   line-height: 60px;
 }
 .nav-title {
@@ -147,6 +126,9 @@ export default {
 .nav-content {
   width: 50%;
 }
+.nav-menu {
+  cursor: pointer;
+}
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 993px) {
   .nav-title {
@@ -167,9 +149,6 @@ export default {
   .nav-menu {
     display: none;
   }
-  .nav-toggle {
-    display: none;
-  }
 }
 /* 中等屏幕，宽度600px~800px; */
 @media screen and (min-width: 769px) and (max-width: 992px) {
@@ -183,15 +162,9 @@ export default {
   .nav-menu {
     display: none;
   }
-  .nav-toggle {
-    display: none;
-  }
 }
 /* 小屏幕，宽度在300px~600px */
 @media screen and (max-width: 769px) {
-  .root {
-    position: relative;
-  }
   .header {
     display: block;
     justify-content: space-between;

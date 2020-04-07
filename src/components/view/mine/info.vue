@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <mu-tabs
+    <!-- <mu-tabs
       :value.sync="active"
       indicator-color="red"
       inverse
@@ -81,12 +81,12 @@
       <mu-tab>图集</mu-tab>
       <mu-tab>文章</mu-tab>
       <mu-tab>喜欢</mu-tab>
-    </mu-tabs>
-    <atlas-list withUser></atlas-list>
+    </mu-tabs> -->
+    <writing-list withUser></writing-list>
   </mu-container>
 </template>
 <script>
-import AtlasList from "@/components/view/home/atlas/atlasList.vue";
+import WritingList from "@/components/view/home/WritingList.vue";
 
 export default {
   name: "info",
@@ -159,7 +159,7 @@ export default {
     // window.removeEventListener("scroll", this.scroll, false);
   },
   components: {
-    AtlasList
+    WritingList
   },
   methods: {
     //关注用户

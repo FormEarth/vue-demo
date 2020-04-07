@@ -1,37 +1,51 @@
 <template>
   <div class="content">
     <!-- 顶部导航栏 -->
-    <demo-nav></demo-nav>
-    <!-- <div class="main-contents"> -->
-    <!-- 左侧部分 -->
-    <!-- <div class="left-panel" :style="{backgroundImage: 'url(' + backgroundImage + ')'}"> -->
-    <!-- <div class="left-panel">
-        <slot name="demo-card"></slot>
-    </div>-->
-    <!-- 右侧部分 -->
-    <div :class="['right-panel',showMobileAppbar?'clear-top':'']">
+    <demo-nav @toggle="toggleDrawer"></demo-nav>
+    <div class="main-content">
+      <!-- 左侧部分 -->
       <div class="left-panel">
+        <slot name="detail-content"></slot>
+      </div>
+      <mu-drawer
+        :docked="false"
+        :open.sync="open"
+        :style="{backgroundImage: 'url(' + drawer_background + ')'}"
+      >
+        <mu-list>
+          <mu-list-item button @click="open=false;$router.push('/')">
+            <mu-list-item-title>首页</mu-list-item-title>
+          </mu-list-item>
+          <mu-list-item button @click="open=false;$router.push('/album')">
+            <mu-list-item-title>相册</mu-list-item-title>
+          </mu-list-item>
+          <mu-list-item button v-if="isLogin" @click="open=false;$router.push('/mine')">
+            <mu-list-item-title>{{user.userName}}</mu-list-item-title>
+          </mu-list-item>
+          <mu-list-item button v-else @click="open=false;$router.push('/login')">
+            <mu-list-item-title>登录</mu-list-item-title>
+          </mu-list-item>
+          <mu-list-item @click="toggleDrawer" button>
+            <mu-list-item-title>关闭</mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+      </mu-drawer>
+      <!-- 右侧部分 -->
+      <div class="right-panel">
         <slot name="demo-card"></slot>
       </div>
-      <slot name="detail-content"></slot>
     </div>
-    <!-- </div> -->
   </div>
 </template>
 
 <script>
 export default {
   name: "DemoContent",
-  props: {
-    // user: {
-    //   type: Object,
-    //   default: {}
-    // }
-  },
   data() {
     return {
-      backgroundImage:
-        "http://192.168.149.110:9090/static/upload/images/20191012152641.jpg"
+      open: false,
+      screenWidth: document.body.clientWidth,
+      drawer_background: require("@/assets/images/drawer_back.jpg")
     };
   },
   computed: {
@@ -48,6 +62,46 @@ export default {
       } else {
         return false;
       }
+    },
+    //是否已登录
+    isLogin: function() {
+      return this.$store.getters.isLogin;
+    },
+    //已登录用户信息
+    user: function() {
+      return this.$store.state.current_user;
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.open = !this.open;
+    }
+  },
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        that.screenWidth = window.screenWidth;
+      })();
+    };
+  },
+  watch: {
+    screenWidth(val) {
+      // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+      if (!this.timer) {
+        // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+        this.screenWidth = val;
+        this.timer = true;
+        let that = this;
+        setTimeout(function() {
+          // 打印screenWidth变化的值
+          if (that.screenWidth > 992) {
+            that.open = false;
+          }
+          that.timer = false;
+        }, 400);
+      }
     }
   }
 };
@@ -56,8 +110,8 @@ export default {
 <style scoped>
 /*滚动条整体样式*/
 .right-panel::-webkit-scrollbar {
-  /* width: 5px; */
-  width: 0;
+  width: 5px;
+  /* width: 0; */
   height: 8px; /*这个高度是用来定义底部攻读条高度的 */
 }
 /*滚动条滑块*/
@@ -72,71 +126,50 @@ export default {
   border-radius: 10px;
   background: transparent;
 }
+.left-panel {
+  padding: 10px 5px;
+  /* max-width: 800px; */
+}
+.right-panel {
+  padding-top: 5px;
+}
+.mu-drawer {
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* top: 60px; */
+}
+.mu-item-title {
+  text-align: center;
+}
 /* 桌面，宽度>=993px */
 @media screen and (min-width: 993px) {
-  .content .left-panel {
-    width: 350px;
-    position: fixed;
-    top: 65px;
-    left: 10%;
-    background-repeat: no-repeat;
-    background-size: cover;
+  .main-content {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
   }
-  .content .right-panel {
-    padding-left: calc(10% + 370px);
-    padding-right: 10%;
-    position: fixed;
-    top: 70px;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  .main-content .left-panel {
+    flex: 1;
+    margin-right: 15px;
+  }
+  .main-content .right-panel {
+    width: 300px;
     overflow-y: auto;
   }
 }
 /* 平板，宽度[769px,992px]; */
 @media screen and (min-width: 769px) and (max-width: 992px) {
-  .content .left-panel {
+  .main-content .right-panel {
     display: none;
-    width: 330px;
-    position: fixed;
-    top: 75px;
-    left: 5%;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  .content .right-panel {
-    /* padding-left: calc(5% + 350px); */
-    padding-left: 5%;
-    padding-right: 5%;
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-y: auto;
-    /* padding-top: 80px; */
   }
 }
 /* 手机，宽度<=768px */
 @media screen and (max-width: 768px) {
-  /* .content {
-    margin-top: 15px;
-  } */
-  .content .right-panel {
-    margin-bottom: 5px;
-    /* top: 100px; */
-    position: fixed;
-    top: 56px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-y: auto;
-  }
-  .left-panel {
+  .main-content .right-panel {
     display: none;
   }
-  /* .content .clear-top {
-    top: 0;
-  } */
+  .main-content .left-panel {
+    padding-top: 5px;
+  }
 }
 </style>

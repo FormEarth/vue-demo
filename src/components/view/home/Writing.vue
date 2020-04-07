@@ -13,7 +13,7 @@
         <mu-icon size="56" value="refresh" color="blue100"></mu-icon>
       </div>
     </div>
-    <div v-else style="background-color:#fff;padding:10px 20px;">
+    <div v-else class="writing-area">
       <div class="atlas-item-header">
         <div style="display:flex;">
           <div
@@ -35,39 +35,44 @@
           </div>
         </div>
       </div>
-      <div class="main-area">
+      <div v-if="atlas.type==1" class="article-area">
+        <div
+          v-if="atlas.frontCover==null||atlas.frontCover==''"
+          class="article-title"
+        >{{atlas.title}}</div>
+        <mu-card-media :title="atlas.title" v-else>
+          <img :src="atlas.frontCover" style="height:250px;width:100%;object-fit:cover;" />
+        </mu-card-media>
+        <div style="display:flex;justify-content:space-between;height:30px;margin:5px 0 9px 0">
+          <div style="margin-top:6px;">发布于&nbsp;&nbsp;{{atlas.sendTime}}</div>
+          <div style="margin-top:6px;text-align:right;padding-right:10px;">{{atlas.pageview}} 阅读</div>
+        </div>
+        <div style="padding:5px 10px 5px 10px;">
+          <demo-tag v-for="(tag,index) in atlas.tags" :key="index">{{tag.tagText}}</demo-tag>
+        </div>
+        <article-vditor :editable=false :initMarkdown="atlas.content"></article-vditor>
+      </div>
+      <div v-else-if="atlas.type==2" class="atlas-area">
         <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
         <div v-if="atlas.atlasPictures.length>0">
           <demo-tag v-show="atlas.personal" color="red" small>仅自己可见</demo-tag>
-          <demo-tag v-for="tag in atlas.atlasTags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
+          <demo-tag v-for="tag in atlas.tags" :key="tag.tagId" ellipse>{{tag.tagText}}</demo-tag>
         </div>
-        <div v-for="(content,index) in reverseContent" :key="index">
-          <div v-if="index==0">
-            <span class="atlas-content" v-show="content!=''" v-html="content"></span>
-            <demo-tag
-              v-show="atlas.atlasPictures.length==0"
-              v-for="tag in atlas.atlasTags"
-              :key="tag.tagId"
-              simple
-            >{{tag.tagText}}</demo-tag>
-          </div>
-          <div v-else v-show="showHistory" style="color:gray;">
-            <mu-divider style="margin-bottom:5px;"></mu-divider>
-            <span class="atlas-content" v-html="content"></span>
-          </div>
+        <div>
+          <span class="atlas-content" v-show="atlas.content!=''" v-html="atlas.content"></span>
+          <demo-tag
+            v-show="atlas.atlasPictures.length==0"
+            v-for="tag in atlas.tags"
+            :key="tag.tagId"
+            simple
+          >{{tag.tagText}}</demo-tag>
         </div>
         <div class="small-text">
           发布于&nbsp;{{atlas.sendTime}}&nbsp;
-          <mu-icon value="place" size="16"></mu-icon>上海 浦东
-        </div>
-        <div class="small-text" v-show="atlas.atlasContent.length>1">
-          已编辑·最后编辑于&nbsp;{{atlas.updateTime}}&nbsp;
-          <span
-            @click="showHistory=!showHistory"
-          >{{showHistory?"收起编辑历史":"展开编辑历史"}}</span>
+          <mu-icon value="place" size="16"></mu-icon>上海 浦东<br>
+          <span v-if="atlas.modified">已编辑&nbsp;&nbsp;最后编辑于·{{atlas.modifiedTime}}</span>
         </div>
       </div>
-
       <div style="display:flex;justify-content:center;padding-top:15px">
         <mu-button icon>
           <mu-icon value="thumb_up"></mu-icon>
@@ -84,7 +89,9 @@
         <!-- <mu-icon value="speaker_notes_off"></mu-icon> -->
         评论已被作者关闭
       </div>
-      <div v-else style="padding:0 10px;">
+      <div v-else id="comment-box" name='comment-box' ref="comment-box">
+        <writing-comment :writingId="atlas.writingId" :userId="atlas.user.userId"></writing-comment>
+        <!-- <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
         <demo-input placeholder="添加评论" v-model="comment" />
         <div style="margin-top:10px;">
           <input
@@ -92,8 +99,19 @@
             type="submit"
             value="提交"
             style="border:none;width:100%;background-color:#5db2ff;height:30px;"
+            @click="commentWriting"
           />
         </div>
+        <div v-for="(comment,index) in comments" :key="comment.commentId" style="margin-top:10px;">
+          <demo-comment
+            :comment="comment"
+            :commentIndex="index"
+            :articleUserId="atlas.user.userId"
+            :activeCommentId="activeCommentId"
+            @func="changeActiveCommentId"
+            @removeComment="removeCommentByIndex"
+          ></demo-comment>
+        </div>-->
       </div>
       <!-- <mu-divider></mu-divider> -->
       <!-- <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div> -->
@@ -119,9 +137,12 @@
   </mu-container>
 </template>
 <script>
+import ArticleContent from "@/components/public/ArticleContent";
+import WritingComment from "@/components/public/WritingComment";
+import ArticleVditor from "@/components/public/ArticleVditor.vue"; 
 import { ImagePreview } from "vant";
 export default {
-  name: "atlas",
+  name: "writing",
   data() {
     return {
       current: 0,
@@ -133,32 +154,38 @@ export default {
       comment: "",
       loading: true, //是否显示加载遮罩层
       dataIsLoaded: false,
-      showHistory: false //是否展开编辑历史
+      //评论数组
+      comments: [],
+      //要回复的评论的评论id
+      activeCommentId: "-1"
     };
   },
   created() {
     this.loadData();
   },
+  // 锚点跳转
   mounted() {
-    //这里必须是mouted钩子
   },
   computed: {
     //默认加载的图片
     defaultImg() {
       return 'this.src="' + require("@/assets/broken_image.jpg") + '"';
-    },
-    reverseContent() {
-      return this.atlas.atlasContent.reverse();
     }
+  },
+  components: {
+    ArticleContent,
+    WritingComment,
+    ArticleVditor
   },
   methods: {
     loadData() {
       this.loading = true;
-      this.$http.atlas
-        .queryAtlasById(this.$route.params.atlasId)
+      this.$http.writing
+        .queryWritingById(this.$route.params.writingId,'view')
         .then(response => {
           if (response.data.code == "2000") {
             this.atlas = response.data.data.atlas;
+            this.comments = response.data.data.comments;
             this.dataIsLoaded = true;
           } else {
             this.loading = false;
@@ -168,7 +195,7 @@ export default {
           this.loading = false;
         });
     },
-    starArticle() {
+    staratlas() {
       console.log(this.star);
       if (this.star) {
         this.star = false;
@@ -201,6 +228,40 @@ export default {
         images,
         startPosition: typeof position === "number" ? position : 0
       });
+    },
+    changeActiveCommentId(commentId) {
+      this.activeCommentId = commentId;
+    },
+    //根据索引，移除comments数组元素
+    removeCommentByIndex(index) {
+      this.comments.splice(index, 1);
+    },
+    //添加评论
+    commentWriting() {
+      this.$http.article
+        .addComment({
+          writingId: this.atlas.writingId,
+          commentContent: this.comment
+        })
+        .then(response => {
+          this.comments.push({
+            articleId: this.atlas.writingId,
+            avatar: this.atlas.user.avatar,
+            commentContent: this.comment,
+            commentId: response.data.data.commentId,
+            commentTime: response.data.time,
+            replies: [],
+            userId: this.atlas.user.userId,
+            userName: this.atlas.user.userName
+          });
+          this.comment = "";
+          if (response.data.code == "2000") {
+            this.replyContent = "";
+            this.$emit("func", 0);
+            // 轻提示弹框
+            this.$demo_notify("评论成功");
+          }
+        });
     }
   }
 };
@@ -214,7 +275,7 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   /* max-width: 500px; */
-  min-width: 350px;
+  /* min-width: 350px; */
 }
 .atlas-item-header {
   display: flex;
@@ -296,9 +357,24 @@ export default {
   font-size: 12px;
   color: gray;
 }
-@media screen and (min-width: 768px) {
-  .main-area{
-    padding:0 40px;
+.article-title {
+  padding-top: 3px;
+  padding-left: 10px;
+  font-size: 20px;
+}
+.writing-area {
+  background-color: #fff;
+  padding: 10px 20px;
+}
+.article-area >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content {
+  padding: 8px 3px 15px 3px;
+}
+.article-area >>> .v-note-wrapper {
+  z-index: 1;
+}
+@media screen and (max-width: 768px) {
+  .writing-area {
+    padding: 10px;
   }
 }
 /* 1 3 1 1 3 1 1 3 1 */

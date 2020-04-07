@@ -7,7 +7,7 @@
       <p>{{user.userName}}</p>
     </div>
     <div class="user-sign">
-      <label>签名：{{user.sign}}</label><br /><label>简介：{{user.personalProfile}}</label>
+      <label>{{user.sign}}</label><br /><label>{{user.personalProfile}}</label>
     </div>
     <div class="some-data">
       <div class="data-item">
@@ -33,8 +33,9 @@
      </div> 
     </div>
   </div>
-  <div v-else class="demo-card default">
-    <slot></slot>
+  <div v-else class="demo-card">
+    <p class="default-title">{{title}}</p>
+    <div class="default-content"><slot></slot></div>
   </div>
 </template>
 
@@ -56,11 +57,13 @@ export default {
 </script>
 
 <style scoped>
-.default {
-  padding: 10px;
-  white-space: pre-wrap;
+p{
+  margin-bottom: 0;
 }
-.default::before {
+.default-title {
+  padding: 10px;
+}
+.default-title::before {
   display: inline-block;
   margin-right: 8px;
   content: "";
@@ -69,16 +72,15 @@ export default {
   vertical-align: -6px;
   background-color: #5e72e4;
 }
-.default:hover {
-  /* background-color: rgb(221, 24, 57); */
-  background-color: #5e72e4;
-  color: white;
+.default-content{
+  white-space: pre-wrap;
+  padding: 0 0 10px 10px;
 }
 .demo-card {
   margin: 5px;
   background-color: #fff;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
-  box-shadow:0 1px 4px 0 rgba(0,0,0,0.37);
+  /* box-shadow:0 1px 4px 0 rgba(0,0,0,0.37); */
   transition: 0.5s all;
   position: relative;
 }
@@ -86,6 +88,7 @@ export default {
   width: 100%;
   height: 140px;
   object-fit: cover;
+  vertical-align: bottom;
 }
 .avatar-name {
   position: absolute;

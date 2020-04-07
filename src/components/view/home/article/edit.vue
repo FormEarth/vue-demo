@@ -1,10 +1,10 @@
 <template>
   <mu-container>
     <mu-form :model="form" style="padding-top:10px;" label-position="left" label-width="80">
-      <mu-form-item prop="input" label="文章标题">
-        <mu-text-field v-model="form.title" placeholder="您的文章标题（必填项）" max-length="30"></mu-text-field>
+      <mu-form-item prop="input" label="文章标题" style="padding:0 10px;max-width:450px;">
+        <mu-text-field v-model="form.title" placeholder="文章标题（必填项）" max-length="30"></mu-text-field>
       </mu-form-item>
-      <mavon-editor
+      <!-- <mavon-editor
         ref="md"
         @imgAdd="$imgAdd"
         v-model="form.content"
@@ -13,29 +13,21 @@
         :subfield="false"
         :boxShadow="false"
         :autofocus="false"
-      />
-      <mu-form-item prop="checkbox" label="隐私设置">
+      />-->
+      <article-vditor ref="editor"></article-vditor>
+      <mu-form-item prop="checkbox" label="隐私设置" style="padding:0 10px;">
         <mu-checkbox v-model="form.personal" :ripple="false" label="仅自己可见"></mu-checkbox>
         <mu-checkbox v-model="form.comment" :ripple="false" label="允许评论"></mu-checkbox>
         <mu-checkbox v-model="form.saveToFile" :ripple="false" label="生成静态页面"></mu-checkbox>
         <mu-checkbox v-model="form.anonymous" label="匿名文章" disabled></mu-checkbox>
       </mu-form-item>
-      <!-- <mu-form-item label="选择标签">
-        <mu-select v-model="form.tags" chips tags filerable>
-          <mu-option v-for="style in tags" :key="style" :label="style" :value="style"></mu-option>
-        </mu-select>
-      </mu-form-item> -->
+      <mu-form-item label="选择标签" style="padding:0 10px;margin-bottom:0px;"></mu-form-item>
       <demo-tag-select :selectTags.sync="form.tags"></demo-tag-select>
       <mu-paper style="text-align:center">
-        <mu-button flat color="#1565c0" @click="openPreview">
+        <!-- <mu-button flat color="#1565c0" @click="openPreview">
           <mu-icon value="visibility"></mu-icon>预览
-        </mu-button>
-        <mu-button
-          flat
-          color="#1565c0"
-          @click="craeatArticle"
-          :disabled="form.content.length<1||form.title.length<1"
-        >
+        </mu-button>-->
+        <mu-button flat color="#1565c0" @click="craeatArticle" :disabled="form.title.length<1">
           <mu-icon value="send"></mu-icon>发布
         </mu-button>
         <mu-button flat color="#1565c0" :disabled="form.content.length<1">
@@ -54,17 +46,6 @@
         </div>
       </div>
     </mu-form>
-    <mu-dialog max-width="500" transition="scale" :open.sync="preview" fullscreen scrollable>
-      <mu-appbar title="文章预览" color="white" z-depth="1" textColor="black">
-        <mu-button slot="left" icon @click="closePreview">
-          <mu-icon value="close"></mu-icon>
-        </mu-button>
-      </mu-appbar>
-      <div v-if="form.content.length<1" style="text-align:center;margin-top:15px;">您还什么都没有写哦O_O</div>
-      <div v-else>
-        <article-content :content="form.content" :article-style="'googlecode'"></article-content>
-      </div>
-    </mu-dialog>
     <mu-dialog
       title="发布成功"
       width="600"
@@ -82,12 +63,12 @@
 </template>
 <script>
 import ArticleContent from "@/components/public/ArticleContent";
+import ArticleVditor from "@/components/public/ArticleVditor.vue";
 export default {
   name: "writeArticle",
   data() {
     return {
       type: "add", //当前页面是新增还是修改，默认为新增
-      preview: false, //预览是否打开
       releaseSucessDialog: false, //发送成功弹框是否打开
       defaultData: "preview",
       tags: ["原创", "Java", "Vue", "读书笔记", "日记"],
@@ -97,9 +78,8 @@ export default {
         content: "", //内容
         personal: false, //仅自己可见
         anonymous: false, //匿名
-        saveToFile: true, 
+        saveToFile: true,
         comment: true, //允许评论
-        codeStyle: "googlecode",
         tags: [], //标签
         frontCoverBlob: ""
       }
@@ -137,14 +117,13 @@ export default {
     setFrontCoverBlob(data) {
       this.form.frontCoverBlob = data;
     },
-    openPreview() {
-      this.preview = true;
-    },
-    closePreview() {
-      this.preview = false;
-    },
     // 发布文章
     craeatArticle() {
+      if (this.$refs.editor.getMarkdownValue().length < 1) {
+        this.$demo_notify("文章内容为空");
+        return;
+      }
+      this.form.content = this.$refs.editor.getMarkdownValue();
       // data.frontCoverBlob = "";
       //若是用户选择了本地封面，组装FormData进行图片上传
       let formData = new FormData();
@@ -154,19 +133,12 @@ export default {
       //重新组装数组数据
       formData.delete("tags");
       for (let i = 0; i < this.form.tags.length; i++) {
-        formData.append(
-          "tags[" + i + "].tagId",
-          this.form.tags[i].tagId
-        );
-        formData.append(
-          "tags[" + i + "].tagText",
-          this.form.tags[i].tagText
-        );
+        formData.append("tags[" + i + "].tagId", this.form.tags[i].tagId);
+        formData.append("tags[" + i + "].tagText", this.form.tags[i].tagText);
       }
       if (this.form.frontCoverBlob != "") {
         formData.delete("frontCoverBlob");
         formData.append("image", this.form.frontCoverBlob, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
-        
       }
       this.$http.article
         .releaseArticle(formData)
@@ -174,6 +146,7 @@ export default {
           if (response.data.code == "2000") {
             this.newArticleId = response.data.data.articleId;
             this.releaseSucessDialog = true;
+            this.$refs.editor.clearValue();
           } else {
           }
         })
@@ -188,7 +161,7 @@ export default {
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/article/detail/" + this.newArticleId);
+      this.$router.replace("/writing/detail/" + this.newArticleId);
     },
     // 图片上传
     // 绑定@imgAdd event
@@ -211,14 +184,15 @@ export default {
     }
   },
   components: {
-    ArticleContent
+    ArticleContent,
+    ArticleVditor
   }
 };
 </script>
 <style scoped>
 .container {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
   /* max-width: 500px; */
   min-width: 350px;
   background: #fff;

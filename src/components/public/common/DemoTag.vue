@@ -1,15 +1,18 @@
 <template>
   <div v-if="simple" style="display:inline-block;">
-    <a class="demo-tag simple" :style="randomObject">
+    <a class="demo-tag simple">
       <slot>示例标签</slot>
     </a>
   </div>
-  <div v-else style="display:inline-block;">
-    <a :class="['demo-tag',ellipse?'ellipse':'',small?'small':'']" :style="randomObject">
+  <span v-else class="root-node">
+    <span>
+      <img :src="leftTag" class="left-tag" />
       <slot>示例标签</slot>
-    </a><span v-if="optional" class="delete-suffix" @click="deleteTag">×</span>
+      <img v-if="optional" :src="deleteSvg" class="delete-suffix" @click="deleteTag">
+    </span>
+    
     <!-- 不要换行，span的换行符会被渲染成空白 -->
-  </div>
+  </span>
 </template>
     
 <script>
@@ -43,7 +46,10 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      leftTag: require("@/assets/images/jinghao.png"),
+      deleteSvg: require("@/assets/svg/x.svg")
+    };
   },
   computed: {
     //颜色定义，当传入color时，random不再生效
@@ -87,46 +93,59 @@ export default {
 </script>
 
 <style scoped>
+.root-node {
+  height: 20px;
+  display: inline-block;
+  margin-right: 6px;
+  white-space: pre;
+  border-radius: 16px;
+  /* background-color: rgba(2, 153, 255, 0.06); */
+  padding-right: 8px;
+  align-items: center;
+  line-height: 20px;
+  color: rgb(2, 153, 255);
+  font-size: 14px;
+}
+.left-tag {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  margin-top: -3px;
+}
 .demo-tag {
   display: inline-block;
-  margin: 0 0 3px 0.3em;
-  padding: 0.3em 1em;
-  /* color: rgb(0, 140, 255);
-  background: rgba(33, 150, 243, 0.08); */
+  /* margin: 0 0 3px 0.3em; */
+  /* padding: 1px 10px; */
+  /* background-color: #e0e0e0; */
   /* opacity:0.08; */
-  font-size: 12px;
+  /* font-size: 14px; */
   /* 换行时保证标签完整性 */
-  white-space: pre;
+
+  /* font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+    sans-serif; */
+  text-align: center;
 }
-.ellipse {
-  border-radius: 999em;
-}
-.small {
-  font-size: 10px;
-}
-.demo-tag::before {
+.simple::before {
   content: "#";
 }
-.demo-tag:hover {
+.simple{
+  color: rgb(2, 153, 255);
+}
+.simple,.root-node  {
   cursor: pointer;
   /* color: black; */
   /* opacity: 1; */
 }
 .delete-suffix {
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.1);
-  margin: 0 0.1em 3px 0;
-  padding: 0.3em 0.5em;
-  font-size: 12px;
+  vertical-align: text-bottom;
   cursor: pointer;
 }
-.simple{
-  background:transparent;
+.simple {
+  background: transparent;
   padding: 0;
   margin: 0 0 0 0.3em;
   font-size: 14px;
 }
-@media screen and (min-width: 993px){
-  
+@media screen and (min-width: 993px) {
 }
 </style>

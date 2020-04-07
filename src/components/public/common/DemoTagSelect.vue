@@ -18,7 +18,7 @@
       <demo-input
         v-model.trim="searchText"
         placeholder="搜索或自定义标签（可选）"
-        max="10"
+        max="20"
         @input="searchTags"
         style="margin-bottom:4px;"
       ></demo-input>

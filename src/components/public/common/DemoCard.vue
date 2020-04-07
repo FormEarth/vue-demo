@@ -16,11 +16,16 @@
     </div>
     <!-- <div v-else> -->
     <user-card :icons="icons" :title="'常用功能'"></user-card>
-    <user-card>不要成为欲望的奴隶，不要扼杀自己的想象力</user-card>
-    <user-card>虞美人·听雨  蒋捷
+    <user-card :title="'每日一言'">不要成为欲望的奴隶，不要扼杀自己的想象力</user-card>
+    <user-card :title="'每日诗词'">虞美人·听雨  蒋捷
       少年听雨歌楼上，红烛昏罗帐。壮年听雨客舟中，江阔云低，断雁叫西风。
-      而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。
-    </user-card>
+      而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。</user-card>
+    <user-card :title="'热门标签'">
+      <demo-tag>日记</demo-tag>
+      <demo-tag>JavaScript</demo-tag>
+      <demo-tag>原创</demo-tag>
+    </user-card >
+    <user-card :title="'关于'">Copyright © 2019 - 2020 raining_heavily</user-card>
     <!-- </div> -->
   </div>
 </template>
@@ -34,7 +39,7 @@ export default {
     return {
       frontCover: require("@/assets/images/login_background.jpg"),
       icons: [
-        { icon: "post_add", text: "发布长文", link: "/home/article/add" },
+        { icon: "post_add", text: "发布长文", link: "/article/add" },
         { icon: "burst_mode", text: "发布图集", link: "/atlas/add" },
         { icon: "repeat", text: "BeyondHere", link: "/beyondhere" },
         { icon: "bookmarks", text: "书签", link: "/beyondhere" }
@@ -79,6 +84,7 @@ export default {
   background-size: cover;
   /* background-color: rgb(146, 168, 170); */
   opacity: 0.9; /*  值越小越透明*/
+  z-index: 0;
 }
 .user-avatar img {
   width: 80px;
@@ -114,7 +120,7 @@ export default {
   border-radius: 50%;
 }
 /* 大屏幕，宽度大于960px; */
-@media screen and (max-width: 769px) {
+@media screen and (min-width: 993px) {
   .user-avatar {
     padding-top: 150px;
   }
@@ -135,7 +141,7 @@ export default {
     padding-top: 150px;
   }
 }
-@media screen and (min-width: 300px) and (max-width: 769px) {
+@media screen and (min-width: 300px) and (max-width: 768px) {
   /* .information-card {
     margin-top: 10px;
   } */

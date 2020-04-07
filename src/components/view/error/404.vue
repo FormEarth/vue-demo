@@ -1,11 +1,19 @@
 <template>
   <mu-container>
     <div style="height:100%;">
-      <div style="font-size:30px;text-align:center;">404</div>
-      <br />你要访问的内容失踪了,可以尝试以下操作
-      <br />
-      <a @click="$router.back(-1)">返回上一级</a>
-      <br /><a @click="$router.back(0)">刷新一下</a>
+      <div class="error-font">4&nbsp;0&nbsp;4</div>
+      <div class="tips-font">
+        您要访问的内容不存在,可以尝试以下操作
+        <br />
+        <br />
+        <mu-button flat @click="$router.back(-1)" >
+          <mu-icon value="arrow_back" color="green"></mu-icon>返回上一级
+        </mu-button>
+        <br />
+        <mu-button flat @click="$router.back(0)">
+          <mu-icon value="refresh" color="green"></mu-icon>刷新当前页
+        </mu-button>
+      </div>
     </div>
     <img :src="picture" alt width="100%" />
   </mu-container>
@@ -27,6 +35,9 @@ export default {
 </script>
 
 <style scoped>
+.icon-flex-wrap .mu-button {
+  margin: 6px 8px;
+}
 .container {
   width: 100%;
   height: 100%;
@@ -34,6 +45,16 @@ export default {
   /* max-width: 500px; */
   min-width: 350px;
   max-height: 700px;
+}
+.error-font {
+  font-family: "Dressedless Three", sans-serif;
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20px;
+  color: rgb(255, 8, 8);
+}
+.tips-font {
+  text-align: center;
 }
 .bottom {
   width: 100%;

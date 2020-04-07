@@ -49,6 +49,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.8);
   color: azure;
   border-radius: 3px;
+  z-index: 100;
 }
 .content {
   line-height: 20px;

@@ -2,10 +2,10 @@ import request from '@/axios/request.js';//导入axios实例文件中方法
 
 const article = {
     //首页文章数据加载
-    getHomePageArticles(currentPage) {
+    getHomePageArticles(currentPage,userId) {
         return request.get(
-            '/demo/api/articles/' + currentPage,
-            {}
+            '/demo/api/writings',
+            {params:{page:currentPage,userId:userId}}
         );
     },
     //首页图集数据加载
@@ -35,6 +35,13 @@ const article = {
             '/demo/api/image',
             formdata
         );
+    },
+    //获取评论
+    getCommentsByWritingId(writingId){
+        return request.get(
+            '/demo/api/'+writingId+'/comments',
+            {}
+        )
     },
     //添加评论
     addComment(data) {

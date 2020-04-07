@@ -10,6 +10,7 @@ import article from '@/axios/api/article';
 import tag from '@/axios/api/tag';
 // 图集模块接口
 import atlas from '@/axios/api/atlas';
+import writing from '@/axios/api/writing';
 // 其他模块的接口……
  
 // 导出接口
@@ -17,6 +18,7 @@ export default {
     user,
     article,
     tag,
-    atlas
+    atlas,
+    writing
     // ……
 }

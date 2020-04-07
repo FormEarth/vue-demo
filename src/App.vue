@@ -113,7 +113,8 @@ body,
   padding: 0;
   /* 从坐上到右下的渐变色 */
   /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
-  /* background-image: linear-gradient(38deg, #29bdd9 45%, #d4e3f1 33%); */
+  background-image: linear-gradient(38deg, #29bdd9 45%, #d4e3f1 33%);
+  background-attachment: fixed;
   background-color: #f4f5f7;
 }
 .mu-bottom-nav {

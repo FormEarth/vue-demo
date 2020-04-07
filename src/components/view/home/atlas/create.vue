@@ -27,7 +27,7 @@
           <input
             id="upload"
             type="file"
-            accept="image/png, image/jpg, image/jpeg, image/gif"
+            accept="image/png,image/jpg,image/jpeg,image/gif"
             multiple
             @change="addFile($event)"
             style="display: none;"
@@ -38,7 +38,7 @@
     <div class="dynamic-imgs" style="padding-bottom:15px;">
       <p class="img-title">添加描述</p>
       <mu-text-field
-        v-model="atlas.atlasContent[0]"
+        v-model="atlas.content"
         :rows="2"
         :rowsMax="20"
         max-length="300"
@@ -47,16 +47,16 @@
         placeholder="文字描述（可选）"
         solo
       ></mu-text-field>
-      <!-- <div v-if="atlas.atlasContent[0].length>=255" style="text-align:center;color:red;">字数已达上限</div> -->
+      <!-- <div v-if="atlas.content[0].length>=255" style="text-align:center;color:red;">字数已达上限</div> -->
     </div>
     <div class="dynamic-imgs">
       <p class="img-title">添加标签</p>
       <div>
         <demo-tag
-          v-for="(tag,index) in atlas.atlasTags"
+          v-for="(tag,index) in atlas.tags"
           :key="index"
           optional
-          @deleteTag="atlas.atlasTags.splice(index,1)"
+          @deleteTag="atlas.tags.splice(index,1)"
         >{{tag.tagText}}</demo-tag>
         <div v-show="!searchPanel">
           <mu-icon value="add" color="success" @click="searchPanel=true;"></mu-icon>
@@ -66,7 +66,7 @@
         <demo-input
           v-model.trim="searchText"
           placeholder="搜索或自定义标签（可选）"
-          max="10"
+          max="20"
           @input="searchTags"
           style="margin-bottom:4px;"
         ></demo-input>
@@ -79,8 +79,8 @@
               color="info"
               small
               flat
-              :disabled="atlas.atlasTags.length>=10"
-              @click="addAtlasTags({tagId:-1,tagText:searchText})"
+              :disabled="atlas.tags.length>=10"
+              @click="addtags({tagId:-1,tagText:searchText})"
             >添加新标签</mu-button>
           </div>
         </div>
@@ -98,14 +98,14 @@
               small
               flat
               color="primary"
-              :disabled="atlas.atlasTags.length>=10"
-              @click="addAtlasTags(tag)"
+              :disabled="atlas.tags.length>=10"
+              @click="addtags(tag)"
             >添加</mu-button>
           </div>
           <!-- <mu-divider></mu-divider> -->
         </div>
         <div style="text-align:right;">
-          <span v-show="atlas.atlasTags.length>=10" style="color:gray;font-size:12px;">标签不能更多了哦</span>
+          <span v-show="atlas.tags.length>=10" style="color:gray;font-size:12px;">标签不能更多了哦</span>
           <mu-button
             small
             flat
@@ -129,7 +129,7 @@
       <mu-button
         color="info"
         full-width
-        :disabled="atlas.atlasPictures.length<1&&atlas.atlasContent.length<1"
+        :disabled="atlas.atlasPictures.length<1&&atlas.content.length<1"
         @click="createNewatlas"
       >发布</mu-button>
       <p class="img-title" style="color:#666666;">
@@ -179,16 +179,16 @@ export default {
       releaseSucessDialog: false, //发送弹框是否打开
       atlas: {
         atlasPictures: [], //存放添加图片
-        atlasContent: [],
+        content:"",
         comment: true, //允许评论
-        atlasTags: [],
+        tags: [],
         personal: false, //仅自己可见
       },
       initTags: [], //初始化加载的推荐tags数组，即在输入框为空时显示的列表
       tags: ["日记", "原创", "123", "2333"],
       uploaProgress: 0, //文件上传进度
       isRecommend: false, //是否发布成功
-      atlasId: "" //发布成功后服务端返回新图集Id
+      writingId: "" //发布成功后服务端返回新图集Id
     };
   },
   created() {
@@ -223,9 +223,9 @@ export default {
       }
     },
     //点击列表中的某项后将该标签加入输入框
-    addAtlasTags(tag) {
+    addtags(tag) {
       console.log(tag.tagId);
-      this.atlas.atlasTags.push({ tagId: tag.tagId, tagText: tag.tagText });
+      this.atlas.tags.push({ tagId: tag.tagId, tagText: tag.tagText });
     },
     //将file对象转换成可本地预览的ObjectURL
     getObjectURL(file) {
@@ -261,17 +261,19 @@ export default {
       }
       //限制文件类型和大小
       for (let j = 0; j < allowNum; j++) {
-        let fileType = fileList[j].type;
+        //TODO 因微信传过的图片有type为空的现象，这里先判空下，以后处理
+        let fileType = fileList[j].type?fileList[j].type:"image/jpg"
         console.log("文件类型:" + fileType);
         var regex = /image\/jpg|png|jpeg|gif/;
         if (!regex.test(fileType)) {
           Toast({
-            message: "文件类型不匹配",
+            message: "文件类型不匹配,"+fileType,
             duration: 2000,
             forbidClick: true
           });
           return;
         }
+        // alert("文件类型"+fileList[j])
         let fileSize = fileList[j].size;
         if (fileSize / 1024 / 1024 > 5) {
           Toast({
@@ -302,18 +304,18 @@ export default {
       for (let i = 0; i < this.atlas.atlasPictures.length; i++) {
         formData.append("images", this.atlas.atlasPictures[i]);
       }
-      formData.append("atlasContent[0]", this.atlas.atlasContent[0]||'');
+      formData.append("content", this.atlas.content);
       formData.append("comment", this.atlas.comment);
       formData.append("personal", this.atlas.personal);
-      for (let i = 0; i < this.atlas.atlasTags.length; i++) {
-        // formData.append("atlasTags", this.atlas.atlasTags[i]);
+      for (let i = 0; i < this.atlas.tags.length; i++) {
+        // formData.append("tags", this.atlas.tags[i]);
         formData.append(
-          "atlasTags[" + i + "].tagId",
-          this.atlas.atlasTags[i].tagId
+          "tags[" + i + "].tagId",
+          this.atlas.tags[i].tagId
         );
         formData.append(
-          "atlasTags[" + i + "].tagText",
-          this.atlas.atlasTags[i].tagText
+          "tags[" + i + "].tagText",
+          this.atlas.tags[i].tagText
         );
       }
       //组装数据结束
@@ -323,7 +325,7 @@ export default {
         .createNewAtlas(formData, this)
         .then(response => {
           if (response.data.code == "2000") {
-            this.atlasId = response.data.data.id;
+            this.writingId = response.data.data.id;
             this.isRecommend = true;
           } else {
             this.releaseSucessDialog = false;
@@ -340,14 +342,14 @@ export default {
       //this.$router.go(0);
       //清空之前数据
       this.atlas.atlasPictures = [];
-      this.atlas.atlasContent = "";
-      this.atlas.atlasTags = [];
+      this.atlas.content = "";
+      this.atlas.tags = [];
       this.releaseSucessDialog = false;
     },
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/atlas/detail/" + this.atlasId);
+      this.$router.replace("/writing/detail/" + this.writingId);
     },
     //请求服务端模糊查询标签
     searchTagsWithText(isInit) {

@@ -41,13 +41,22 @@
       </div>
       <div class="no-articles" v-else>这是我的底线哦~~</div>
     </div>
+    <flat-button></flat-button>
   </mu-container>
 </template>
 <script>
 import ArticleCardView from "@/components/public/article/ArticleCardView.vue";
 import AtlasItem from "@/components/public/AtlasItem.vue";
+import FlatButton from "@/components/public/FlatButton.vue";
+
 export default {
-  name: "ArticleList",
+  name: "WritingList",
+  props:{
+    withUser:{
+      type:Boolean,
+      default:false
+    }
+  },
   data() {
     return {
       loading: false, //是否显示加载遮罩层
@@ -94,7 +103,8 @@ export default {
   },
   components: {
     ArticleCardView,
-    AtlasItem
+    AtlasItem,
+    FlatButton
   },
   methods: {
     handleScroll() {
@@ -105,7 +115,7 @@ export default {
     //页面加载时显示的初始化数据
     getInitArticlesData() {
       this.initLoading = true;
-      let userId = this.$route.params.writingId?this.$route.params.writingId:null
+      let userId = this.withUser?this.$route.params.userId:null
       this.$http.article
         .getHomePageArticles(this.current,userId)
         .then(response => {
@@ -126,11 +136,12 @@ export default {
     //滑动到底部时加载更多数据
     getMoreArticleData() {
       if (this.loadedAll) return; //已加载完毕不再进行任何操作
+      let userId = this.withUser?this.$route.params.userId:null
       this.current = this.current + 1;
       console.log("当前加载文章页数：" + this.current);
       this.loading = true;
       this.$http.article
-        .getHomePageArticles(this.current)
+        .getHomePageArticles(this.current,userId)
         .then(response => {
           if ((response.data.code = "2000")) {
             let dataLength = response.data.data.writings.length;

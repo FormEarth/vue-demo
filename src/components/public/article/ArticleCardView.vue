@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <div class="article-item" @click="$router.push('/article/detail/'+ article.articleId)">
+    <div class="article-item" @click="$router.push('/writing/detail/'+ article.writingId)">
       <div class="left-image" :style="{backgroundImage: 'url(' + article.frontCover + ')'}">
         <!-- <img :src="article.frontCover" /> -->
       </div>
@@ -18,16 +18,16 @@
           >{{tag.tagText}}</demo-tag>
         </div>-->
         <div style="padding-left: 3px;">
-          <span>{{article.authorName}}&nbsp;&nbsp;</span>
-          <span>
+          <!-- <span>{{article.authorName}}&nbsp;&nbsp;</span> -->
+          <!-- <span>
             <mu-icon value="schedule" size="16" style="vertical-align: text-top;"></mu-icon>
             {{article.sendTime|time}}&nbsp;&nbsp;
           </span>
           <span>
             <mu-icon value="remove_red_eye" size="16" style="vertical-align: text-top;"></mu-icon>
-            {{article.readerNum}}&nbsp;阅读&nbsp;&nbsp;
-          </span>
-          <span v-if="article.tags.length>0">
+            {{article.pageview}}&nbsp;阅读&nbsp;&nbsp;
+          </span>-->
+          <span v-if="hasTag">
             <mu-icon value="local_offer" size="16" style="vertical-align: text-top;"></mu-icon>
             <demo-tag
               v-for="(tag,index) in article.tags"
@@ -69,16 +69,9 @@ export default {
     article: {}
   },
   computed: {
-    //切割标签为数组
-    tagArray: function() {
-      if (
-        typeof this.article.tags == "undefined" ||
-        this.article.tags == null ||
-        this.article.tags == ""
-      ) {
-        return [];
-      }
-      return this.article.tags.split("|");
+    hasTag() {
+      console.log(typeof this.article.tags);
+      return typeof this.article.tags == "undefined" ? false : true;
     }
   },
   filters: {
@@ -91,25 +84,24 @@ export default {
 
 <style scoped>
 .root {
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   max-width: 800px;
 }
 .article-item {
+  transition: all 0.3s;
+  cursor: pointer;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  border-radius: 7px;
+  /* border-radius: 7px; */
   background-color: #fff;
-  /* border-top: 0.5px rgba(0, 0, 0, 0.3) solid;
-  border-left: 0.5px rgba(0, 0, 0, 0.3) solid;
-  border-right: 0.5px rgba(0, 0, 0, 0.3) solid;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4); */
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
-  box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5); */
+  border: 1px solid #e5e9ef;
 }
 .left-image {
-  border-top-left-radius: 7px;
-  border-bottom-left-radius: 7px;
+  /* border-top-left-radius: 7px; */
+  /* border-bottom-left-radius: 7px; */
   width: 30%;
   height: auto;
   max-height: 300px;
@@ -135,6 +127,7 @@ export default {
   font-size: 24px;
   font-weight: 300;
   padding: 7px 3px;
+  transition: color 0.3s;
 }
 .sub-title {
   font-size: 15px;
@@ -148,6 +141,7 @@ export default {
   /* autoprefixer: on */
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  word-break: break-all;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -188,10 +182,6 @@ export default {
   .front-cover {
     display: none;
   }
-  .article-item {
-    transition: all 0.3s;
-    cursor: pointer;
-  }
   .right-content {
     padding-left: 10px;
   }
@@ -199,18 +189,20 @@ export default {
     padding: 0 7px;
   }
   .article-item:hover {
-    /* transform: translateX(-10px); */
-    z-index: 100;
-    box-shadow: 0px 4px 5px 3px rgba(33, 150, 243, 0.4);
+    /* box-shadow: 0px 4px 5px 3px rgba(33, 150, 243, 0.4); */
+    box-shadow: 0 3px 10px 0 rgba(213, 216, 219, 0.44);
   }
+  /* .article-item:hover .title {
+    color: rgb(39, 118, 236);
+  } */
 }
 @media screen and (max-width: 768px) {
   .left-image {
     /* display: none; */
     height: 250px;
     width: 100%;
-    border-top-right-radius: 7px;
-    border-bottom-left-radius: 0;
+    /* border-top-right-radius: 7px; */
+    /* border-bottom-left-radius: 0; */
   }
   .right-content {
     width: 100%;
@@ -222,7 +214,7 @@ export default {
     display: none;
     -webkit-line-clamp: 4;
   }
-  .article-item{
+  .article-item {
     padding-bottom: 10px;
   }
 }
