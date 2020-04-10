@@ -4,17 +4,7 @@
       <mu-form-item prop="input" label="文章标题" style="padding:0 10px;max-width:450px;">
         <mu-text-field v-model="form.title" placeholder="文章标题（必填项）" max-length="30"></mu-text-field>
       </mu-form-item>
-      <!-- <mavon-editor
-        ref="md"
-        @imgAdd="$imgAdd"
-        v-model="form.content"
-        placeholder="立即开始你的创作之旅吧……"
-        codeStyle="googlecode"
-        :subfield="false"
-        :boxShadow="false"
-        :autofocus="false"
-      />-->
-      <article-vditor ref="editor"></article-vditor>
+      <article-vditor ref="editor" :editable=true :initMarkdown="form.content" :cache="type=='add'?true:false"></article-vditor>
       <mu-form-item prop="checkbox" label="隐私设置" style="padding:0 10px;">
         <mu-checkbox v-model="form.personal" :ripple="false" label="仅自己可见"></mu-checkbox>
         <mu-checkbox v-model="form.comment" :ripple="false" label="允许评论"></mu-checkbox>
@@ -88,11 +78,16 @@ export default {
   created() {
     if (this.$route.name == "articleEdit") {
       this.type = "edit";
-      articleDetail().then(response => {
-        console.log(response.data.data);
-        this.form = response.data.data;
-      });
+      this.$http.writing.queryWritingById(this.$route.params.id, "edit").then(response=>{
+        if(response.data.code=='2000'){
+          this.form = response.data.data.writing
+          // this.$refs.editor.initMarkdown()
+        }
+      })
     }
+  },
+  mounted(){
+    // this.$refs.editor.setValue()
   },
   computed: {
     disabled: function() {
@@ -107,9 +102,9 @@ export default {
     },
     //封面的展示
     previewCover() {
-      return this.form.frontCoverBlob == ""
-        ? this.$store.state.current_user.frontCover
-        : window.URL.createObjectURL(this.form.frontCoverBlob);
+      // return this.form.frontCoverBlob == ""
+      //   ? this.$store.state.current_user.frontCover
+      //   : window.URL.createObjectURL(this.form.frontCoverBlob);
     }
   },
   methods: {

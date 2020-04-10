@@ -27,7 +27,7 @@
             <mu-list slot="content" style="min-width:150px;">
               <mu-list-item
                 button
-                @click="openMenu=false;$router.push('/writing/detail/'+atlas.writingId+'?#comment-box');"
+                @click="openMenu=false;$router.push('/writing/detail/'+atlas.writingId);"
               >
                 <mu-list-item-title>详情</mu-list-item-title>
               </mu-list-item>
@@ -46,7 +46,7 @@
               <mu-list-item
                 button
                 v-show="this.$store.state.current_user.userId==this.atlas.creatorId"
-                @click="openMenu=false;$router.push('/atlas/edit/'+atlas.writingId)"
+                @click="editWriting"
               >
                 <mu-list-item-title>重新编辑</mu-list-item-title>
               </mu-list-item>
@@ -238,6 +238,15 @@ export default {
   methods: {
     test() {
       alert(width);
+    },
+    editWriting(){
+      this.openMenu=false;
+      if(this.atlas.type==2){
+        this.$router.push('/atlas/edit/'+this.atlas.writingId)
+      }else{
+        this.$router.push('/article/edit/'+this.atlas.writingId)
+      }
+      
     },
     //切换喜欢与取消喜欢
     toggleLike() {

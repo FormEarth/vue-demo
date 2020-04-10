@@ -20,17 +20,28 @@ export default {
       //初始化时的值
       type: String,
       default: ""
+    },
+    cache: {
+      //是否使用localStorage缓存
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      vditor: null
+      vditor: null,
+      focus: false
     };
   },
-  async mounted() {
+  computed: {
+    current_user: function() {
+      return this.$store.state.current_user;
+    }
+  },
+  mounted() {
     let _this = this;
     if (this.editable) {
-      //创建可编辑editor
+      //创建可编辑vditor
       this.vditor = new Vditor("vditor", {
         debugger: false,
         placeholder: "立即开始创作之旅吧~~",
@@ -59,9 +70,12 @@ export default {
             toc: true
           }
         },
-        value: _this.initMarkdown,
         mode: "ir",
         tab: "\t",
+        cache: {
+          enable: _this.cache,
+          id: _this.current_user.userId
+        },
         upload: {
           accept: "image/*",
           handler(files) {
@@ -75,20 +89,27 @@ export default {
                 _this.url = url;
                 // return null;
                 let str = "![图片](" + url + ")";
+                _this.vditor.focus();
                 _this.vditor.insertValue(str, true);
               } else {
                 _this.vditor.tip("图片上传失败", 2);
               }
             });
-          },
-          filename(name) {
-            return name
-              .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, "")
-              .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, "")
-              .replace("/\\s/g", "");
           }
+          // after: 这个属性没有什么用好像
         }
       });
+      // vditor初始化是异步的，必须初始化才能调用方法
+      setTimeout(function() {
+        if (_this.initMarkdown == "") {
+          // localStorage.getItem(_this.current_user.userId)
+          console.log("写文章");
+          // _this.vditor.enableCache()
+        } else {
+          console.log("编辑文章");
+          _this.vditor.setValue(_this.initMarkdown);
+        }
+      }, 100);
     } else {
       //调用静态方法创建创建预览
       this.vditor = Vditor.preview(
@@ -113,9 +134,11 @@ export default {
       this.vditor.setValue("");
       this.vditor.clearCache();
     },
-    test(){
-     let ert = this.vditor.getCursorPosition()
-     console.log(ert.top,ert.left)
+    test() {
+      // let ert = this.vditor.getCursorPosition();
+      // console.log(ert.top, ert.left);
+
+      this.vditor.setValue(this.initMarkdown);
     }
   }
 };

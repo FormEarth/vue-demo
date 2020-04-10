@@ -47,7 +47,7 @@ const router = new Router({
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
     { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false, nav: "article" }, component: article },
     { path: '/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true, nav: "article" }, component: articleAdd },
-    { path: '/home/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleAdd },
+    { path: '/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleAdd },
 
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
     { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },

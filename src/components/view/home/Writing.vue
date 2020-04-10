@@ -184,7 +184,7 @@ export default {
         .queryWritingById(this.$route.params.writingId,'view')
         .then(response => {
           if (response.data.code == "2000") {
-            this.atlas = response.data.data.atlas;
+            this.atlas = response.data.data.writing;
             this.comments = response.data.data.comments;
             this.dataIsLoaded = true;
           } else {

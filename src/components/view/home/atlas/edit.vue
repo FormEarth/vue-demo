@@ -97,7 +97,7 @@ export default {
       .queryWritingById(this.$route.params.atlasId, "edit")
       .then(response => {
         if (response.data.code == "2000") {
-          this.atlas = response.data.data.atlas;
+          this.atlas = response.data.data.writing;
           let cloneAtlas = JSON.stringify(this.atlas)
           this.initAtlas = JSON.parse(cloneAtlas)
           // this.atlas.atlasContent = this.atlas.content;
