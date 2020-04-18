@@ -27,14 +27,12 @@
             <mu-icon value="remove_red_eye" size="16" style="vertical-align: text-top;"></mu-icon>
             {{article.pageview}}&nbsp;阅读&nbsp;&nbsp;
           </span>-->
-          <span v-if="hasTag">
+          <span v-if="article.tags.length>0">
             <mu-icon value="local_offer" size="16" style="vertical-align: text-top;"></mu-icon>
             <demo-tag
               v-for="(tag,index) in article.tags"
               :key="index"
               color="green"
-              small
-              simple
             >{{tag.tagText}}</demo-tag>
           </span>
         </div>
@@ -67,12 +65,6 @@ export default {
   },
   props: {
     article: {}
-  },
-  computed: {
-    hasTag() {
-      console.log(typeof this.article.tags);
-      return typeof this.article.tags == "undefined" ? false : true;
-    }
   },
   filters: {
     time: function(value) {

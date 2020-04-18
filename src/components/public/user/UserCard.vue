@@ -7,7 +7,9 @@
       <p>{{user.userName}}</p>
     </div>
     <div class="user-sign">
-      <label>{{user.sign}}</label><br /><label>{{user.personalProfile}}</label>
+      <label>{{user.sign}}</label>
+      <br />
+      <label>{{user.personalProfile}}</label>
     </div>
     <div class="some-data">
       <div class="data-item">
@@ -25,17 +27,31 @@
     </div>
   </div>
   <div v-else-if="icons" class="demo-card" style="padding:10px;">
-      {{title}}
+    {{title}}
     <div class="icon-container">
-     <div class="icon-item" v-for="icon in icons" :key="icon.text" @click="$router.push(icon.link)">
-      <mu-icon :value="icon.icon"></mu-icon>
-      <br />{{icon.text}}
-     </div> 
+      <div
+        class="icon-item"
+        v-for="icon in icons"
+        :key="icon.text"
+        @click="$router.push(icon.link)"
+      >
+        <mu-icon :value="icon.icon"></mu-icon>
+        <br />
+        {{icon.text}}
+      </div>
+    </div>
+  </div>
+  <div v-else-if="poem" class="poem-card">
+    <!-- <p class="default-title">{{title}}</p> -->
+    <div class="poem">
+      <slot></slot>
     </div>
   </div>
   <div v-else class="demo-card">
     <p class="default-title">{{title}}</p>
-    <div class="default-content"><slot></slot></div>
+    <div class="default-content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -47,17 +63,22 @@ export default {
       type: Object
     },
     icons: {
-      type: Array 
+      type: Array
     },
     title: {
-      type: String 
+      type: String,
+      default: "default title"
+    },
+    poem: {
+      type: Boolean,
+      default: false
     }
   }
 };
 </script>
 
 <style scoped>
-p{
+p {
   margin-bottom: 0;
 }
 .default-title {
@@ -72,17 +93,18 @@ p{
   vertical-align: -6px;
   background-color: #5e72e4;
 }
-.default-content{
+.default-content {
   white-space: pre-wrap;
   padding: 0 0 10px 10px;
 }
 .demo-card {
   margin: 5px;
-  background-color: #fff;
+  background-color: #ffffff;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
-  /* box-shadow:0 1px 4px 0 rgba(0,0,0,0.37); */
+  /* box-shadow:0 1px 20px -8px rgba(0, 0, 0, 0.5); */
   transition: 0.5s all;
   position: relative;
+  /* opacity: 0.8; */
 }
 .demo-card img {
   width: 100%;
@@ -116,6 +138,22 @@ p{
   padding-left: 5px;
   white-space: pre-wrap;
 }
+.poem-card {
+  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  background-color: #d4bba7;
+  margin: 5px;
+  margin-top: 16px;
+}
+.poem {
+  writing-mode: vertical-lr;
+  font-size: 16px;
+  height: 140px;
+  width: 100%;
+  line-height: 24px;
+  white-space: pre-wrap;
+  text-align: center;
+}
 .some-data {
   display: flex;
   justify-content: space-around;
@@ -127,22 +165,23 @@ p{
 .data-item h5 {
   margin-top: 5px;
 }
-.icon-container{
-  display:flex;
-  justify-content:space-around;
-  text-align:center;
+.icon-container {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
 }
-.icon-container .icon-item{
-  font-size:12px;
+.icon-container .icon-item {
+  font-size: 12px;
   /* transition: 0.5s all;
   color:rgb(221, 24, 57); */
   cursor: pointer;
 }
-.icon-item .mu-icon{
-  color:rgb(221, 24, 57);
+.icon-item .mu-icon {
+  color: rgb(221, 24, 57);
   transition: 0.5s all ease-out;
 }
-.icon-item .mu-icon:hover{
-  transform:rotate(360deg);
+.icon-item .mu-icon:hover {
+  transform: rotate(360deg);
 }
 </style>

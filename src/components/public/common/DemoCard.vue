@@ -16,8 +16,10 @@
     </div>
     <!-- <div v-else> -->
     <user-card :icons="icons" :title="'常用功能'"></user-card>
-    <user-card :title="'每日一言'">不要成为欲望的奴隶，不要扼杀自己的想象力</user-card>
-    <user-card :title="'每日诗词'">虞美人·听雨  蒋捷
+    <user-card :title="'每日一言'" style="font-style: italic;font-size:16px;">The art of losing isn't hard to master，so many things seem filled with the intent to be lost that their loss is no disaster.
+Elizabeth Bishop《One Art》</user-card>
+    <user-card poem>虞美人·听雨
+      蒋捷
       少年听雨歌楼上，红烛昏罗帐。壮年听雨客舟中，江阔云低，断雁叫西风。
       而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。</user-card>
     <user-card :title="'热门标签'">
@@ -78,13 +80,14 @@ export default {
 
 <style scoped>
 .information-card {
+  /* position: fixed;
+  top: 70px; */
   /* background-color: rgb(255, 255, 255); */
   /* border-radius: 5px; */
   /* text-align: center; */
   background-size: cover;
   /* background-color: rgb(146, 168, 170); */
-  opacity: 0.9; /*  值越小越透明*/
-  z-index: 0;
+  /* z-index: 0; */
 }
 .user-avatar img {
   width: 80px;
@@ -93,7 +96,6 @@ export default {
   border: white 2px solid;
   /* display: block;
   margin: 0 auto;*/
-  -o-object-fit: cover;
   object-fit: cover;
 }
 .information-card .user-information {

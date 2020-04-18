@@ -212,6 +212,9 @@ export default {
 };
 </script>
 <style scoped>
+.container{
+  background-color: #ffffff;
+}
 .demo-list {
   width: 100%;
 }

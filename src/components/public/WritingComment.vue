@@ -15,7 +15,7 @@
         solo
       ></mu-text-field>
     </div>
-    <div v-if="comments.length<1" style="text-align:center;">
+    <div v-if="comments.length<1" style="color:gray;text-align:center;padding:15px 0">
       暂时还没有评论哦
     </div>
     <div v-else v-for="comment in comments" :key="comment.commentId">

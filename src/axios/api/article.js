@@ -1,30 +1,23 @@
 import request from '@/axios/request.js';//导入axios实例文件中方法
 
 const article = {
-    //首页文章数据加载
-    getHomePageArticles(currentPage,userId) {
+    //首页数据加载
+    getHomePageArticles(currentPage, userId) {
         return request.get(
             '/demo/api/writings',
-            {params:{page:currentPage,userId:userId}}
-        );
-    },
-    //首页图集数据加载
-    getHomePageAtlases(data) {
-        return request.get(
-            '/demo/api/atlases',
-            data
-        );
-    },
-    //文章详情数据加载
-    articleDetail(articleId) {
-        return request.get(
-            '/demo/api/article/' + articleId,
-            {}
+            { params: { page: currentPage, userId: userId } }
         );
     },
     //发布文章
     releaseArticle(data) {
         return request.post(
+            '/demo/api/article',
+            data
+        );
+    },
+    //编辑文章
+    releaseArticle(data) {
+        return request.put(
             '/demo/api/article',
             data
         );
@@ -37,9 +30,9 @@ const article = {
         );
     },
     //获取评论
-    getCommentsByWritingId(writingId){
+    getCommentsByWritingId(writingId) {
         return request.get(
-            '/demo/api/'+writingId+'/comments',
+            '/demo/api/' + writingId + '/comments',
             {}
         )
     },
@@ -59,7 +52,7 @@ const article = {
     //获取回复
     getRepliesByCommentId(commentId) {
         return request.get(
-            '/demo/api/'+commentId+'/replies',
+            '/demo/api/' + commentId + '/replies',
             {}
         )
     },

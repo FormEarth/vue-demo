@@ -10,8 +10,7 @@
       <mu-drawer
         :docked="false"
         :open.sync="open"
-        :style="{backgroundImage: 'url(' + drawer_background + ')'}"
-      >
+      ><!-- :style="{backgroundImage: 'url(' + drawer_background + ')'}" -->
         <mu-list>
           <mu-list-item button @click="open=false;$router.push('/')">
             <mu-list-item-title>首页</mu-list-item-title>
@@ -127,6 +126,8 @@ export default {
   background: transparent;
 }
 .left-panel {
+  /* position: sticky;
+  top: 70px; */
   padding: 10px 5px;
   /* max-width: 800px; */
 }

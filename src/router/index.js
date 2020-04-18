@@ -8,9 +8,9 @@ import register from '@/components/view/register'
 
 import writings from '@/components/view/home/Writing'
 import article from '@/components/view/home/article/article'
-import articleAdd from '@/components/view/home/article/edit'
+import articleAdd from '@/components/view/home/article/create'
+import articleEdit from '@/components/view/home/article/edit'
 import atlasList from '@/components/view/home/atlas/atlasList'
-import atlas from '@/components/view/home/atlas/atlas'
 import atlasAdd from '@/components/view/home/atlas/create'
 import atlasEdit from '@/components/view/home/atlas/edit'
 
@@ -47,7 +47,7 @@ const router = new Router({
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
     { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false, nav: "article" }, component: article },
     { path: '/article/add', name: 'articleAdd', meta: { title: "发布长文", requireLogin: true, nav: "article" }, component: articleAdd },
-    { path: '/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleAdd },
+    { path: '/article/edit/:id', name: 'articleEdit', meta: { title: "编辑文章", requireLogin: true, nav: "article" }, component: articleEdit },
 
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
     { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },

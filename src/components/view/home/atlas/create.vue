@@ -152,7 +152,7 @@
         <mu-linear-progress mode="determinate" :value="uploaProgress"></mu-linear-progress>正在努力发布中……
       </div>
       <!-- <div v-else> -->
-      <span v-if="isRecommend">文章已发布成功！</span>
+      <span v-if="isRecommend">动态已发布成功！</span>
       <mu-button v-if="isRecommend" slot="actions" flat color="primary" @click="writeAnother">再写一篇</mu-button>
       <mu-button
         v-if="isRecommend"
@@ -160,7 +160,7 @@
         flat
         color="primary"
         @click="goNewArticle"
-      >去查看新发布文章</mu-button>
+      >去查看新发布动态</mu-button>
       <!-- </div> -->
     </mu-dialog>
   </mu-container>
@@ -318,8 +318,12 @@ export default {
           this.atlas.tags[i].tagText
         );
       }
+      //获取user-agent
+      let parser = require('ua-parser-js');
+      let ua = parser(navigator.userAgent);
+      let source = ua.os.name+ua.os.version+" "+ua.browser.name+ua.browser.version;
+      formData.append("source", source);
       //组装数据结束
-
       this.releaseSucessDialog = true;
       this.$http.atlas
         .createNewAtlas(formData, this)

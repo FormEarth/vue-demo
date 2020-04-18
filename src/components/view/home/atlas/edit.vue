@@ -68,7 +68,7 @@
       :open.sync="releaseSucessDialog"
     >
       您的修改已生效
-      <mu-button slot="actions" color="primary" flat @click="goNewArticle">查看文章</mu-button>
+      <mu-button slot="actions" color="primary" flat @click="goNewArticle">查看动态</mu-button>
       <!-- </div> -->
     </mu-dialog>
   </mu-container>
@@ -109,7 +109,7 @@ export default {
     allowSubmit() {
       //图片为空时文字不能为空
       if (
-        this.atlas.content == ""
+        this.atlas.atlasPictures.length<1 && this.atlas.content == ""
       ) {
         return false;
       }

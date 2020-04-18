@@ -4,7 +4,7 @@
       <mu-form-item prop="input" label="文章标题" style="padding:0 10px;max-width:450px;">
         <mu-text-field v-model="form.title" placeholder="文章标题（必填项）" max-length="30"></mu-text-field>
       </mu-form-item>
-      <article-vditor ref="editor" :editable="true" :initMarkdown="form.content" :cache="false"></article-vditor>
+      <article-vditor ref="editor" :editable=true :initMarkdown="form.content" :cache=true></article-vditor>
       <mu-form-item prop="checkbox" label="隐私设置" style="padding:0 10px;">
         <mu-checkbox v-model="form.personal" :ripple="false" label="仅自己可见"></mu-checkbox>
         <mu-checkbox v-model="form.comment" :ripple="false" label="允许评论"></mu-checkbox>
@@ -14,11 +14,11 @@
       <mu-form-item label="选择标签" style="padding:0 10px;margin-bottom:0px;"></mu-form-item>
       <demo-tag-select :selectTags.sync="form.tags"></demo-tag-select>
       <mu-paper style="text-align:center">
-        <!-- <mu-button flat color="#1565c0" @click="openPreview">
-          <mu-icon value="visibility"></mu-icon>预览
-        </mu-button>-->
-        <mu-button flat color="#1565c0" @click="editArticle" :disabled="form.title.length<1">
-          编辑完成<mu-icon value="near_me"></mu-icon>
+        <mu-button flat color="#1565c0" @click="craeatArticle" :disabled="form.title.length<1">
+          <mu-icon value="send"></mu-icon>发布
+        </mu-button>
+        <mu-button flat color="#1565c0" :disabled="form.content.length<1">
+          <mu-icon value="inbox"></mu-icon>暂存
         </mu-button>
       </mu-paper>
       <div>
@@ -29,12 +29,12 @@
               <mu-icon value="edit"></mu-icon>
             </demo-image-upload>
           </div>
-          <img :src="previewCoverURL" width="100%" />
+          <img :src="previewCover" width="100%" />
         </div>
       </div>
     </mu-form>
     <mu-dialog
-      title="修改成功"
+      title="发布成功"
       width="600"
       max-width="80%"
       transition="slide-left"
@@ -42,8 +42,9 @@
       :overlay-close="false"
       :open.sync="releaseSucessDialog"
     >
-      修改已生效！
-      <mu-button slot="actions" flat color="primary" @click="goNewArticle">查看文章</mu-button>
+      文章已发布成功！
+      <mu-button slot="actions" flat color="primary" @click="writeAnother">再写一篇</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="goNewArticle">去查看新发布文章</mu-button>
     </mu-dialog>
   </mu-container>
 </template>
@@ -51,13 +52,13 @@
 import ArticleContent from "@/components/public/ArticleContent";
 import ArticleVditor from "@/components/public/ArticleVditor.vue";
 export default {
-  name: "editArticle",
+  name: "writeArticle",
   data() {
     return {
       releaseSucessDialog: false, //发送成功弹框是否打开
-      // tags: ["原创", "Java", "Vue", "读书笔记", "日记"],
-      previewCover:"",
-      modifyFrontcover:false,
+      defaultData: "preview",
+      tags: ["原创", "Java", "Vue", "读书笔记", "日记"],
+      newArticleId: "", //新增文章后返回的文章Id
       form: {
         title: "", //题目
         content: "", //内容
@@ -66,40 +67,25 @@ export default {
         saveToFile: true,
         comment: true, //允许评论
         tags: [], //标签
-        // frontCoverBlob: ""
+        frontCoverBlob: ""
       }
     };
   },
-  created() {
-    this.$http.writing
-      .queryWritingById(this.$route.params.id, "edit")
-      .then(response => {
-        if (response.data.code == "2000") {
-          this.form = response.data.data.writing;
-          this.previewCover = response.data.data.writing.frontCover;
-          // this.$refs.editor.initMarkdown()
-        }
-      });
-  },
-  mounted() {
-    // this.$refs.editor.setValue()
-  },
   computed: {
-    // 封面的展示
-    previewCoverURL() {
-      return this.modifyFrontcover
-        ? window.URL.createObjectURL(this.previewCover)
-        : this.form.frontCover;
+    //封面的展示
+    previewCover() {
+      return this.form.frontCoverBlob == ""
+        ? this.$store.state.current_user.frontCover
+        : window.URL.createObjectURL(this.form.frontCoverBlob);
     }
   },
   methods: {
     //设置裁剪后图片数据
     setFrontCoverBlob(data) {
-      this.modifyFrontcover = true;
-      this.previewCover = data;
+      this.form.frontCoverBlob = data;
     },
-    // 编辑成功
-    editArticle() {
+    // 发布文章
+    craeatArticle() {
       if (this.$refs.editor.getMarkdownValue().length < 1) {
         this.$demo_notify("文章内容为空");
         return;
@@ -117,30 +103,55 @@ export default {
         formData.append("tags[" + i + "].tagId", this.form.tags[i].tagId);
         formData.append("tags[" + i + "].tagText", this.form.tags[i].tagText);
       }
-      if (this.modifyFrontcover) {
+      if (this.form.frontCoverBlob != "") {
         formData.delete("frontCoverBlob");
-        formData.append("image", this.previewCover, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
+        formData.append("image", this.form.frontCoverBlob, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
       }
-      formData.delete("user");
-      //删去服务端时间类型的数据，否则会报转换错误
-      formData.delete("sendTime")
-      formData.delete("createTime")
-      formData.delete("modifiedTime")
-      formData.delete("updateTime")
+      let parser = require('ua-parser-js');
+      let ua = parser(navigator.userAgent);
+      let source = ua.os.name+ua.os.version+" "+ua.browser.name+ua.browser.version;
+      formData.append("source", source);
       this.$http.article
         .releaseArticle(formData)
         .then(response => {
           if (response.data.code == "2000") {
+            this.newArticleId = response.data.data.articleId;
             this.releaseSucessDialog = true;
+            this.$refs.editor.clearValue();
           } else {
           }
         })
         .catch(error => {});
     },
-    // 去查看编辑文章
+    // 再写一篇
+    writeAnother() {
+      this.releaseSucessDialog = false;
+      //刷新当前页面
+      this.$router.go(0);
+    },
+    // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/writing/detail/" + this.form.writingId);
+      this.$router.replace("/writing/detail/" + this.newArticleId);
+    },
+    // 图片上传
+    // 绑定@imgAdd event
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData();
+      formdata.append("image", $file);
+      // this.$http.article.uploadArticleImage(this.formdata)
+      this.$http.article.uploadArticleImage(formdata).then(response => {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        // $vm.$img2Url 详情见本页末尾
+        if (response.data.code == "2000") {
+          var url = response.data.data.relativePath;
+          console.log(
+            "response.data.data.relativePath:" + response.data.data.relativePath
+          );
+          this.$refs.md.$img2Url(pos, url);
+        }
+      });
     }
   },
   components: {

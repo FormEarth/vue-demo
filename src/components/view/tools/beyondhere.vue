@@ -10,11 +10,13 @@
     <demo-text-editor :originContent="text" @change="modifyText"></demo-text-editor>
     {{text}}
     <div>{{appName}}</div>
+    <div>{{userAgent}}</div>
     <mu-button color="info" @click="showNotify">点我</mu-button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "BeyondHere",
   data() {
@@ -26,9 +28,12 @@ export default {
   },
   computed: {
     appName() {
-      return (
-        navigator.appName + "," + navigator.platform + "," + navigator.userAgent
-      );
+      var parser = require('ua-parser-js');
+      var ua = parser(navigator.userAgent);
+      return 'browser:'+ua.browser.name+',version:'+ua.browser.version+",os"+ua.os.name+",os.version"+ua.os.version
+    },
+    userAgent(){
+      return navigator.userAgent;
     }
   },
   methods: {

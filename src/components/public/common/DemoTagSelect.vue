@@ -6,7 +6,7 @@
         v-for="(tag,index) in selectTags"
         :key="index"
         optional
-        @deleteTag="selectTags.splice(index,1)"
+        @deleteTag="deleteTag(index)"
       >{{tag.tagText}}</demo-tag>
       <mu-icon
         :value="searchPanel?'close':'add'"
@@ -75,13 +75,13 @@
 <script>
 export default {
   name: "DemoTagSelect", //标签选取组件
-  created() {
-    this.searchTagsWithText(true);
-  },
   props: {
     //已选标签，使用:selectTags.sync进行绑定
     selectTags: {
-      type: Array
+      type: Array,
+      // default:()=>{
+      //   return []
+      // }
     }
   },
   data() {
@@ -91,6 +91,9 @@ export default {
       searchText: "", //tag搜素输入的内容
       searchPanel: false //tag搜索区域的开合标识
     };
+  },
+  created() {
+    this.searchTagsWithText(true);
   },
   methods: {
     //输入内容改变时，请求服务端进行模糊搜索
@@ -110,8 +113,13 @@ export default {
     },
     //点击列表中的某项后将该标签加入输入框
     addNewTags(tag) {
-      console.log(tag.tagId);
+      console.log('+'+tag.tagId);
       this.selectTags.push({ tagId: tag.tagId, tagText: tag.tagText });
+    },
+    //删除标签
+    deleteTag(index){
+      console.log('-'+index);
+      this.selectTags.splice(index,1)
     },
     //请求服务端模糊查询标签
     searchTagsWithText(isInit) {

@@ -50,7 +50,7 @@
         <div style="padding:5px 10px 5px 10px;">
           <demo-tag v-for="(tag,index) in atlas.tags" :key="index">{{tag.tagText}}</demo-tag>
         </div>
-        <article-vditor :editable=false :initMarkdown="atlas.content"></article-vditor>
+        <article-vditor :editable="false" :initMarkdown="atlas.content"></article-vditor>
       </div>
       <div v-else-if="atlas.type==2" class="atlas-area">
         <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
@@ -67,11 +67,13 @@
             simple
           >{{tag.tagText}}</demo-tag>
         </div>
-        <div class="small-text">
-          发布于&nbsp;{{atlas.sendTime}}&nbsp;
-          <mu-icon value="place" size="16"></mu-icon>上海 浦东<br>
-          <span v-if="atlas.modified">已编辑&nbsp;&nbsp;最后编辑于·{{atlas.modifiedTime}}</span>
-        </div>
+      </div>
+      <div class="small-text">
+        发布于&nbsp;{{atlas.sendTime}}&nbsp;
+        <mu-icon value="place" size="16"></mu-icon>上海 浦东
+        <br />
+        <span v-if="atlas.modified">已编辑&nbsp;&nbsp;最后编辑于·{{atlas.modifiedTime}}<br /></span>
+        <span v-if="atlas.source">来自{{atlas.source}}（该数据仅供参考）</span>
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
         <mu-button icon>
@@ -89,7 +91,7 @@
         <!-- <mu-icon value="speaker_notes_off"></mu-icon> -->
         评论已被作者关闭
       </div>
-      <div v-else id="comment-box" name='comment-box' ref="comment-box">
+      <div v-else id="comment-box" name="comment-box" ref="comment-box">
         <writing-comment :writingId="atlas.writingId" :userId="atlas.user.userId"></writing-comment>
         <!-- <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
         <demo-input placeholder="添加评论" v-model="comment" />
@@ -114,7 +116,7 @@
         </div>-->
       </div>
       <!-- <mu-divider></mu-divider> -->
-      <!-- <div style="text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div> -->
+      <div style="font-size:12px;text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>
     </div>
     <!-- <app-footer param="home"></app-footer> -->
     <mu-bottom-sheet :open.sync="open">
@@ -139,7 +141,7 @@
 <script>
 import ArticleContent from "@/components/public/ArticleContent";
 import WritingComment from "@/components/public/WritingComment";
-import ArticleVditor from "@/components/public/ArticleVditor.vue"; 
+import ArticleVditor from "@/components/public/ArticleVditor.vue";
 import { ImagePreview } from "vant";
 export default {
   name: "writing",
@@ -164,8 +166,7 @@ export default {
     this.loadData();
   },
   // 锚点跳转
-  mounted() {
-  },
+  mounted() {},
   computed: {
     //默认加载的图片
     defaultImg() {
@@ -181,7 +182,7 @@ export default {
     loadData() {
       this.loading = true;
       this.$http.writing
-        .queryWritingById(this.$route.params.writingId,'view')
+        .queryWritingById(this.$route.params.writingId, "view")
         .then(response => {
           if (response.data.code == "2000") {
             this.atlas = response.data.data.writing;
@@ -363,7 +364,7 @@ export default {
   font-size: 20px;
 }
 .writing-area {
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   padding: 10px 20px;
 }
 .article-area >>> .v-note-wrapper .v-note-panel .v-note-show .v-show-content {

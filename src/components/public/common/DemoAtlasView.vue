@@ -16,9 +16,8 @@
         v-for="(image,index) in images"
         :key="index"
         :class="['each-item-'+index,'default-item']"
-        @click="current=index;showPreview=true;"
       >
-        <img v-lazy="image" />
+        <img v-lazy="image" @click="current=index;showPreview=true;"/>
       </div>
       <van-image-preview
         v-model="showPreview"
@@ -26,7 +25,7 @@
         :loop="false"
         :start-position="current"
         :closeOnPopstate="true"
-        @change="onChange"
+        @change="onChange" 
       >
         <template v-slot:index>第{{ current }}页</template>
         <div slot="cover">text</div>
@@ -122,7 +121,7 @@ img {
   width: 100%;
   /* height: 100%; */
   /* max-width: 100%; */
-  max-width: 100%;
+  max-width: 225px;
   /* max-height: 100%; */
   /* object-fit: contain; */
   vertical-align: middle;
@@ -247,10 +246,10 @@ img {
 }
 /* 4张图片（同2） */
 /* 5张图片 */
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   .image-item-1 img {
     max-width: 225px;
-    cursor: zoom-in;
+    max-height: 400px;
   }
 }
 </style>

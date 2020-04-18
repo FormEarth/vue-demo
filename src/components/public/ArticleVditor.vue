@@ -103,13 +103,12 @@ export default {
       setTimeout(function() {
         if (_this.initMarkdown == "") {
           // localStorage.getItem(_this.current_user.userId)
-          console.log("写文章");
           // _this.vditor.enableCache()
         } else {
           console.log("编辑文章");
           _this.vditor.setValue(_this.initMarkdown);
         }
-      }, 100);
+      }, 200);
     } else {
       //调用静态方法创建创建预览
       this.vditor = Vditor.preview(

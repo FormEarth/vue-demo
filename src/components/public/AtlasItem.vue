@@ -433,6 +433,7 @@ export default {
   box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 4px;
+  /* opacity: 0.8; */
 }
 .atlas-item-header {
   display: flex;

@@ -3,7 +3,7 @@
   <div class="root-node">
     <div class="header">
       <div class="nav-title">
-        DEMOOO
+        <span class="title" @click="$router.push('/')">DEMOOO</span>
         <div class="nav-menu">
           <mu-icon value="menu" size="30" style="vertical-align: middle;" @click="showDrawer"></mu-icon>
         </div>
@@ -85,7 +85,7 @@ export default {
   top: 0;
   width: 100%;
   z-index: 1;
-  background-color: #fff;
+  background-color: #0066CC;
 }
 .header {
   display: flex;
@@ -94,7 +94,7 @@ export default {
   height: 60px;
   min-width: 300px;
   /* background-color: #fff; */
-
+  color: #fff;
   line-height: 60px;
 }
 .nav-title {
@@ -102,6 +102,9 @@ export default {
   font-weight: 500;
   font-size: 3.5rem;
   font-size: 28px;
+}
+.nav-title .title{
+  cursor: pointer;
 }
 .title img {
   padding-top: 10px;
@@ -141,10 +144,10 @@ export default {
     width: 30%;
   }
   .nav-item:hover {
-    color: rgb(255, 0, 0);
-    /* border-bottom: 3px rgb(255, 0, 0) solid; */
+    /* color: rgb(255, 0, 0); */
+    /* border-bottom: 3px #ffffff solid; */
     cursor: pointer;
-    transition: all 1s;
+    /* transition: all 0.5s; */
   }
   .nav-menu {
     display: none;
