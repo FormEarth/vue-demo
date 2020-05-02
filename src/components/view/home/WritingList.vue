@@ -78,16 +78,16 @@ export default {
   },
   //keep-alive页面进入触发
   activated() {
-    document.querySelector(".right-panel").scrollTo(0, this.scroll);
+    document.querySelector(".content").scrollTo(0, this.scroll);
     document
-      .querySelector(".right-panel")
+      .querySelector(".content")
       .addEventListener("scroll", this.handleScroll);
   },
   //keep-alive页面销毁触发
   deactivated() {
-    if (document.querySelector(".right-panel") != null) {
+    if (document.querySelector(".content") != null) {
       document
-        .querySelector(".right-panel")
+        .querySelector(".content")
         .removeEventListener("scroll", this.handleScroll);
     }
   },
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     handleScroll() {
-      let scrollTo = document.querySelector(".right-panel").scrollTop;
+      let scrollTo = document.querySelector(".content").scrollTop;
       // console.log("scrollTop:" + scrollTo);
       this.scroll = scrollTo;
     },

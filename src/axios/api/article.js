@@ -16,7 +16,7 @@ const article = {
         );
     },
     //编辑文章
-    releaseArticle(data) {
+    editArticle(data) {
         return request.put(
             '/demo/api/article',
             data

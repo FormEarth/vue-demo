@@ -4,7 +4,7 @@
       <mu-form-item prop="input" label="文章标题" style="padding:0 10px;max-width:450px;">
         <mu-text-field v-model="form.title" placeholder="文章标题（必填项）" max-length="30"></mu-text-field>
       </mu-form-item>
-      <article-vditor ref="editor" :editable="true" :initMarkdown="form.content" :cache="false"></article-vditor>
+      <article-vditor v-if="requestSuccess" ref="editor" :editable="true" :initMarkdown="form.content" :cache="false"></article-vditor>
       <mu-form-item prop="checkbox" label="隐私设置" style="padding:0 10px;">
         <mu-checkbox v-model="form.personal" :ripple="false" label="仅自己可见"></mu-checkbox>
         <mu-checkbox v-model="form.comment" :ripple="false" label="允许评论"></mu-checkbox>
@@ -58,6 +58,7 @@ export default {
       // tags: ["原创", "Java", "Vue", "读书笔记", "日记"],
       previewCover:"",
       modifyFrontcover:false,
+      requestSuccess:false,
       form: {
         title: "", //题目
         content: "", //内容
@@ -78,6 +79,7 @@ export default {
           this.form = response.data.data.writing;
           this.previewCover = response.data.data.writing.frontCover;
           // this.$refs.editor.initMarkdown()
+          this.requestSuccess=true;
         }
       });
   },
@@ -128,7 +130,7 @@ export default {
       formData.delete("modifiedTime")
       formData.delete("updateTime")
       this.$http.article
-        .releaseArticle(formData)
+        .editArticle(formData)
         .then(response => {
           if (response.data.code == "2000") {
             this.releaseSucessDialog = true;

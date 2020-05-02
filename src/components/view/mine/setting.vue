@@ -8,7 +8,7 @@
     <mu-list>
       <mu-sub-header color="black">图集&文章设置</mu-sub-header>
       <mu-list-item button :ripple="false" @click="events = !events" color="primary">
-        <mu-list-item-title>全部预览模式</mu-list-item-title>
+        <mu-list-item-title>保存设备信息</mu-list-item-title>
         <mu-list-item-action>
           <mu-switch v-model="events" :ripple="false" readonly></mu-switch>
         </mu-list-item-action>

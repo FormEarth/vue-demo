@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <div class="article-item" @click="$router.push('/writing/detail/'+ article.writingId)">
+    <div class="article-item" @click="$router.push('/writing/'+ article.writingId)">
       <div class="left-image" :style="{backgroundImage: 'url(' + article.frontCover + ')'}">
         <!-- <img :src="article.frontCover" /> -->
       </div>
@@ -87,7 +87,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   /* border-radius: 7px; */
-  background-color: #fff;
+  /* background-color: rgb(255, 255, 255,0.9); */
   /* box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5); */
   border: 1px solid #e5e9ef;
 }

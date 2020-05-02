@@ -104,7 +104,7 @@
           </mu-button>
         </mu-list-item-action>
       </mu-list-item>
-      <mu-list-item button :ripple="false" to="#">
+      <mu-list-item button :ripple="false" to="/lab">
         <mu-list-item-action>
           <mu-icon value="all_inclusive" color="yellow"></mu-icon>
         </mu-list-item-action>

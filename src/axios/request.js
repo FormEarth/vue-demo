@@ -7,7 +7,7 @@ import router from '../router'
 //不判断的话会将null上送成'null'
 // let sessionId = ()
 const instance = axios.create({
-   baseURL: 'http://192.168.149.108:9092', //api 的 base_url
+   baseURL: 'http://192.168.149.115:9092', //api 的 base_url
   // baseURL: 'http://106.15.120.224:9092', // api 的 base_url
   timeout: 18000, // request timeout,3分钟，因为有图片上传
   // headers: { 'Authorization-Sessionid': sessionId },//请求头
@@ -46,7 +46,8 @@ instance.interceptors.response.use(
         localStorage.removeItem("Authorization-Sessionid")
         //因为无法获取route.path，在这截取下,需要跳过http://
         let currentPath = window.location.href
-        currentPath = currentPath.substring(currentPath.indexOf('#')+1)
+        // let currentPath = router.path
+        currentPath = currentPath.substring(currentPath.indexOf('demooo')+6)
         console.log("currentPath:" + currentPath)
         router.push({
           path: '/login',

@@ -1,14 +1,14 @@
 <template>
   <mu-container>
     <div class="user-card" :style="{backgroundImage: 'url(' + user.frontCover + ')'}">
-      <div style="display:flex;justify-content:space-between;height:50px;">
+      <!-- <div style="display:flex;justify-content:space-between;height:50px;">
         <mu-button icon slot="left" :ripple="false" @click="$router.back(-1)">
           <mu-icon value="arrow_back" color="white"></mu-icon>
         </mu-button>
         <mu-button icon slot="right" to="/mine/personal/frontcover">
           <mu-icon value="edit" color="white"></mu-icon>
         </mu-button>
-      </div>
+      </div> -->
       <div v-show="showHeader">
         <div class="user-avatar" style="display:flex;z-index:100;">
           <img :src="user.avatar" alt="用户头像" />
@@ -281,12 +281,13 @@ export default {
 }
 .user-card {
   background-size: cover;
+  padding-top: 10px;
 }
 .user-card .user-avatar {
   width: 100%;
   height: 62px;
   padding-top: 0px;
-  padding-left: 6%;
+  padding-left: 2%;
 }
 .user-card .user-avatar img {
   width: 60px;

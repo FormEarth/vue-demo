@@ -115,7 +115,7 @@ body,
   /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
   /* background-image: linear-gradient(38deg, #29bdd9 45%, #d4e3f1 33%); */
   background-attachment: fixed;
-  background-color: #C6DEF3;
+  /* background-color: #C6DEF3; */
 }
 .mu-bottom-nav {
   width: 100%;

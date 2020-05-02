@@ -27,7 +27,7 @@
             <mu-list slot="content" style="min-width:150px;">
               <mu-list-item
                 button
-                @click="openMenu=false;$router.push('/writing/detail/'+atlas.writingId);"
+                @click="openMenu=false;$router.push('/writing/'+atlas.writingId);"
               >
                 <mu-list-item-title>详情</mu-list-item-title>
               </mu-list-item>
@@ -429,11 +429,12 @@ export default {
   /* min-width: 350px; */
   /* max-width: 800px; */
   width: 100%;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255,0.9);
   box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 4px;
   /* opacity: 0.8; */
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .atlas-item-header {
   display: flex;

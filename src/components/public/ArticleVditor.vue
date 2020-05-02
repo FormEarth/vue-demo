@@ -19,7 +19,6 @@ export default {
     initMarkdown: {
       //初始化时的值
       type: String,
-      default: ""
     },
     cache: {
       //是否使用localStorage缓存
@@ -96,19 +95,24 @@ export default {
               }
             });
           }
-          // after: 这个属性没有什么用好像
+        },
+        after() {
+          console.log("editor asynchronous rendering is completed");
+          // console.log(_this.initMarkdown);
+          _this.vditor.setValue(_this.initMarkdown);
         }
       });
       // vditor初始化是异步的，必须初始化才能调用方法
-      setTimeout(function() {
-        if (_this.initMarkdown == "") {
-          // localStorage.getItem(_this.current_user.userId)
-          // _this.vditor.enableCache()
-        } else {
-          console.log("编辑文章");
-          _this.vditor.setValue(_this.initMarkdown);
-        }
-      }, 200);
+      // setTimeout(function() {
+      //   console.log(_this.initMarkdown);
+      //   if (_this.initMarkdown == "") {
+      //     // localStorage.getItem(_this.current_user.userId)
+      //     // _this.vditor.enableCache()
+      //   } else {
+      //     console.log("编辑文章");
+      //     _this.vditor.setValue(_this.initMarkdown);
+      //   }
+      // }, 200);
     } else {
       //调用静态方法创建创建预览
       this.vditor = Vditor.preview(

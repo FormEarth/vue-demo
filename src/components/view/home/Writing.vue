@@ -163,6 +163,8 @@ export default {
     };
   },
   created() {
+    let url = 'http://192.168.149.115:8080/demooo/'
+    console.log("----:"+url.substring(url.indexOf('/',3)))
     this.loadData();
   },
   // 锚点跳转

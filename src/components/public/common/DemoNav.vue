@@ -1,29 +1,46 @@
 <template>
   <!-- 顶部导航栏组件 -->
-  <div class="root-node">
-    <div class="header">
+  <div class="demo-nav">
+    <div :class="['header',scrollTop>10?'white-box':'']">
       <div class="nav-title">
-        <span class="title" @click="$router.push('/')">DEMOOO</span>
+        <div class="nav-back" v-show="showBlackIcon" @click="$router.back(-1)">
+          <mu-icon value="arrow_back" size="30" class="middle"></mu-icon>
+        </div>
+        <span class="title" @click="$router.push('/')">
+          <span>D</span>
+          <span>E</span>
+          <span>M</span>
+          <span>O</span>
+          <span>O</span>
+          <span>O</span>
+        </span>
         <div class="nav-menu">
-          <mu-icon value="menu" size="30" style="vertical-align: middle;" @click="showDrawer"></mu-icon>
+          <mu-icon value="menu" size="30" class="middle" @click="showDrawer"></mu-icon>
         </div>
       </div>
       <div class="nav-content" id="nav-content">
-        <div
+        <div class="nav-item">
+          <div class="search-area clear-line">
+            <input type="text" :class="['search-box',scrollTop>10?'':'white-back']" v-model="search_txt" placeholder="输入搜索内容" />
+            <mu-icon class="middle" value="search" size="27" @click="searchGo"></mu-icon>
+          </div>
+        </div>
+        <!-- <search-icon></search-icon> -->
+        <!-- <div
           class="nav-item"
           :class="$route.meta.nav=='article'?'active-item':''"
-          @click="$router.push('/')"
-        >首页</div>
+          @click="$router.replace('/')"
+        >首页</div>-->
         <div
           class="nav-item"
           :class="$route.meta.nav=='album'?'active-item':''"
-          @click="$router.push('/album')"
+          @click="$router.replace('/album')"
         >相册</div>
         <div
           class="nav-item"
           v-if="isLogin"
           :class="$route.meta.nav=='mine'?'active-item':''"
-          @click="$router.push('/mine')"
+          @click="$router.replace('/mine')"
         >{{user.userName}}</div>
         <div
           v-else
@@ -33,22 +50,61 @@
         >登录</div>
       </div>
     </div>
+    <!-- <div class="nothing-box"></div> -->
   </div>
 </template>
 
 <script>
+import SearchIcon from "@/components/public/SearchIcon";
 export default {
   name: "DemoNav",
   data() {
     return {
-      
+      search_txt: "",
       style: true,
       logo_png: require("@/assets/images/logo.png"),
+      scrollTop: 0
     };
   },
+  mounted() {
+    window.addEventListener("scroll", this.scroll, true);
+    // // 按需使用：A→B→C就需要页面一进来的时候，就添加一个历史记录
+    // window.history.pushState(null, null, document.URL);
+    // // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法
+    // window.addEventListener("popstate", this.onBrowserBack, false);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.scroll);
+    // console.log("--------beforeDestroy")
+    // // 当页面销毁必须要移除这个事件，vue不刷新页面，不移除会重复执行这个事件
+    // window.removeEventListener("popstate", this.onBrowserBack, false);
+  },
+  // watch: {
+  //   // 弹框监听，当弹框显示的时候，pushState添加一个历史，供返回键使用
+  //   PopupShow: {
+  //     handler(newVal, oldVal) {
+  //       if (newVal.Terms === true) {
+  //         window.history.pushState(null, null, document.URL);
+  //       }
+  //     },
+  //     deep: true
+  //   }
+  // },
   methods: {
+    scroll() {
+      let element = document.querySelector(".content")
+      let scrollTop = element?element.scrollTop:0;
+      this.scrollTop = scrollTop
+      // console.log("scroll:"+scrollTop)
+    },
     showDrawer() {
-      this.$emit('toggle');
+      this.$emit("toggle");
+    },
+    onSearch() {},
+    searchGo() {
+      this.search_txt
+        ? this.$router.push("/search/" + this.search_txt)
+        : this.$demo_notify("请输入搜索内容");
     }
   },
   computed: {
@@ -60,42 +116,57 @@ export default {
     isLogin: function() {
       return this.$store.getters.isLogin;
     },
-    showMobileAppbar: function() {
+    showBlackIcon: function() {
       var routeName = this.$route.name;
       if (
         routeName == "homePage" ||
-        routeName == "atlasList" ||
+        routeName == "album" ||
         routeName == "mine" ||
-        routeName == "star" ||
-        routeName == "info"
+        routeName == "star"
       ) {
         return false;
       } else {
         return true;
       }
     }
+  },
+  components: {
+    SearchIcon
   }
 };
 </script>
 
 <style scoped>
-.root-node {
+.demo-nav {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
   width: 100%;
   z-index: 1;
-  background-color: #0066CC;
+  transition: background-color .5s ease-in;
+  /* background-color: #0066cc; */
+  /* background-color: #ffffff; */
 }
 .header {
   display: flex;
   justify-content: center;
   /* color: aliceblue; */
-  height: 60px;
+  height: 55px;
   min-width: 300px;
   /* background-color: #fff; */
   color: #fff;
-  line-height: 60px;
+  line-height: 55px;
+  /* padding-bottom: 5px; */
+}
+.white-box{
+  background-color: #ffffff;
+  color: black;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); ;
+}
+.nothing-box{
+  height: 15px;
+  background-color: transparent;
 }
 .nav-title {
   font-family: "Dressedless Three", sans-serif;
@@ -103,8 +174,23 @@ export default {
   font-size: 3.5rem;
   font-size: 28px;
 }
-.nav-title .title{
+.nav-title .title {
   cursor: pointer;
+}
+.nav-title .title span:nth-child(1) {
+  color: #4286f3;
+}
+
+.nav-title .title span:nth-child(2),span:nth-child(5),span:nth-child(6) {
+  color: #eb4537;
+}
+
+.nav-title .title span:nth-child(3) {
+  color: #fac230;
+}
+
+.nav-title .title span:nth-child(4) {
+  color: #55af7b;
 }
 .title img {
   padding-top: 10px;
@@ -129,19 +215,56 @@ export default {
 .nav-content {
   width: 50%;
 }
-.nav-menu {
+.nav-back {
   cursor: pointer;
+}
+.middle {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.search-box {
+  height: 100%;
+  outline: 0;
+  border: none;
+  color: black;
+  font-size: 16px;
+  padding: 0 15px;
+  border-radius: 100px;
+  min-width: 300px;
+  transition: all 0.5s ease-in-out;
+  /* background-color: aquamarine; */
+  /* background-color: #ffffff; */
+  background-color: rgba(0,0,0,0.1);
+}
+.search-box:focus {
+  min-width: 400px;
+}
+.clear-line {
+  line-height: normal;
+}
+.search-area {
+  margin-top: 13px;
+  /* display: inline-block; */
+  /* background-color: rgb(0, 0, 0,0.2); */
+  height: 30px;
+  border-radius: 100px;
+  padding-right: 7px;
+  opacity: 0.7;
+}
+.white-back{
+  background-color: rgba(255, 255, 255, 0.7);
 }
 /* 大屏幕，宽度大于800px; */
 @media screen and (min-width: 993px) {
   .nav-title {
-    width: 70%;
+    width: 50%;
     padding-left: 40px;
   }
   .nav-content {
     display: flex;
     /* position: static; */
-    width: 30%;
+    width: 50%;
+    /* padding-left: 20%; */
   }
   .nav-item:hover {
     /* color: rgb(255, 0, 0); */
@@ -149,25 +272,31 @@ export default {
     cursor: pointer;
     /* transition: all 0.5s; */
   }
-  .nav-menu {
+  .nav-menu,
+  .nav-back {
     display: none;
   }
 }
-/* 中等屏幕，宽度600px~800px; */
+/* 中等屏幕 */
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .nav-title {
+    width: 30%;
     padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
   }
   .nav-content {
+    width: 70%;
     display: flex;
     /* position: static; */
   }
-  .nav-menu {
+  .nav-menu,
+  .nav-back {
     display: none;
   }
 }
-/* 小屏幕，宽度在300px~600px */
-@media screen and (max-width: 769px) {
+/* 小屏幕 */
+@media screen and (max-width: 768px) {
   .header {
     display: block;
     justify-content: space-between;
@@ -176,18 +305,12 @@ export default {
   .nav-content {
     display: none;
     width: auto;
-    /* position: absolute;
-    top: 10px;
-    width: 100%; */
   }
   .nav-title {
     width: 100%;
     padding: 0 15px;
-  }
-  .nav-menu {
-    float: right;
-    font-weight: bold;
-    /* background-color: #fff; */
+    display: flex;
+    justify-content: space-between;
   }
   .show-item {
     background-color: #fff;

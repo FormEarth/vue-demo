@@ -1,4 +1,5 @@
 <template>
+<demo-transition>
   <mu-container class="demo-container" fluid :style="backgroundDiv">
     <div class="login-box">
       <mu-appbar title="用户登录" color="white" z-depth="0" textColor="black">
@@ -72,6 +73,7 @@
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">好吧</mu-button>
     </mu-dialog>
   </mu-container>
+  </demo-transition>
 </template>
 
 <script>

@@ -19,9 +19,9 @@
     <user-card :title="'每日一言'" style="font-style: italic;font-size:16px;">The art of losing isn't hard to master，so many things seem filled with the intent to be lost that their loss is no disaster.
 Elizabeth Bishop《One Art》</user-card>
     <user-card poem>虞美人·听雨
-      蒋捷
-      少年听雨歌楼上，红烛昏罗帐。壮年听雨客舟中，江阔云低，断雁叫西风。
-      而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。</user-card>
+蒋捷
+少年听雨歌楼上，红烛昏罗帐。壮年听雨客舟中，江阔云低，断雁叫西风。
+而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。</user-card>
     <user-card :title="'热门标签'">
       <demo-tag>日记</demo-tag>
       <demo-tag>JavaScript</demo-tag>

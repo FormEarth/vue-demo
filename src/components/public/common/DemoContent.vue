@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" :style="{backgroundImage:'url('+image+')'}">
     <!-- 顶部导航栏 -->
     <demo-nav @toggle="toggleDrawer"></demo-nav>
     <div class="main-content">
@@ -44,6 +44,8 @@ export default {
     return {
       open: false,
       screenWidth: document.body.clientWidth,
+      image:require("@/assets/images/global_backc.jpg"),
+      // image:require("@/assets/images/wallhaven-2el1mg.jpg"),
       drawer_background: require("@/assets/images/drawer_back.jpg")
     };
   },
@@ -107,6 +109,34 @@ export default {
 </script>
 
 <style scoped>
+.content{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: all 0.4s ease-in;
+}
+.left-panel {
+  /* position: sticky;
+  top: 70px; */
+  padding: 10px 5px;
+  /* max-width: 800px; */
+}
+.right-panel {
+  padding-top: 5px;
+}
+.mu-drawer {
+  background-repeat: no-repeat;
+  background-size: cover;
+  top: 60px;
+}
+.mu-item-title {
+  text-align: center;
+}
 /*滚动条整体样式*/
 .right-panel::-webkit-scrollbar {
   width: 5px;
@@ -124,23 +154,6 @@ export default {
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
   border-radius: 10px;
   background: transparent;
-}
-.left-panel {
-  /* position: sticky;
-  top: 70px; */
-  padding: 10px 5px;
-  /* max-width: 800px; */
-}
-.right-panel {
-  padding-top: 5px;
-}
-.mu-drawer {
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* top: 60px; */
-}
-.mu-item-title {
-  text-align: center;
 }
 /* 桌面，宽度>=993px */
 @media screen and (min-width: 993px) {
