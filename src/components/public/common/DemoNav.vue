@@ -139,13 +139,11 @@ export default {
 <style scoped>
 .demo-nav {
   position: sticky;
-  position: -webkit-sticky;
   top: 0;
-  width: 100%;
+  /* left: 0;
+  right: 0; */
   z-index: 1;
-  transition: background-color .5s ease-in;
-  /* background-color: #0066cc; */
-  /* background-color: #ffffff; */
+  transition: all .3s ease-in;
 }
 .header {
   display: flex;
@@ -237,7 +235,7 @@ export default {
   background-color: rgba(0,0,0,0.1);
 }
 .search-box:focus {
-  min-width: 400px;
+  min-width: 350px;
 }
 .clear-line {
   line-height: normal;

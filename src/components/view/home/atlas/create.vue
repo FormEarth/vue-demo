@@ -353,7 +353,7 @@ export default {
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/writing/detail/" + this.writingId);
+      this.$router.replace("/writing/" + this.writingId);
     },
     //请求服务端模糊查询标签
     searchTagsWithText(isInit) {

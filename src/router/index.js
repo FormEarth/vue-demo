@@ -75,7 +75,7 @@ const router = new Router({
     { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
 
     // 404页面在最下面
-    { path: '*', name: 'notfound', meta: { title: "404 not found", requireLogin: false, nav: "atlas" }, component: notfound }
+    { path: '*', name: 'notfound', meta: { title: "页面找不到啦~~", requireLogin: false, nav: "none" }, component: notfound }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

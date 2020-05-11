@@ -1,30 +1,25 @@
 <template>
-  <mu-container>
-    <div style="height:100%;">
-      <div class="error-font">4&nbsp;0&nbsp;4</div>
+  <div class="container-404">
+    <div class="error-box">
+      <img :src="picture" alt width="100%" />
       <div class="tips-font">
-        您要访问的内容不存在,可以尝试以下操作
+        页面走丢啦~~,可以尝试回到首页或刷新
         <br />
-        <br />
-        <mu-button flat @click="$router.back(-1)" >
-          <mu-icon value="arrow_back" color="green"></mu-icon>返回上一级
-        </mu-button>
-        <br />
-        <mu-button flat @click="$router.back(0)">
-          <mu-icon value="refresh" color="green"></mu-icon>刷新当前页
-        </mu-button>
+        <img :src="homepage" alt="首页" class="hover" @click="$router.replace('/');"/>
+        <img :src="refresh" alt="刷新" class="hover" @click="$router.go(0);"/>
       </div>
     </div>
-    <img :src="picture" alt width="100%" />
-  </mu-container>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      picture: require("@/assets/images/404.jpg"),
+      picture: require("@/assets/images/404-page.png"),
+      homepage: require("@/assets/images/home_page_100px.png"),
+      refresh: require("@/assets/images/reset_100px.png"),
       header: {
-        backgroundImage: "url(" + require("@/assets/images/404.jpg") + ")",
+        backgroundImage: "url(" + require("@/assets/images/404-page.png") + ")",
         // backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
         //height: "100%"
@@ -35,38 +30,26 @@ export default {
 </script>
 
 <style scoped>
-.icon-flex-wrap .mu-button {
-  margin: 6px 8px;
-}
-.container {
-  width: 100%;
-  height: 100%;
-  /* padding: 10px 10%; */
-  /* max-width: 500px; */
-  min-width: 350px;
-  max-height: 700px;
-}
-.error-font {
-  font-family: "Dressedless Three", sans-serif;
-  font-size: 40px;
-  text-align: center;
-  padding-top: 20px;
-  color: rgb(255, 8, 8);
-}
-.tips-font {
-  text-align: center;
-}
-.bottom {
-  width: 100%;
+.container-404 {
   position: fixed;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  background-color: #ffffff;
+  overflow-y: auto;
 }
-@media screen and (min-width: 993px) {
-  .container {
-    padding: 10px 10%;
-  }
+.error-box{
+  max-width: 768px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.hover{
+  cursor: pointer;
+  width:60px;
+  height:60px
 }
 </style>
 

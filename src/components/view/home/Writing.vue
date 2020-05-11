@@ -69,10 +69,10 @@
         </div>
       </div>
       <div class="small-text">
-        发布于&nbsp;{{atlas.sendTime}}&nbsp;
+        发布于&nbsp;{{atlas.sendTime|format}}&nbsp;
         <mu-icon value="place" size="16"></mu-icon>上海 浦东
         <br />
-        <span v-if="atlas.modified">已编辑&nbsp;&nbsp;最后编辑于·{{atlas.modifiedTime}}<br /></span>
+        <span v-if="atlas.modified">已编辑&nbsp;&nbsp;最后编辑于·{{atlas.modifiedTime|format}}<br /></span>
         <span v-if="atlas.source">来自{{atlas.source}}（该数据仅供参考）</span>
       </div>
       <div style="display:flex;justify-content:center;padding-top:15px">
@@ -143,6 +143,7 @@ import ArticleContent from "@/components/public/ArticleContent";
 import WritingComment from "@/components/public/WritingComment";
 import ArticleVditor from "@/components/public/ArticleVditor.vue";
 import { ImagePreview } from "vant";
+import util from "@/util/util";
 export default {
   name: "writing",
   data() {
@@ -163,8 +164,6 @@ export default {
     };
   },
   created() {
-    let url = 'http://192.168.149.115:8080/demooo/'
-    console.log("----:"+url.substring(url.indexOf('/',3)))
     this.loadData();
   },
   // 锚点跳转
@@ -179,6 +178,11 @@ export default {
     ArticleContent,
     WritingComment,
     ArticleVditor
+  },
+  filters:{
+    format(value){
+      return util.formatDate(value,'YY年MM月DD日 hh:mm')
+    }
   },
   methods: {
     loadData() {
@@ -305,7 +309,7 @@ export default {
   border-radius: 50%;
 }
 .header-username {
-  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   height: 23px;
   font-size: 16px;

@@ -121,7 +121,7 @@ export default {
   /* font-size: 14px; */
   /* 换行时保证标签完整性 */
 
-  /* font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  /* font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
     sans-serif; */
   text-align: center;
 }

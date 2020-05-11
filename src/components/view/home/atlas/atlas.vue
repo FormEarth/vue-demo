@@ -241,7 +241,7 @@ export default {
   border-radius: 50%;
 }
 .header-username {
-  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   height: 23px;
   font-size: 16px;

@@ -23,7 +23,8 @@
         </div>
         <div class="header-right">
           <mu-menu cover placement="left-start" :open.sync="openMenu" style="padding-top:11px;">
-            <mu-icon value="more_vert"></mu-icon>
+            <!-- <mu-icon value="more_vert"></mu-icon> -->
+            <mu-icon value="expand_more"></mu-icon>
             <mu-list slot="content" style="min-width:150px;">
               <mu-list-item
                 button
@@ -69,7 +70,7 @@
           <demo-tag v-for="tag in atlas.tags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
         </div>
         <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
-          <span style="font-size:14px;white-space: pre-wrap;" v-html="atlas.content"></span>
+          <span class="text-content" v-html="atlas.content"></span>
           <demo-tag
             v-show="atlas.atlasPictures.length==0"
             v-for="tag in atlas.tags"
@@ -88,8 +89,7 @@
       <!-- <div style="font-size:12px;">123条评论</div> -->
       <div class="atlas-item-footer">
         <div
-          class="footer-left"
-          style="font-size:12px;width:100%;margin-top:4px;margin-right:3px;"
+          style="font-size:12px;width:100%;margin-top:4px;margin-right:3px;text-align:left;"
         >&nbsp;{{atlas.pageview|view}}浏览</div>
         <div style="width:100%;text-align:right;">
           <mu-icon
@@ -239,14 +239,13 @@ export default {
     test() {
       alert(width);
     },
-    editWriting(){
-      this.openMenu=false;
-      if(this.atlas.type==2){
-        this.$router.push('/atlas/edit/'+this.atlas.writingId)
-      }else{
-        this.$router.push('/article/edit/'+this.atlas.writingId)
+    editWriting() {
+      this.openMenu = false;
+      if (this.atlas.type == 2) {
+        this.$router.push("/atlas/edit/" + this.atlas.writingId);
+      } else {
+        this.$router.push("/article/edit/" + this.atlas.writingId);
       }
-      
     },
     //切换喜欢与取消喜欢
     toggleLike() {
@@ -382,9 +381,16 @@ export default {
     },
     // 复制链接到剪贴板
     copyWritingLink() {
-      let writingLink =
-        window.location.href + "writing/detail/" + this.atlas.writingId;
-      console.log("writingLink:" + writingLink);
+      let writingLink;
+      let currentPath = this.$route.path
+      if(currentPath=='/'){
+        writingLink = window.location.href;
+      }else{
+        let href = window.location.href
+        writingLink = href.substring(0,href.length-currentPath.length+1)
+      }
+      writingLink += "writing/" + this.atlas.writingId; 
+      // console.log("writingLink:" + writingLink);
       var aux = document.createElement("input");
       aux.setAttribute("value", writingLink);
       document.body.appendChild(aux);
@@ -429,7 +435,7 @@ export default {
   /* min-width: 350px; */
   /* max-width: 800px; */
   width: 100%;
-  background-color: rgb(255, 255, 255,0.9);
+  background-color: rgb(255, 255, 255, 0.9);
   box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 4px;
@@ -480,13 +486,14 @@ export default {
   padding: 0;
 }
 .header-username {
-  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   height: 23px;
   font-size: 16px;
   line-height: 15px;
   padding-top: 5px;
-  color: red;
+  /* color: red; */
+  font-weight: bold;
 }
 .atlas-content {
   display: -webkit-box;
@@ -500,11 +507,18 @@ export default {
   font-size: 15px;
   padding: 0 2px;
 }
+.atlas-content .text-content{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 .show {
   font-size: 13px;
   color: cornflowerblue;
 }
 @media screen and (min-width: 768px) {
+  .atlas-item-footer{
+    padding: 0 40px;
+  }
   .differ-content {
     padding-left: 40px;
     padding-right: 40px;

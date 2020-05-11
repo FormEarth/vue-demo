@@ -139,7 +139,7 @@ p {
   white-space: pre-wrap;
 }
 .poem-card {
-  font-family: 方正隶变简体, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   background-color: #d4bba7;
   margin: 5px;

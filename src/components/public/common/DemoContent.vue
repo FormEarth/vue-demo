@@ -7,10 +7,10 @@
       <div class="left-panel">
         <slot name="detail-content"></slot>
       </div>
-      <mu-drawer
+      <!-- <mu-drawer style="z-index:100;"
         :docked="false"
         :open.sync="open"
-      ><!-- :style="{backgroundImage: 'url(' + drawer_background + ')'}" -->
+      >
         <mu-list>
           <mu-list-item button @click="open=false;$router.push('/')">
             <mu-list-item-title>首页</mu-list-item-title>
@@ -28,7 +28,7 @@
             <mu-list-item-title>关闭</mu-list-item-title>
           </mu-list-item>
         </mu-list>
-      </mu-drawer>
+      </mu-drawer> -->
       <!-- 右侧部分 -->
       <div class="right-panel">
         <slot name="demo-card"></slot>
@@ -124,7 +124,7 @@ export default {
   /* position: sticky;
   top: 70px; */
   padding: 10px 5px;
-  /* max-width: 800px; */
+  max-width: 800px;
 }
 .right-panel {
   padding-top: 5px;
@@ -147,7 +147,7 @@ export default {
 .right-panel::-webkit-scrollbar-thumb {
   /* border-radius: 10px; */
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-  background: rgb(110, 189, 253);
+  background: rgb(240, 246, 252);
 }
 /*滚动条轨道*/
 .right-panel::-webkit-scrollbar-track {

@@ -27,7 +27,7 @@
             <mu-icon value="remove_red_eye" size="16" style="vertical-align: text-top;"></mu-icon>
             {{article.pageview}}&nbsp;阅读&nbsp;&nbsp;
           </span>-->
-          <span v-if="article.tags.length>0">
+          <span v-if="article.tags">
             <mu-icon value="local_offer" size="16" style="vertical-align: text-top;"></mu-icon>
             <demo-tag
               v-for="(tag,index) in article.tags"

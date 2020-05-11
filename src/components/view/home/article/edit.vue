@@ -122,6 +122,8 @@ export default {
       if (this.modifyFrontcover) {
         formData.delete("frontCoverBlob");
         formData.append("image", this.previewCover, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
+      }else{
+        formData.delete("atlasPictures");
       }
       formData.delete("user");
       //删去服务端时间类型的数据，否则会报转换错误
@@ -129,6 +131,7 @@ export default {
       formData.delete("createTime")
       formData.delete("modifiedTime")
       formData.delete("updateTime")
+      //删除封面
       this.$http.article
         .editArticle(formData)
         .then(response => {
@@ -142,7 +145,7 @@ export default {
     // 去查看编辑文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/writing/detail/" + this.form.writingId);
+      this.$router.replace("/writing/" + this.form.writingId);
     }
   },
   components: {

@@ -128,7 +128,7 @@ export default {
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/writing/detail/" + this.$route.params.atlasId);
+      this.$router.replace("/writing/" + this.$route.params.atlasId);
     },
     //编辑图集
     editAtlas() {
