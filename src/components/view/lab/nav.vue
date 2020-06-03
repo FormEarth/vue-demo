@@ -1,82 +1,101 @@
 <template>
-  <div class="root-nav" :style="{backgroundImage: 'url(' + image + ')'}">
-    <div class="nav-header">
-      <a href="./">
-        <span>D</span>
-        <span>E</span>
-        <span>M</span>
-        <span>O</span>
-        <span>O</span>
-        <span>O</span>
-      </a>
-      <span class="normal-font" style="font-weight: lighter;">导航</span>
-      <!-- <div style="position: absolute;right:0;top: 1em;right: 1em;">  -->
-      <mu-menu placement="left-start" :open.sync="setting_open" style="position: absolute;right:0;top: 1em;right: 1em;">
-        <mu-icon value="settings" color="white" @click="setting_open=!setting_open"></mu-icon>
-        <mu-list slot="content" style="min-width:10em">
-          <mu-list-item button>
-            <mu-list-item-title>关注</mu-list-item-title>
-          </mu-list-item>
-          <mu-list-item button>
-            <mu-list-item-title>关注</mu-list-item-title>
-          </mu-list-item>
-        </mu-list>
-      </mu-menu>
-      <!-- </div> -->
-    </div>
-    <div class="root-node">
-      <div>
-        <div class="search-area">
-          <select name id>
-            <option value="Google">Google</option>
-            <option value="Bing">Bing</option>
-            <option value="Baidu">Baidu</option>
-          </select>
-          <input
-            class="search-box"
-            type="text"
-            name="search-box"
-            id="search-box"
-            placeholder="输入搜索内容"
-          />
-          <mu-icon value="search" size="30" class="search-icon"></mu-icon>
-        </div>
-        <div style="margin-top: 40px;display:flex;">
-          <div style="color:white;margin:0 10px;text-align:center;">
-            <div style>
+  <demo-transition>
+    <div class="demooo-nav" :style="{backgroundImage: 'url(' + image + ')'}">
+    <!-- <div class="demooo-nav"> -->
+      <div class="nav-header">
+        <a href="./">
+          <span>D</span>
+          <span>E</span>
+          <span>M</span>
+          <span>O</span>
+          <span>O</span>
+          <span>O</span>
+        </a>
+        <span class="normal-font" style="font-weight: lighter;">导航</span>
+        <!-- <div style="position: absolute;right:0;top: 1em;right: 1em;">  -->
+        <mu-menu
+          placement="left-start"
+          :open.sync="setting_open"
+          style="position: absolute;right:0;top: 1em;right: 1em;"
+        >
+          <mu-icon value="settings" color="white" @click="setting_open=!setting_open"></mu-icon>
+          <mu-list slot="content" style="min-width:10em">
+            <mu-list-item button>
+              <mu-list-item-title>更换壁纸</mu-list-item-title>
+            </mu-list-item>
+            <mu-list-item button>
+              <mu-list-item-title>设置</mu-list-item-title>
+            </mu-list-item>
+          </mu-list>
+        </mu-menu>
+        <!-- </div> -->
+      </div>
+      <div class="root-node">
+        <div>
+          <div :class="['search-area',focus?'search-shadow':'']">
+            <div class="select-box">
+              <mu-select filterable solo v-model="selected_engine" style="width:100px;">
+                <mu-option
+                  v-for="(engine,index) in engines"
+                  :key="index"
+                  :label="engine"
+                  :value="index"
+                ></mu-option>
+              </mu-select>
+            </div>
+            <div class="search-box">
+              <input
+                class="search-input"
+                type="text"
+                placeholder="输入搜索内容"
+                v-model="keyword"
+                @focus="focus=true"
+                @blur="focus=false"
+              />
+              <mu-icon value="search" size="30" class="search-icon" @click="SearchGo"></mu-icon>
+            </div>
+          </div>
+          <div></div>
+          <div style="margin-top: 40px;display:flex;">
+            <div class="net-item">
+              <div>
+                <img
+                  style="width:50px;height:50px;"
+                  src="http://192.168.149.115:9090/static/app/bilibili.png"
+                />
+              </div>bilibili
+            </div>
+            <div class="net-item">
               <img
                 style="width:50px;height:50px;"
-                src="http://192.168.149.115:9090/static/app/bilibili.png"
+                src="http://192.168.149.115:9090/static/app/zhihu.jpg"
               />
-            </div>bilibili
+              <br />知乎
+            </div>
+            <div class="net-item">
+              <img
+                style="width:50px;height:50px;"
+                src="http://192.168.149.115:9090/static/app/github_1.png"
+              />
+              <br />GitHub
+            </div>
+            <div class="net-item">
+              <img
+                style="width:50px;height:50px;"
+                src="http://192.168.149.115:9090/static/app/weibo.webp"
+              />
+              <br />weibo
+            </div>
+            <!-- <div class="bookmark">书签</div>
+            <div class="bookmark">书签</div>-->
+            <!-- <div>
+              <div class="lab-card">123</div>
+            </div>-->
           </div>
-          <div style="color:white;margin:0 10px;text-align:center;">
-            <img
-              style="width:50px;height:50px;"
-              src="http://192.168.149.115:9090/static/app/zhihu.jpg"
-            />
-            <br />知乎
-          </div>
-          <div style="color:white;margin:0 10px;text-align:center;">
-            <img
-              style="width:50px;height:50px;"
-              src="http://192.168.149.115:9090/static/app/github_1.png"
-            />
-            <br />GitHub
-          </div>
-          <div style="color:white;margin:0 10px;text-align:center;">
-            <img
-              style="width:50px;height:50px;"
-              src="http://192.168.149.115:9090/static/app/weibo.webp"
-            />
-            <br />weibo
-          </div>
-          <!-- <div class="bookmark">书签</div>
-          <div class="bookmark">书签</div>-->
         </div>
       </div>
     </div>
-  </div>
+  </demo-transition>
 </template>
 
 <script>
@@ -84,12 +103,28 @@ import axios from "axios";
 export default {
   data() {
     return {
+      engines: ["bing", "google", "baidu"],
+      selected_engine: 0,
+      keyword: "",
       setting_open: false,
-      image: require("@/assets/images/albedo.png")
-      // search_svg: require("@/assets/images/svg/search.svg")
+      image: require("@/assets/images/albedo.png"),
+      focus: false
     };
   },
   methods: {
+    SearchGo() {
+      if (this.keyword == "") {
+        this.$demo_notify("请输入搜索内容");
+        return;
+      }
+      if (this.selected_engine == 0) {
+        window.open("https://cn.bing.com/search?q=" + this.keyword);
+      } else if (this.selected_engine == 1) {
+        window.open("https://www.google.com.hk/search?" + this.keyword);
+      } else if (this.selected_engine == 2) {
+        window.open("https://www.baidu.com/s?wd=" + this.keyword);
+      }
+    },
     getURLInfo() {
       //   html_string = response.content.decode(automatic_detect(url));
       //   var titleRegx = /<title>(.+)<\/title>/;
@@ -101,7 +136,7 @@ export default {
 </script>
 
 <style scoped>
-.root-nav {
+.demooo-nav {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
@@ -158,36 +193,54 @@ select {
 }
 
 .search-area {
-  display: inline-block;
-  min-width: 40em;
+  /* display: inline-block; */
+  display: flex;
+  /* min-width: 40em; */
+  width: 60%;
   background-color: #ffffff;
   position: relative;
   border-radius: 3px;
   transition: all 0.5s ease-out;
+  padding-left: 1em;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
-.search-area:focus-within {
-  min-width: 50em;
+/* .search-box:focus-within {
+  width: 40em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+} */
 
-.search-area:focus-within .mu-icon {
-  color: #4286f3;
-}
-
-.search-box {
-  height: 2.9em;
-  width: 80%;
+.search-input {
+  height: 100%;
+  width: 100%;
   border: none;
   outline: 0;
-  padding: 0.3em 0.4em;
+  /* padding: 0.3em 0.4em; */
+  transition: all 0.5s;
+  background-color: transparent;
+}
+/* .search-input:focus > .search-box{
+  background-color: #fac230;
+} */
+.select-box {
+  width: 90px;
+}
+.search-box {
+  padding-left: 8px;
+  flex: 1;
+  display: inline-block;
+  /* min-width: 35em; */
   transition: all 0.5s;
 }
 
+.search-shadow{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .search-icon {
   position: absolute;
-  top: 0.2em;
-  right: 0.2em;
+  top: 9px;
+  right: 5px;
+  vertical-align: middle;
   cursor: pointer;
 }
 
@@ -202,5 +255,21 @@ select {
   margin: 10px 0;
   padding: 0 10px;
   line-height: 30px;
+}
+
+.lab-card {
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #eee;
+  height: 204px;
+  padding: 20px;
+  /* position: absolute; */
+  width: 296px;
+  background-color: #ffffff;
+}
+.net-item {
+  color: white;
+  margin: 0 10px;
+  text-align: center;
+  cursor: pointer;
 }
 </style>

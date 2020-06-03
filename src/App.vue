@@ -16,21 +16,6 @@
         </demo-transition>
       </div>
     </demo-content>
-
-    <!-- <mu-bottom-nav
-      v-show="showBottomNav"
-      :value.sync="this.$route.name"
-      color="primary"
-      id="bottomNav"
-    >
-      <mu-bottom-nav-item value="homePage" title="首页" icon="home" replace to="/"></mu-bottom-nav-item>
-      <mu-bottom-nav-item value="atlasList" title="图集" icon="burst_mode" replace to="/atlas"></mu-bottom-nav-item>
-      <div class="mu-bottom-item">
-        <native-add-button></native-add-button>
-      </div>
-      <mu-bottom-nav-item value="star" title="收藏" icon="star" replace to="/star"></mu-bottom-nav-item>
-      <mu-bottom-nav-item value="mine" title="我的" icon="person" replace to="/mine"></mu-bottom-nav-item>
-    </mu-bottom-nav> -->
   </div>
 </template>
 
@@ -40,23 +25,6 @@ export default {
   name: "App",
   data() {
     return {};
-  },
-  computed: {
-    // 是否显示底部导航栏
-    showBottomNav: function() {
-      const name = this.$route.name;
-      console.log("name:" + name, "nav:" + this.$route.meta.nav);
-      if (
-        name == "homePage" ||
-        name == "atlasList" ||
-        name == "mine" ||
-        name == "star"
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
   },
   created() {
     if (!this.$store.getters.isLogin) {
@@ -87,6 +55,13 @@ export default {
       }
     }
   },
+  updated() {
+    //非KeepAlive页面将滚动到顶部
+    if (!this.$route.meta.keepAlive&&this.$route.meta.nav!='none') {
+      let element = document.querySelector(".demo-content")
+      document.querySelector(".demo-content").scrollTop = 0;
+    }
+  },
   components: {
     NativeAddButton
   }
@@ -94,7 +69,7 @@ export default {
 </script>
 
 <style>
-@import './assets/fonts/font.css';
+@import "./assets/fonts/font.css";
 #app {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /*-webkit-font-smoothing: antialiased;

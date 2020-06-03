@@ -89,7 +89,7 @@ function formatDate(time,format='YY-MM-DD hh:mm:ss'){
 }
 
 //防抖
-export function _debounce(fn, delay) {
+export function debounce(fn, delay) {
   var delay = delay || 200;
   var timer;
   return function() {
@@ -110,6 +110,7 @@ export default {
   tagColor,
   consoleObj,
   dateSubtract,
-  formatDate
+  formatDate,
+  debounce
 };
 </script>

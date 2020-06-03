@@ -35,6 +35,7 @@ export default {
   text-align: center;
   padding: 7px 0;
   vertical-align: middle;
+  /* background-image: linear-gradient( 135deg, #ABDCFF 10%, #0396FF 100%); */
 }
 .avatar {
   width: 50px;

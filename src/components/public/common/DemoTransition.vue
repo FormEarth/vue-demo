@@ -52,4 +52,22 @@ export default {
   transform: translateX(20px);
   /* transform: translateY(20px); */
 }
+
+.bt-enter-active {
+  transition: all 0.1s ease-in;
+}
+.bt-enter {
+  /* .slide-fade-leave-active for below version 2.1.8 */
+  transform: translateY(-20px);
+  /* transform: rotate(50deg); */
+  opacity: 0;
+}
+.bt-leave-active {
+  transition: all 0.3s ease;
+}
+.bt-leave-to {
+  transform: translateY(-20px);
+  /* transform: translateY(20px); */
+}
+
 </style>

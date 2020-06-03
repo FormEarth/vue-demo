@@ -71,6 +71,9 @@ export default {
       }
     };
   },
+  created(){
+    this.form.content = localStorage.getItem(this.$store.state.current_user.userId)
+  },
   computed: {
     //封面的展示
     previewCover() {

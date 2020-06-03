@@ -1,7 +1,8 @@
 <template>
   <!-- 顶部导航栏组件 -->
-  <div class="demo-nav">
-    <div :class="['header',scrollTop>10?'white-box':'']">
+  <demo-transition type="bt">
+  <div class="demo-nav" v-show="showNav">
+    <div class="header white-box">
       <div class="nav-title">
         <div class="nav-back" v-show="showBlackIcon" @click="$router.back(-1)">
           <mu-icon value="arrow_back" size="30" class="middle"></mu-icon>
@@ -21,7 +22,7 @@
       <div class="nav-content" id="nav-content">
         <div class="nav-item">
           <div class="search-area clear-line">
-            <input type="text" :class="['search-box',scrollTop>10?'':'white-back']" v-model="search_txt" placeholder="输入搜索内容" />
+            <input type="text" class="search-box" v-model="search_txt" placeholder="输入搜索内容" />
             <mu-icon class="middle" value="search" size="27" @click="searchGo"></mu-icon>
           </div>
         </div>
@@ -38,24 +39,25 @@
         >相册</div>
         <div
           class="nav-item"
-          v-if="isLogin"
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.replace('/mine')"
-        >{{user.userName}}</div>
-        <div
+        >我的</div>
+        <!-- <div
           v-else
           class="nav-item"
           :class="$route.meta.nav=='mine'?'active-item':''"
           @click="$router.push('/login')"
-        >登录</div>
+        >登录</div> -->
       </div>
     </div>
     <!-- <div class="nothing-box"></div> -->
   </div>
+  </demo-transition>
 </template>
 
 <script>
 import SearchIcon from "@/components/public/SearchIcon";
+import util from "@/util/util";
 export default {
   name: "DemoNav",
   data() {
@@ -63,15 +65,25 @@ export default {
       search_txt: "",
       style: true,
       logo_png: require("@/assets/images/logo.png"),
-      scrollTop: 0
+      scrollTop: 0,
+      showNav:true,
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.scroll, true);
+    window.addEventListener("scroll", util.debounce(this.scroll,500), true);
     // // 按需使用：A→B→C就需要页面一进来的时候，就添加一个历史记录
     // window.history.pushState(null, null, document.URL);
     // // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法
     // window.addEventListener("popstate", this.onBrowserBack, false);
+  },
+  watch:{
+    scrollTop(newVal,oldVal){
+      if(newVal-oldVal>1){
+        this.showNav = false
+      }else{
+        this.showNav = true
+      }
+    }
   },
   destroyed() {
     window.removeEventListener("scroll", this.scroll);
@@ -92,7 +104,7 @@ export default {
   // },
   methods: {
     scroll() {
-      let element = document.querySelector(".content")
+      let element = document.querySelector(".demo-content")
       let scrollTop = element?element.scrollTop:0;
       this.scrollTop = scrollTop
       // console.log("scroll:"+scrollTop)
@@ -138,12 +150,12 @@ export default {
 
 <style scoped>
 .demo-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
-  /* left: 0;
-  right: 0; */
+  left: 0;
+  right: 0;
   z-index: 1;
-  transition: all .3s ease-in;
+  /* transition: all .5s ease-in; */
 }
 .header {
   display: flex;
@@ -279,7 +291,7 @@ export default {
 @media screen and (min-width: 769px) and (max-width: 992px) {
   .nav-title {
     width: 30%;
-    padding-left: 30px;
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
   }

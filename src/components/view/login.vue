@@ -1,79 +1,80 @@
 <template>
-<demo-transition>
-  <mu-container class="demo-container" fluid :style="backgroundDiv">
-    <div class="login-box">
-      <mu-appbar title="用户登录" color="white" z-depth="0" textColor="black">
-        <mu-button icon slot="left" @click="$router.back(-1)" class="back-button">
-          <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
-        </mu-button>
-      </mu-appbar>
-      <mu-form ref="form" :model="validateForm" class="mu-demo-form">
-        <mu-form-item prop="account" :rules="accountRules" icon="perm_identity">
-          <mu-text-field v-model="validateForm.account" placeholder="您的账号"></mu-text-field>
-        </mu-form-item>
-        <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
-          <mu-text-field
-            placeholder="您的密码"
-            v-model="validateForm.password"
-            :action-icon="visibility ? 'visibility_off' : 'visibility'"
-            :action-click="() => (visibility = !visibility)"
-            :type="visibility ? 'text' : 'password'"
-          ></mu-text-field>
-        </mu-form-item>
-        <mu-form-item prop="rememberMe" help-text="请勿在公用设备上勾选此选项" style="padding-left:16px;">
-          <mu-checkbox label="记住我" v-model="validateForm.rememberMe"></mu-checkbox>
-        </mu-form-item>
-        <div style="padding:0 15px;">
-          <mu-button
-            full-width
-            color="green500"
-            v-loading="loading"
-            :disabled="loading"
-            @click="submit"
-            data-mu-loading-size="24"
-            data-mu-loading-overlay-color="white"
-          >
-            登录
-            <mu-icon right value="send"></mu-icon>
+  <mu-scale-transition>
+    <mu-container class="demo-container" fluid :style="backgroundDiv">
+      <div class="login-box">
+        <mu-appbar title="用户登录" color="white" z-depth="0" textColor="black">
+          <mu-button icon slot="left" @click="$router.back(-1)" class="back-button">
+            <mu-icon value="keyboard_arrow_left" color="black" size="36"></mu-icon>
           </mu-button>
-          <!-- <mu-button color="secondary" v-loading="loading" data-mu-loading-size="24" @click="test">按钮加载</mu-button> -->
-        </div>
-        <!-- <mu-button flat @click="submit">
+        </mu-appbar>
+        <mu-form ref="form" :model="validateForm" class="mu-demo-form">
+          <mu-form-item prop="account" :rules="accountRules" icon="perm_identity">
+            <mu-text-field v-model="validateForm.account" placeholder="您的账号"></mu-text-field>
+          </mu-form-item>
+          <mu-form-item prop="password" :rules="passwordRules" icon="vpn_key">
+            <mu-text-field
+              placeholder="您的密码"
+              v-model="validateForm.password"
+              :action-icon="visibility ? 'visibility_off' : 'visibility'"
+              :action-click="() => (visibility = !visibility)"
+              :type="visibility ? 'text' : 'password'"
+            ></mu-text-field>
+          </mu-form-item>
+          <mu-form-item prop="rememberMe" help-text="请勿在公用设备上勾选此选项" style="padding-left:16px;">
+            <mu-checkbox label="记住我" v-model="validateForm.rememberMe"></mu-checkbox>
+          </mu-form-item>
+          <div style="padding:0 15px;">
+            <mu-button
+              full-width
+              color="green500"
+              v-loading="loading"
+              :disabled="loading"
+              @click="submit"
+              data-mu-loading-size="24"
+              data-mu-loading-overlay-color="white"
+            >
+              登录
+              <mu-icon right value="send"></mu-icon>
+            </mu-button>
+            <!-- <mu-button color="secondary" v-loading="loading" data-mu-loading-size="24" @click="test">按钮加载</mu-button> -->
+          </div>
+          <!-- <mu-button flat @click="submit">
           登录
           <mu-icon right value="send"></mu-icon>
-        </mu-button>-->
-        <!-- <mu-divider></mu-divider> -->
-        <div style="text-align: center;color: grey;padding:4px 0">——更多登录方式——</div>
-        <div class="login-otherway">
-          <div class="otherway-item">
-            <img :src="wechat_png" alt />
+          </mu-button>-->
+          <!-- <mu-divider></mu-divider> -->
+          <div style="text-align: center;color: grey;padding:4px 0">——更多登录方式——</div>
+          <div class="login-otherway">
+            <div class="otherway-item">
+              <img :src="wechat_png" alt />
+            </div>
+            <div class="otherway-item">
+              <img :src="qq_png" alt />
+            </div>
+            <div class="otherway-item">
+              <img :src="weibo_png" alt />
+            </div>
           </div>
-          <div class="otherway-item">
-            <img :src="qq_png" alt />
+          <div style="padding:0 15px;">
+            <mu-button full-width color="blueGrey100" textColor="black" to="/register">
+              注册新账号
+              <!-- <mu-icon right value="send"></mu-icon> -->
+            </mu-button>
           </div>
-          <div class="otherway-item">
-            <img :src="weibo_png" alt />
+          <div style="text-align:center;margin-top:10px;">
+            登录即表示同意
+            <a href>《服务条款》</a>和
+            <a href>《隐私政策》</a>
           </div>
-        </div>
-        <div style="padding:0 15px;">
-          <mu-button full-width color="blueGrey100" textColor="black" to="/register">
-            注册新账号
-            <!-- <mu-icon right value="send"></mu-icon> -->
-          </mu-button>
-        </div>
-        <div style="text-align:center;margin-top:10px;">
-          登录即表示同意
-          <a href>《服务条款》</a>和
-          <a href>《隐私政策》</a>
-        </div>
-      </mu-form>
-    </div>
-    <mu-dialog width="360" transition="slide-left" :open.sync="openDialog">
-      暂未开放注册哦^_^
-      <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">好吧</mu-button>
-    </mu-dialog>
-  </mu-container>
-  </demo-transition>
+        </mu-form>
+      </div>
+
+      <mu-dialog width="360" transition="slide-left" :open.sync="openDialog">
+        暂未开放注册哦^_^
+        <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">好吧</mu-button>
+      </mu-dialog>
+    </mu-container>
+  </mu-scale-transition>
 </template>
 
 <script>

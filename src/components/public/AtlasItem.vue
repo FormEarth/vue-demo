@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div class="main-atlas">
     <div class="atlas-item">
       <div class="atlas-item-header">
         <div style="display:flex;">
@@ -25,7 +25,7 @@
           <mu-menu cover placement="left-start" :open.sync="openMenu" style="padding-top:11px;">
             <!-- <mu-icon value="more_vert"></mu-icon> -->
             <mu-icon value="expand_more"></mu-icon>
-            <mu-list slot="content" style="min-width:150px;">
+            <mu-list slot="content" style="min-width:150px;opacity: 0.7;">
               <mu-list-item
                 button
                 @click="openMenu=false;$router.push('/writing/'+atlas.writingId);"
@@ -109,6 +109,7 @@
         </div>
       </div>
     </div>
+    <mu-divider></mu-divider>
     <mu-bottom-sheet :open.sync="open">
       <mu-list @item-click="closeBottomSheet">
         <mu-sub-header>您正在举报{{atlas.user.userName}}，举报原因：</mu-sub-header>
@@ -431,14 +432,14 @@ export default {
 };
 </script>
 <style scoped>
-.main-content {
+.main-atlas {
   /* min-width: 350px; */
   /* max-width: 800px; */
   width: 100%;
   background-color: rgb(255, 255, 255, 0.9);
-  box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 4px;
+  /* box-shadow: 0 1px 20px -8px rgba(0, 0, 0, 0.5); */
+  padding: 0 10px;
+  /* border-radius: 4px; */
   /* opacity: 0.8; */
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }

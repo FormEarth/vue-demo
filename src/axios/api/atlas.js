@@ -57,10 +57,16 @@ const atlas = {
         )
     },
     //修改图集
-    modifyAtlas(data){
+    modifyAtlas(data) {
         return request.put(
             "/demo/api/atlas",
             data
+        )
+    },
+    getVideoList() {
+        return request.get(
+            "/demo/api/videos",
+            {}
         )
     }
 }

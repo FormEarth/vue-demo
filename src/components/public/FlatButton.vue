@@ -35,8 +35,9 @@ export default {
   },
   methods:{
         toTop() {
-      if (document.documentElement.scrollTop > 0) {
-        document.documentElement.scrollTop = 0;
+          var dom = document.querySelector(".demo-content")
+      if (dom.scrollTop > 0) {
+        dom.scrollTop = 0;
       }
     },
   }

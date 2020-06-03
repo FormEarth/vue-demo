@@ -1,5 +1,5 @@
 <template>
-  <mu-container>
+  <div class="writing">
     <div
       v-if="!dataIsLoaded"
       style="position:fixed;width:100%;height:100%;text-align:center;"
@@ -136,7 +136,7 @@
         </mu-list-item>
       </mu-list>
     </mu-bottom-sheet>
-  </mu-container>
+  </div>
 </template>
 <script>
 import ArticleContent from "@/components/public/ArticleContent";
@@ -278,7 +278,7 @@ export default {
   max-width: 100%;
   max-height: 100%;
 }
-.container {
+.writing {
   padding-left: 0px;
   padding-right: 0px;
   /* max-width: 500px; */
@@ -356,6 +356,7 @@ export default {
 }
 .atlas-content {
   white-space: pre-wrap;
+  word-break: break-all;
   /* padding: 0 5px; */
 }
 .small-text {
@@ -378,6 +379,12 @@ export default {
 }
 .article-area >>> .v-note-wrapper {
   z-index: 1;
+}
+@media screen and (min-width: 769px) and (max-width: 992px){
+  .writing {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 @media screen and (max-width: 768px) {
   .writing-area {

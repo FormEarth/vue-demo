@@ -9,16 +9,15 @@
     <div class="nav-container">
       <div>过往&序章</div>
     </div>
-    <!-- <div class="photos-container"> -->
-    <transition-group name="photo" class="photos-container">
-      <div class="photo-item" v-for="img in imgs" :key="img" @click="showPop()">
-        <img :src="picture" alt="图片" />
-      </div>
-    </transition-group>
+    <div class="photos-container">
+<div class="photo-item" v-for="img in imgs" :key="img" @click="showPop()">
+      <img :src="picture" alt="图片" />
+    </div>
+    </div>
+    
     <mu-flex justify-content="center">
       <mu-pagination raised circle :total="100" :page-count="5" :current.sync="current"></mu-pagination>
     </mu-flex>
-    <!-- </div> -->
     <my-footer></my-footer>
   </div>
 </template>
@@ -30,7 +29,7 @@ export default {
   name: "album",
   data() {
     return {
-      imgs: [1, 2, 3, 4, 5,6,7,8],
+      imgs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       picture: require("@/assets/images/test5.jpg"),
       showpop: false,
       current: 1
@@ -116,7 +115,7 @@ export default {
     background-color: azure;
     border: 8px white solid;
     /* padding: 10px; */
-    margin: 1%;
+    margin: 0 1%;
   }
   .photo-item img:hover {
     transform: scale(1.1); /* 元素放大1.4倍 */
@@ -124,7 +123,7 @@ export default {
     cursor: pointer;
   }
 }
-@media screen and (max-width: 769px) and (max-width: 992px) {
+@media screen and (min-width: 769px) and (max-width: 992px) {
   .show-container {
     margin-top: 12%;
     width: 80%;
@@ -138,7 +137,7 @@ export default {
     margin: 1%;
   }
 }
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 768px) {
   .album-container {
     height: 130%;
   }

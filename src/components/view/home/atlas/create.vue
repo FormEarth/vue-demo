@@ -399,7 +399,7 @@ export default {
   width: 100%;
   background-color: #ffffff;
   padding: 5px 15px 5px 15px;
-  margin-bottom: 6.5px;
+  /* margin-bottom: 6.5px; */
 }
 .img-title {
   margin-bottom: 12px;

@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 .recommend-user-list {
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   padding: 10px;
   overflow-y: auto;
   white-space: nowrap;

@@ -1,5 +1,5 @@
 <template>
-  <div class="content" :style="{backgroundImage:'url('+image+')'}">
+  <div class="demo-content" :style="{backgroundImage:'url('+image+')'}">
     <!-- 顶部导航栏 -->
     <demo-nav @toggle="toggleDrawer"></demo-nav>
     <div class="main-content">
@@ -7,30 +7,8 @@
       <div class="left-panel">
         <slot name="detail-content"></slot>
       </div>
-      <!-- <mu-drawer style="z-index:100;"
-        :docked="false"
-        :open.sync="open"
-      >
-        <mu-list>
-          <mu-list-item button @click="open=false;$router.push('/')">
-            <mu-list-item-title>首页</mu-list-item-title>
-          </mu-list-item>
-          <mu-list-item button @click="open=false;$router.push('/album')">
-            <mu-list-item-title>相册</mu-list-item-title>
-          </mu-list-item>
-          <mu-list-item button v-if="isLogin" @click="open=false;$router.push('/mine')">
-            <mu-list-item-title>{{user.userName}}</mu-list-item-title>
-          </mu-list-item>
-          <mu-list-item button v-else @click="open=false;$router.push('/login')">
-            <mu-list-item-title>登录</mu-list-item-title>
-          </mu-list-item>
-          <mu-list-item @click="toggleDrawer" button>
-            <mu-list-item-title>关闭</mu-list-item-title>
-          </mu-list-item>
-        </mu-list>
-      </mu-drawer> -->
       <!-- 右侧部分 -->
-      <div class="right-panel">
+      <div v-if="hiddenRight" class="right-panel">
         <slot name="demo-card"></slot>
       </div>
     </div>
@@ -44,25 +22,21 @@ export default {
     return {
       open: false,
       screenWidth: document.body.clientWidth,
-      image:require("@/assets/images/global_backc.jpg"),
+      image:require("@/assets/images/artstation.jpg"),
       // image:require("@/assets/images/wallhaven-2el1mg.jpg"),
-      drawer_background: require("@/assets/images/drawer_back.jpg")
+      drawer_background: require("@/assets/images/drawer_back.jpg"),
+      net_array:[
+        {name:"bilibili",url:"",img:""},
+        {name:"baidu",url:"",img:""},
+        {name:"github",url:"",img:""}
+        ]
     };
   },
   computed: {
-    showMobileAppbar: function() {
-      var routeName = this.$route.name;
-      if (
-        routeName == "homePage" ||
-        routeName == "atlasList" ||
-        routeName == "mine" ||
-        routeName == "star" ||
-        routeName == "info"
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+    hiddenRight(){
+      let right = this.$route.meta.right;
+      if(typeof (right) == 'undefined') right = true;
+      return right;
     },
     //是否已登录
     isLogin: function() {
@@ -109,7 +83,7 @@ export default {
 </script>
 
 <style scoped>
-.content{
+.demo-content{
   position: fixed;
   left: 0;
   right: 0;
@@ -120,11 +94,15 @@ export default {
   background-size: cover;
   transition: all 0.4s ease-in;
 }
+.main-content{
+  padding-top: 55px;
+}
 .left-panel {
   /* position: sticky;
   top: 70px; */
   padding: 10px 5px;
-  max-width: 800px;
+  overflow: hidden;
+  /* max-width: 800px; */
 }
 .right-panel {
   padding-top: 5px;

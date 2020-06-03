@@ -27,6 +27,7 @@ import modifyPassword from '@/components/view/mine/setting/modifyPassword'
 
 import lab from '@/components/view/mine/lab'
 import nav from '@/components/view/lab/nav'
+import videos from '@/components/view/lab/videos'
 
 import writing from '@/components/view/home/Writing'
 import writingList from '@/components/view/home/WritingList'
@@ -55,7 +56,7 @@ const router = new Router({
     { path: '/register', name: 'register', meta: { title: "注册", requireLogin: false, nav: "none" }, component: register },
     { path: '/login', name: 'login', meta: { title: "登录", requireLogin: false, nav: "none" }, component: login, },
     { path: '/test', name: 'test', meta: { title: "测试", requireLogin: false, nav: "none" }, component: test },
-    { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" }, component: album },
+    { path: '/album', name: 'album', meta: { title: "相册", requireLogin: false, nav: "album" ,right:false}, component: album },
     { path: '/atlas', name: 'atlasList', meta: { title: "图集", requireLogin: false, keepAlive: true, nav: "atlas" }, component: atlasList },
     
     { path: '/atlas/add', name: 'atlasAdd', meta: { title: "发布图集", requireLogin: true, nav: "atlas" }, component: atlasAdd },
@@ -70,12 +71,13 @@ const router = new Router({
     { path: '/mine/setting', name: 'setting', meta: { title: "个人设置", requireLogin: true, nav: "mine" }, component: setting },
     { path: '/mine/tag/add', name: 'tagAdd', meta: { title: "添加标签", requireLogin: true, nav: "mine" }, component: tagAdd },
     { path: '/mine/password/modify', name: 'modifyPassword', meta: { title: "密码修改", requireLogin: true, nav: "mine" }, component: modifyPassword },
-    { path: '/lab', name: 'lab', meta: { title: "实验室", requireLogin: false, nav: "mine" }, component: lab },
+    { path: '/lab', name: 'lab', meta: { title: "实验室", requireLogin: false, nav: "mine" ,right:false}, component: lab },
     { path: '/nav', name: 'nav', meta: { title: "导航", requireLogin: false, nav: "none" }, component: nav },
     { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
+    { path: '/lab/videos', name: 'videos', meta: { title: "Videos", requireLogin: false, nav: "mine",right:false }, component: videos },
 
     // 404页面在最下面
-    { path: '*', name: 'notfound', meta: { title: "页面找不到啦~~", requireLogin: false, nav: "none" }, component: notfound }
+    { path: '*', name: 'notfound', meta: { title: "页面找不到啦~~", requireLogin: false, nav: "none" ,right:false}, component: notfound }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

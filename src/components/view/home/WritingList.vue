@@ -24,19 +24,13 @@
           finished-text="没有更多了"
           @load="getMoreArticleData"
         >
-          <div v-for="(writing,index) in articles" :key="writing.writingId">
-            <atlas-item
-              style="margin-bottom:5px;"
-              :atlas="writing"
-              :arrayIndex="index"
-              @remove="removeAtlasFromArray"
-            ></atlas-item>
+          <div class="list-header">
+            共{{total}}条数据
+            全部|文章|动态&nbsp;时间倒序|热度排序
           </div>
-          <!-- <article-card-view
-            v-for="article in articles"
-            :key="article.writingId"
-            :article="article"
-          ></article-card-view>-->
+          <div v-for="(writing,index) in articles" :key="writing.writingId">
+            <atlas-item :atlas="writing" :arrayIndex="index" @remove="removeAtlasFromArray"></atlas-item>
+          </div>
         </van-list>
       </div>
       <div class="no-articles" v-else>这是我的底线哦~~</div>
@@ -51,10 +45,10 @@ import FlatButton from "@/components/public/FlatButton.vue";
 
 export default {
   name: "WritingList",
-  props:{
-    withUser:{
-      type:Boolean,
-      default:false
+  props: {
+    withUser: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -78,16 +72,16 @@ export default {
   },
   //keep-alive页面进入触发
   activated() {
-    document.querySelector(".content").scrollTo(0, this.scroll);
+    document.querySelector(".demo-content").scrollTo(0, this.scroll);
     document
-      .querySelector(".content")
+      .querySelector(".demo-content")
       .addEventListener("scroll", this.handleScroll);
   },
   //keep-alive页面销毁触发
   deactivated() {
-    if (document.querySelector(".content") != null) {
+    if (document.querySelector(".demo-content") != null) {
       document
-        .querySelector(".content")
+        .querySelector(".demo-content")
         .removeEventListener("scroll", this.handleScroll);
     }
   },
@@ -108,16 +102,16 @@ export default {
   },
   methods: {
     handleScroll() {
-      let scrollTo = document.querySelector(".content").scrollTop;
+      let scrollTo = document.querySelector(".demo-content").scrollTop;
       // console.log("scrollTop:" + scrollTo);
       this.scroll = scrollTo;
     },
     //页面加载时显示的初始化数据
     getInitArticlesData() {
       this.initLoading = true;
-      let userId = this.withUser?this.$route.params.userId:null
+      let userId = this.withUser ? this.$route.params.userId : null;
       this.$http.article
-        .getHomePageArticles(this.current,userId)
+        .getHomePageArticles(this.current, userId)
         .then(response => {
           if (response.data.code == "2000") {
             this.articles = response.data.data.writings;
@@ -136,12 +130,12 @@ export default {
     //滑动到底部时加载更多数据
     getMoreArticleData() {
       if (this.loadedAll) return; //已加载完毕不再进行任何操作
-      let userId = this.withUser?this.$route.params.userId:null
+      let userId = this.withUser ? this.$route.params.userId : null;
       this.current = this.current + 1;
       console.log("当前加载文章页数：" + this.current);
       this.loading = true;
       this.$http.article
-        .getHomePageArticles(this.current,userId)
+        .getHomePageArticles(this.current, userId)
         .then(response => {
           if ((response.data.code = "2000")) {
             let dataLength = response.data.data.writings.length;
@@ -179,6 +173,9 @@ export default {
   padding-right: 0;
   padding-left: 0;
 }
+/* .demo-container >>> .main-atlas:nth-child(1) {
+  color: red;
+} */
 .no-articles {
   background-color: whitesmoke;
   font-size: 16px;
@@ -191,7 +188,14 @@ export default {
   text-align: center;
   /* color:white; */
 }
-.detail-content{
+.list-header {
+  color: grey;
+  padding: 10px 10px 10px 50px;
+  background-color: rgb(255, 255, 255, 0.9);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.detail-content {
   /* padding: 5px 5px 56px 5px; */
 }
 /* 大屏幕，宽度大于960px; */
@@ -213,11 +217,15 @@ export default {
 }
 /* 小屏幕，宽度在300px~640px */
 @media screen and (max-width: 768px) {
+  .list-header {
+    padding: 10px;
+  }
   .detail-content {
     /* background-image: linear-gradient(to bottom left, #07a3b2, #d9ecc7); */
     /* background-color: #f6f7f8; */
     /* padding: 10px 5px 56px 5px; */
   }
+
   /* .content {
     margin-top: 15px;
   } */
