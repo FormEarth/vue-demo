@@ -13,7 +13,7 @@
     "@material/textfield": "^0.42.1",
     "@types/mockjs": "^1.0.2",
     "@vant/touch-emulator": "^1.1.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "better-scroll": "^2.0.0-beta.2",
     "mavon-editor": "^2.7.1",
     "mockjs": "^1.0.1-beta3",
