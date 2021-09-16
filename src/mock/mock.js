@@ -3,7 +3,7 @@ import Mock from 'mockjs';  /*引用mockjs*/
 // 获取 mock.Random 对象
 const Random = Mock.Random;
 //用户登录
-Mock.mock('http://192.168.0.110:8080/demo/api/user/login', 'post', {
+Mock.mock('http://192.168.0.110:8080/user/login', 'post', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",
@@ -15,7 +15,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/user/login', 'post', {
   }
 });
 //首页文章数据加载
-Mock.mock('http://192.168.0.110:8080/demo/api/articles', 'get', {
+Mock.mock('http://192.168.0.110:8080/articles', 'get', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",
@@ -88,7 +88,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/articles', 'get', {
   ]
 });
 //首页图集数据加载
-Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
+Mock.mock('http://192.168.0.110:8080/atlases', 'get', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",
@@ -168,7 +168,7 @@ Mock.mock('http://192.168.0.110:8080/demo/api/atlases', 'get', {
   ]
 });
 //文章详情数据
-Mock.mock('http://192.168.0.110:8080/demo/api/article/detail/123', 'get', {
+Mock.mock('http://192.168.0.110:8080/article/detail/123', 'get', {
   code: "2000",
   msg: "成功",
   time: "2019-04-24 20:57:21",

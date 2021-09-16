@@ -11,8 +11,10 @@
         <mu-checkbox v-model="form.saveToFile" :ripple="false" label="生成静态页面"></mu-checkbox>
         <mu-checkbox v-model="form.anonymous" label="匿名文章" disabled></mu-checkbox>
       </mu-form-item>
-      <mu-form-item label="选择标签" style="padding:0 10px;margin-bottom:0px;"></mu-form-item>
-      <demo-tag-select :selectTags.sync="form.tags"></demo-tag-select>
+      <mu-form-item label="选择标签" style="padding:0 10px;margin-bottom:0px;">
+        <demo-tag-select :tag_group="form.tags"></demo-tag-select>
+      </mu-form-item>
+      
       <mu-paper style="text-align:center">
         <mu-button flat color="#1565c0" @click="craeatArticle" :disabled="form.title.length<1">
           <mu-icon value="send"></mu-icon>发布
@@ -67,12 +69,13 @@ export default {
         saveToFile: true,
         comment: true, //允许评论
         tags: [], //标签
-        frontCoverBlob: ""
+        frontCoverBlob: "",
+        type: 1
       }
     };
   },
   created(){
-    this.form.content = localStorage.getItem(this.$store.state.current_user.userId)
+    this.form.content = localStorage.getItem(this.$store.state.current_user.userId)||''
   },
   computed: {
     //封面的展示
@@ -135,7 +138,7 @@ export default {
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
-      this.$router.replace("/writing/detail/" + this.newArticleId);
+      this.$router.replace("/writing/" + this.newArticleId);
     },
     // 图片上传
     // 绑定@imgAdd event

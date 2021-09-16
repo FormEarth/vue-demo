@@ -5,7 +5,7 @@
         <div style="display:inline-block;">
           <p class="img-title">添加图片({{atlas.atlasPictures.length}}/9)</p>
         </div>
-        <div v-show="atlas.atlasPictures.length>1" style="display:inline-block;float:right;">
+        <div v-show="atlas.atlasPictures.length>1" style="display:inline-block;">
           <p class="delete-text" @click="deleteAll">全部删除</p>
         </div>
       </div>
@@ -51,69 +51,7 @@
     </div>
     <div class="dynamic-imgs">
       <p class="img-title">添加标签</p>
-      <div>
-        <demo-tag
-          v-for="(tag,index) in atlas.tags"
-          :key="index"
-          optional
-          @deleteTag="atlas.tags.splice(index,1)"
-        >{{tag.tagText}}</demo-tag>
-        <div v-show="!searchPanel">
-          <mu-icon value="add" color="success" @click="searchPanel=true;"></mu-icon>
-        </div>
-      </div>
-      <div v-show="searchPanel">
-        <demo-input
-          v-model.trim="searchText"
-          placeholder="搜索或自定义标签（可选）"
-          max="20"
-          @input="searchTags"
-          style="margin-bottom:4px;"
-        ></demo-input>
-        <div v-show="tags.length==0" style="display:flex;justify-content: space-between;">
-          <div>
-            <demo-tag>{{searchText}}</demo-tag>
-          </div>
-          <div>
-            <mu-button
-              color="info"
-              small
-              flat
-              :disabled="atlas.tags.length>=10"
-              @click="addtags({tagId:-1,tagText:searchText})"
-            >添加新标签</mu-button>
-          </div>
-        </div>
-        <div v-show="!searchText" style="margin-bottom:4px;color:gray;font-size:12px;">最近的热门标签</div>
-        <div
-          v-for="(tag,index) in tags"
-          :key="index"
-          style="display:flex;justify-content: space-between;"
-        >
-          <div>
-            <demo-tag :color="tag.tagColor">{{tag.tagText}}</demo-tag>
-          </div>
-          <div>
-            <mu-button
-              small
-              flat
-              color="primary"
-              :disabled="atlas.tags.length>=10"
-              @click="addtags(tag)"
-            >添加</mu-button>
-          </div>
-          <!-- <mu-divider></mu-divider> -->
-        </div>
-        <div style="text-align:right;">
-          <span v-show="atlas.tags.length>=10" style="color:gray;font-size:12px;">标签不能更多了哦</span>
-          <mu-button
-            small
-            flat
-            color="success"
-            @click="searchPanel=false;searchText='';tags=initTags;"
-          >完成</mu-button>
-        </div>
-      </div>
+      <demo-tag-select ref="tag_select" :tag_group="atlas.tags" @change_tags="change_tags"></demo-tag-select>
     </div>
     <div class="dynamic-imgs">
       <div class="flex-content">
@@ -183,6 +121,7 @@ export default {
         comment: true, //允许评论
         tags: [],
         personal: false, //仅自己可见
+        type: 2
       },
       initTags: [], //初始化加载的推荐tags数组，即在输入框为空时显示的列表
       tags: ["日记", "原创", "123", "2333"],
@@ -192,8 +131,8 @@ export default {
     };
   },
   created() {
-    //初始化热门标签
-    this.searchTagsWithText(true);
+    //初始化热门标签，添加标签时再初始化
+    // this.searchTagsWithText(true);
   },
   computed: {
     isAddImg() {
@@ -206,27 +145,6 @@ export default {
     },
   },
   methods: {
-    //输入内容改变时，请求服务端进行模糊搜索
-    searchTags() {
-      console.log("触发了搜索");
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      if (this.searchText) {
-        this.timer = setTimeout(() => {
-          this.searchTagsWithText(false);
-        }, 500);
-        // util._debounce(this.searchTagsWithText(false), 3000);
-      } else {
-        // 输入框中的内容被删为空时触发，此时会展示页面初始化加载的搜索结果
-        this.tags = this.initTags;
-      }
-    },
-    //点击列表中的某项后将该标签加入输入框
-    addtags(tag) {
-      console.log(tag.tagId);
-      this.atlas.tags.push({ tagId: tag.tagId, tagText: tag.tagText });
-    },
     //将file对象转换成可本地预览的ObjectURL
     getObjectURL(file) {
       var url = null;
@@ -309,14 +227,7 @@ export default {
       formData.append("personal", this.atlas.personal);
       for (let i = 0; i < this.atlas.tags.length; i++) {
         // formData.append("tags", this.atlas.tags[i]);
-        formData.append(
-          "tags[" + i + "].tagId",
-          this.atlas.tags[i].tagId
-        );
-        formData.append(
-          "tags[" + i + "].tagText",
-          this.atlas.tags[i].tagText
-        );
+        formData.append("tags[" + i + "]",this.atlas.tags[i])
       }
       //获取user-agent
       let parser = require('ua-parser-js');
@@ -349,26 +260,16 @@ export default {
       this.atlas.content = "";
       this.atlas.tags = [];
       this.releaseSucessDialog = false;
+      this.$refs.tag_select.clear_tags()
+      this.$forceUpdate()
     },
     // 去查看新写的文章
     goNewArticle() {
       this.releaseSucessDialog = false;
       this.$router.replace("/writing/" + this.writingId);
     },
-    //请求服务端模糊查询标签
-    searchTagsWithText(isInit) {
-      this.$http.tag
-        .queryTagsByText(this.searchText)
-        .then(response => {
-          if (response.data.code == "2000") {
-            this.tags = response.data.data.tags;
-            //初始化加载进行缓存
-            if (isInit) {
-              this.initTags = this.tags;
-            }
-          }
-        })
-        .catch(error => {});
+    change_tags(array){
+      this.atlas.tags = array
     }
   }
 };

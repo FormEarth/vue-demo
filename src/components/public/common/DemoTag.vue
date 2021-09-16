@@ -1,151 +1,89 @@
 <template>
-  <div v-if="simple" style="display:inline-block;">
-    <a class="demo-tag simple">
-      <slot>示例标签</slot>
-    </a>
+  <div :class="['demooo-tag',editable?'editable':'']">
+    <div v-if="editable">
+      <!-- input和icon不要换行 -->
+      <input ref="tag_input" type="text" v-model.trim="tag_text" class="tag-input" placeholder="new tag" 
+          @keyup.enter="edit_finish" @blur="edit_finish">
+          <!-- <mu-icon value="close" size="16" style="vertical-align: middle;" @click="remove_tag"></mu-icon> -->
+    </div>
+    <div v-else>
+      <!-- {{value}} -->
+      <slot></slot>
+    </div>
   </div>
-  <span v-else class="root-node">
-    <span>
-      <img :src="leftTag" class="left-tag" />
-      <slot>示例标签</slot>
-      <img v-if="optional" :src="deleteSvg" class="delete-suffix" @click="deleteTag">
-    </span>
-    
-    <!-- 不要换行，span的换行符会被渲染成空白 -->
-  </span>
 </template>
-    
 <script>
-import util from "@/util/util";
-export default {
-  name: "DemoTag",
-  props: {
-    color: {
-      type: String,
-      default: "blue"
-    },
-    random: {
-      type: Boolean,
-      default: false
-    },
-    optional: {
-      type: Boolean,
-      default: false
-    },
-    ellipse: {
-      type: Boolean,
-      default: false
-    },
-    small: {
-      type: Boolean,
-      default: false
-    },
-    simple: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      leftTag: require("@/assets/images/jinghao.png"),
-      deleteSvg: require("@/assets/svg/x.svg")
-    };
-  },
-  computed: {
-    //颜色定义，当传入color时，random不再生效
-    randomObject: function() {
-      // console.log(this.color)
-      // if (this.random) {
-      //   var max = util.tagColor.length - 1;
-      //   var random = Math.random();
-      //   var num = Math.round(random * max);
-      //   var color = util.tagColor[num].color;
-      //   return {
-      //     color: util.tagColor[num].color,
-      //     background: util.tagColor[num].background
-      //   };
-      // }
-      // if (this.color) {
-      for (var i = 0, len = util.tagColor.length; i < len; i++) {
-        if (this.color == util.tagColor[i].name) {
-          if (this.simple) {
-            return {
-              color: util.tagColor[i].color
-            };
-          } else {
-            return {
-              color: util.tagColor[i].color,
-              background: util.tagColor[i].background
-            };
-          }
-        }
-        // }
-        // return {}
+  export default {
+    name: "demo-tag",
+    props: {
+      value: {
+        type: String,
+        default: ''
+      },
+      editable: {
+        type: Boolean,
+        default: false
       }
-    }
-  },
-  methods: {
-    deleteTag() {
-      this.$emit("deleteTag");
-    }
+    },
+    data() {
+      return {
+        tag_text: this.value,
+        text_alter: false,
+        lock_flag: false
+      }
+    },
+    methods: {
+      //回车或失去焦点表明编辑完成,回车和失焦使用的同一个function，只要触发一次就行
+      edit_finish() {
+        if(this.lock_flag) return
+        this.lock_flag = true
+        //传来就是空时s
+        if(this.value == '' && this.tag_text == ''){
+          this.$demo_notify('tag cannot be empty' )
+          this.lock_flag = false
+          return
+        }
+        this.$emit('edit_finish',this.tag_text)
+        this.tag_text = this.value
+        this.$refs.tag_input.blur()
+        this.lock_flag = false
+      },
+      //移除tag
+      remove_tag(){
+        this.$emit('remove_tag')
+      },
+      click_tag(){
+        console.log(this.editable)
+        if(this.editable){
+          this.$refs.tag_input.focus()
+        }
+      }
+    },
   }
-};
 </script>
-
 <style scoped>
-.root-node {
-  height: 20px;
-  display: inline-block;
-  margin-right: 6px;
-  white-space: pre;
-  border-radius: 16px;
-  /* background-color: rgba(2, 153, 255, 0.06); */
-  padding-right: 8px;
-  align-items: center;
-  line-height: 20px;
-  color: rgb(2, 153, 255);
-  font-size: 14px;
-}
-.left-tag {
-  width: 12px;
-  height: 12px;
-  vertical-align: middle;
-  margin-top: -3px;
-}
-.demo-tag {
-  display: inline-block;
-  /* margin: 0 0 3px 0.3em; */
-  /* padding: 1px 10px; */
-  /* background-color: #e0e0e0; */
-  /* opacity:0.08; */
-  /* font-size: 14px; */
-  /* 换行时保证标签完整性 */
+  .demooo-tag {
+    background-color: #55af7b;
+    color: #fff;
+    font-size: 12px;
+    padding: 2.8px 8px;
+    line-height: normal;
+    border-radius: 0.2em;
+    display: inline-block;
+    margin: 4.2px;
+  }
 
-  /* font-family: Fangzhenglibian, "Open Sans", "Helvetica Neue", Helvetica, Arial,
-    sans-serif; */
-  text-align: center;
-}
-.simple::before {
-  content: "#";
-}
-.simple{
-  color: rgb(2, 153, 255);
-}
-.simple,.root-node  {
-  cursor: pointer;
-  /* color: black; */
-  /* opacity: 1; */
-}
-.delete-suffix {
-  vertical-align: text-bottom;
-  cursor: pointer;
-}
-.simple {
-  background: transparent;
-  padding: 0;
-  margin: 0 0 0 0.3em;
-  font-size: 14px;
-}
-@media screen and (min-width: 993px) {
-}
+  .editable {
+    background-color: #fff;
+    color: #000;
+    border: 1px dashed lightblue;
+    padding: 1.8px 8px;
+  }
+
+  .tag-input {
+    border: none;
+    max-width: 50px;
+    margin: 0;
+    padding: 0;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="    background-color: #E9EBF2;">
     <!-- 内容区域 -->
     <router-view v-if="this.$route.meta.nav=='none'" :key="$route.fullPath"></router-view>
     <demo-content v-else>

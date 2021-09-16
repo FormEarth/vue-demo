@@ -4,21 +4,21 @@ const tag = {
     //新增tag
     createNewTag(data) {
         return request.post(
-            "/demo/api/tag",
+            "/tag",
             data
         )
     },
     //查询所有tag
     queryAllTags() {
         return request.get(
-            "/demo/api/tags",
+            "/tags",
             {}
         )
     },
     //根据输入内容模糊查询标签
     queryTagsByText(searchText) {
         return request.get(
-            "/demo/api/tags/search", {
+            "/tags/search", {
             params: {
                 searchText: searchText
             }

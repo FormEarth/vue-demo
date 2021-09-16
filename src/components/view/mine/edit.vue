@@ -138,6 +138,9 @@ export default {
               forbidClick: true
             });
             var newUser = response.data.data.user;
+            newUser.user_watch_list = response.data.data.user_watch_list;
+            newUser.user_like_list = response.data.data.user_like_list;
+            newUser.user_keep_list = response.data.data.user_keep_list;
             sessionStorage.setItem("current_user", JSON.stringify(newUser));
             this.$store.commit("save_user", newUser);
             this.$router.back(-1);

@@ -70,7 +70,7 @@
       </div>
     </div>
     <div
-      style="with:100%;background-color:green;padding:10px;display:flex;flex-wrap:wrap;
+      style="width:100%;background-color:green;padding:10px;display:flex;flex-wrap:wrap;
             flex-direction:row;"
     >
       <!-- <img
@@ -120,7 +120,7 @@
     </div>
     <!-- <article-card-view></article-card-view> -->
     <div style="margin:20px;">123</div>
-    <div style="with:100%;background-color:pink;padding:10px;">
+    <div style="width:100%;background-color:pink;padding:10px;">
       <div
         style="background-color:#fff;border-radius:5px;width:145px;text-align:center;padding:7px 0;"
       >
@@ -138,11 +138,8 @@
       </div>
     </div>
     <demo-image-upload></demo-image-upload>
-    <demo-tag-select :selectTags.sync="selectTags"></demo-tag-select>
-    <div contenteditable="true" style="border:1px solid #000">123</div>
-    <div>
-      <span class="qwerty">1234</span>
-    </div>
+    <demo-tag-select :tag_group="selectTags" @change_tags="change_tags"></demo-tag-select>
+    <!-- <div contenteditable="true" style="border:1px solid #000">123</div> -->
     <mu-button @click="open=!open">toggle</mu-button>
     <mu-drawer :open.sync="open" :docked=false>
       <mu-list>
@@ -219,6 +216,9 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    change_tags(array){
+      this.selectTags = array
+    },
     handleScroll() {
       this.scroll =
         document.documentElement && document.documentElement.scrollTop;

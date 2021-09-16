@@ -14,6 +14,10 @@
           <mu-icon value="swap_horiz"></mu-icon>
           beyondhere
       </div>
+      <div class="lab-item" @click="$router.push('/leftnav')">
+          <mu-icon value="swap_horiz"></mu-icon>
+          left-nav
+      </div>
       <!-- <div class="lab-item" @click="$router.push('/lab/videos')">
           <mu-icon value="video_library"></mu-icon>
           视频

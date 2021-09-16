@@ -1,0 +1,13 @@
+.base-back {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+.base-green-back {
+    background-color: #12a182;
+    color: #fff;
+}
+.base-color {
+    color: #12a182;
+}
+.bold-font {
+    font-weight: bold;
+}

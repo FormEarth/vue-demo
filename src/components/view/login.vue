@@ -105,8 +105,8 @@ export default {
         }
       ],
       validateForm: {
-        account: "",
-        password: "",
+        account: "raining",
+        password: "123456",
         rememberMe: false
       },
       wechat_png: require("@/assets/images/wechat.png"),
@@ -145,12 +145,12 @@ export default {
               sessionStorage.setItem("current_user", JSON.stringify(user));
               sessionStorage.setItem(
                 "Authorization-Sessionid",
-                response.data.data.AuthorizationSessionId
+                response.data.data['Authorization-Sessionid']
               );
               if (this.validateForm.rememberMe) {
                 localStorage.setItem(
                   "Authorization-Sessionid",
-                  response.data.data.AuthorizationSessionId
+                  response.data.data['Authorization-Sessionid']
                 );
               }
               this.$store.commit("save_user", user);
@@ -167,7 +167,7 @@ export default {
                 }
               }, 1000);
               //取值的时候也要注意字符串转对象
-              console.log(JSON.parse(sessionStorage.getItem("current_user")));
+              // console.log(JSON.parse(sessionStorage.getItem("current_user")));
               console.log(
                 "Authorization-Sessionid:" +
                   localStorage.getItem("Authorization-Sessionid")

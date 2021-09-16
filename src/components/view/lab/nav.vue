@@ -61,28 +61,28 @@
               <div>
                 <img
                   style="width:50px;height:50px;"
-                  src="http://192.168.149.115:9090/static/app/bilibili.png"
+                  src="http://192.168.15.113:9090/static/app/bilibili.png"
                 />
               </div>bilibili
             </div>
             <div class="net-item">
               <img
                 style="width:50px;height:50px;"
-                src="http://192.168.149.115:9090/static/app/zhihu.jpg"
+                src="http://192.168.15.113:9090/static/app/zhihu.jpg"
               />
               <br />知乎
             </div>
             <div class="net-item">
               <img
                 style="width:50px;height:50px;"
-                src="http://192.168.149.115:9090/static/app/github_1.png"
+                src="http://192.168.15.113:9090/static/app/github_1.png"
               />
               <br />GitHub
             </div>
             <div class="net-item">
               <img
                 style="width:50px;height:50px;"
-                src="http://192.168.149.115:9090/static/app/weibo.webp"
+                src="http://192.168.15.113:9090/static/app/weibo.webp"
               />
               <br />weibo
             </div>
@@ -120,7 +120,7 @@ export default {
       if (this.selected_engine == 0) {
         window.open("https://cn.bing.com/search?q=" + this.keyword);
       } else if (this.selected_engine == 1) {
-        window.open("https://www.google.com.hk/search?" + this.keyword);
+        window.open("https://www.google.com.hk/search?q=" + this.keyword);
       } else if (this.selected_engine == 2) {
         window.open("https://www.baidu.com/s?wd=" + this.keyword);
       }

@@ -172,7 +172,7 @@ export default {
       });
       this.$http.user
         .userAddCollection({
-          collectionType: "USER_WATCH",
+          collectionType: 0,
           collectionId: this.user.userId
         })
         .then(response => {
@@ -205,7 +205,7 @@ export default {
       });
       this.$http.user
         .userRemoveCollection({
-          collectionType: "USER_WATCH",
+          collectionType: 0,
           collectionId: this.user.userId
         })
         .then(response => {

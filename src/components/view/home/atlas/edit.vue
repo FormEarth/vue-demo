@@ -42,7 +42,7 @@
     </div>
     <div class="dynamic-imgs">
       <p class="img-title">修改标签</p>
-      <demo-tag-select :selectTags.sync="atlas.tags"></demo-tag-select>
+      <demo-tag-select :tag_group="atlas.tags"></demo-tag-select>
     </div>
     <div class="dynamic-imgs">
       <div class="flex-content">

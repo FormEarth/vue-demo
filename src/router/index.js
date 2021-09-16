@@ -28,9 +28,11 @@ import modifyPassword from '@/components/view/mine/setting/modifyPassword'
 import lab from '@/components/view/mine/lab'
 import nav from '@/components/view/lab/nav'
 import videos from '@/components/view/lab/videos'
+import leftnav from '@/components/view/lab/leftNav'
 
 import writing from '@/components/view/home/Writing'
 import writingList from '@/components/view/home/WritingList'
+import search from '@/components/view/home/WritingSearch'
 
 import test from '@/components/view/test/test'
 import album from '@/components/view/test/album'
@@ -46,7 +48,10 @@ const router = new Router({
   mode: 'history',
   routes: [
     { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: writingList },
+    { path: '/v2', name: 'home2', meta: { title: "首页",right:false, keepAlive: true }, component: ()=> import("@/components/view/v2/index") },
+    { path: '/v2/:user_id/homepage', name: 'homepage2', meta: { title: "个人主页",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/homepage") },
     { path: '/writing/:writingId', name: 'writing', meta: { title: "动态详情", requireLogin: false, nav: "atlas" }, component: writing },
+    { path: '/search', name: 'search', meta: { title: "搜索", requireLogin: false }, component: search },
     // { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: info },
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
     { path: '/article/detail/:articleId', name: 'article', meta: { title: "文章详情", requireLogin: false, nav: "article" }, component: article },
@@ -73,6 +78,7 @@ const router = new Router({
     { path: '/mine/password/modify', name: 'modifyPassword', meta: { title: "密码修改", requireLogin: true, nav: "mine" }, component: modifyPassword },
     { path: '/lab', name: 'lab', meta: { title: "实验室", requireLogin: false, nav: "mine" ,right:false}, component: lab },
     { path: '/nav', name: 'nav', meta: { title: "导航", requireLogin: false, nav: "none" }, component: nav },
+    { path: '/leftnav', name: 'leftnav', meta: { title: "LEFT", requireLogin: false, nav: "none" }, component: leftnav },
     { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
     { path: '/lab/videos', name: 'videos', meta: { title: "Videos", requireLogin: false, nav: "mine",right:false }, component: videos },
 

@@ -27,7 +27,7 @@ Elizabeth Bishop《One Art》</user-card>
       <demo-tag>JavaScript</demo-tag>
       <demo-tag>原创</demo-tag>
     </user-card >
-    <user-card :title="'关于'">Copyright © 2019 - 2020 raining_heavily</user-card>
+    <user-card :title="'关于'">Copyright © 2019 - 2021 raining_heavily</user-card>
     <!-- </div> -->
   </div>
 </template>

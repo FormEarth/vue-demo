@@ -1,5 +1,6 @@
 <template>
-  <div class="demo-content" :style="{backgroundImage:'url('+image+')'}">
+  <!-- <div class="demo-content" :style="{backgroundImage:'url('+image+')'}"> -->
+  <div class="demo-content">
     <!-- 顶部导航栏 -->
     <demo-nav @toggle="toggleDrawer"></demo-nav>
     <div class="main-content">

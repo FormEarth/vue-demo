@@ -5,7 +5,7 @@ const atlas = {
     //这里涉及到图片上传，当data类型为FormData对象时，axios会自动删除已指定的Content-Type，这样浏览器会自己设定为multipart/form-data
     createNewAtlas(data, _this) {
         return request.post(
-            "/demo/api/atlas",
+            "/writing",
             data,
             {
                 onUploadProgress: progressEvent => {
@@ -20,7 +20,7 @@ const atlas = {
     queryAllAtlas(currentPage, withUser, userId) {
         if (withUser) {
             return request.get(
-                "/demo/api/atlases/" + currentPage,
+                "/atlases/" + currentPage,
                 {
                     params: {
                         userId: userId
@@ -29,7 +29,7 @@ const atlas = {
             )
         } else {
             return request.get(
-                "/demo/api/atlases/" + currentPage,
+                "/atlases/" + currentPage,
                 {}
             )
         }
@@ -38,34 +38,34 @@ const atlas = {
     // 下拉加载最新数据
     queryLastedAtlas(refreshTime) {
         return request.get(
-            "/demo/api/atlases/refresh/" + refreshTime,
+            "/atlases/refresh/" + refreshTime,
             {}
         )
     },
     // 根据Id查询指定的图集
     queryAtlasById(atlasId) {
         return request.get(
-            "/demo/api/atlas/" + atlasId,
+            "/atlas/" + atlasId,
             {}
         )
     },
     // 根据Id删除指定图集
     deleteAtlasById(atlasId) {
         return request.delete(
-            "/demo/api/atlas/" + atlasId,
+            "/atlas/" + atlasId,
             {}
         )
     },
     //修改图集
     modifyAtlas(data) {
         return request.put(
-            "/demo/api/atlas",
+            "/atlas",
             data
         )
     },
     getVideoList() {
         return request.get(
-            "/demo/api/videos",
+            "/videos",
             {}
         )
     }

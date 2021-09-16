@@ -171,6 +171,7 @@ export default {
   padding-right: 0px;
   /* max-width: 500px; */
   min-width: 350px;
+  background-color: white;
 }
 
 @media screen and (min-width: 993px) {

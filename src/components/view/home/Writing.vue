@@ -44,11 +44,11 @@
           <img :src="atlas.frontCover" style="height:250px;width:100%;object-fit:cover;" />
         </mu-card-media>
         <div style="display:flex;justify-content:space-between;height:30px;margin:5px 0 9px 0">
-          <div style="margin-top:6px;">发布于&nbsp;&nbsp;{{atlas.sendTime}}</div>
+          <div style="margin-top:6px;">发布于&nbsp;&nbsp;{{atlas.sendTime|format}}</div>
           <div style="margin-top:6px;text-align:right;padding-right:10px;">{{atlas.pageview}} 阅读</div>
         </div>
         <div style="padding:5px 10px 5px 10px;">
-          <demo-tag v-for="(tag,index) in atlas.tags" :key="index">{{tag.tagText}}</demo-tag>
+          <demo-tag v-for="(tag,index) in atlas.tags" :key="index">{{tag}}</demo-tag>
         </div>
         <article-vditor :editable="false" :initMarkdown="atlas.content"></article-vditor>
       </div>
@@ -56,16 +56,16 @@
         <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical"></demo-atlas-view>
         <div v-if="atlas.atlasPictures.length>0">
           <demo-tag v-show="atlas.personal" color="red" small>仅自己可见</demo-tag>
-          <demo-tag v-for="tag in atlas.tags" :key="tag.tagId" ellipse>{{tag.tagText}}</demo-tag>
+          <demo-tag v-for="(tag,index) in atlas.tags" :key="index" ellipse>{{tag}}</demo-tag>
         </div>
         <div>
           <span class="atlas-content" v-show="atlas.content!=''" v-html="atlas.content"></span>
           <demo-tag
             v-show="atlas.atlasPictures.length==0"
-            v-for="tag in atlas.tags"
-            :key="tag.tagId"
+            v-for="(tag,index) in atlas.tags"
+            :key="index"
             simple
-          >{{tag.tagText}}</demo-tag>
+          >{{tag}}</demo-tag>
         </div>
       </div>
       <div class="small-text">
@@ -92,28 +92,7 @@
         评论已被作者关闭
       </div>
       <div v-else id="comment-box" name="comment-box" ref="comment-box">
-        <writing-comment :writingId="atlas.writingId" :userId="atlas.user.userId"></writing-comment>
-        <!-- <div style="color: #aaa;font-size: 15px;letter-spacing: .1em;margin-bottom:10px;">发表新评论</div>
-        <demo-input placeholder="添加评论" v-model="comment" />
-        <div style="margin-top:10px;">
-          <input
-            :disabled="comment.length==0"
-            type="submit"
-            value="提交"
-            style="border:none;width:100%;background-color:#5db2ff;height:30px;"
-            @click="commentWriting"
-          />
-        </div>
-        <div v-for="(comment,index) in comments" :key="comment.commentId" style="margin-top:10px;">
-          <demo-comment
-            :comment="comment"
-            :commentIndex="index"
-            :articleUserId="atlas.user.userId"
-            :activeCommentId="activeCommentId"
-            @func="changeActiveCommentId"
-            @removeComment="removeCommentByIndex"
-          ></demo-comment>
-        </div>-->
+        <!-- <writing-comment :writingId="atlas.writingId" :userId="atlas.user.userId"></writing-comment> -->
       </div>
       <!-- <mu-divider></mu-divider> -->
       <div style="font-size:12px;text-align:center;padding-top:5px;">作品由作者发布于本平台，版权属作者所有，该作不代表本站观点，若有侵权，请联系管理员</div>

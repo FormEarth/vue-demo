@@ -63,20 +63,17 @@
         </div>
       </div>
       <!-- <mu-divider></mu-divider> -->
+      <!-- 图集 -->
       <div v-if="atlas.type==2" class="differ-content">
         <demo-atlas-view :images="atlas.atlasPictures" :identical="atlas.identical" forbidOversize></demo-atlas-view>
         <div v-if="atlas.atlasPictures.length>0">
-          <demo-tag v-if="atlas.personal" color="red" small>仅自己可见</demo-tag>
-          <demo-tag v-for="tag in atlas.tags" :key="tag.tagId" small>{{tag.tagText}}</demo-tag>
+          <demo-tag v-for="(tag,index) in atlas.tags" :key="index" small>{{tag}}</demo-tag>
         </div>
         <div ref="contentText" class="atlas-content" :style="{lineClamp: fold}">
           <span class="text-content" v-html="atlas.content"></span>
-          <demo-tag
-            v-show="atlas.atlasPictures.length==0"
-            v-for="tag in atlas.tags"
-            :key="tag.tagId"
-            simple
-          >{{tag.tagText}}</demo-tag>
+          <div v-if="atlas.atlasPictures.length==0">
+            <demo-tag v-for="(tag,index) in atlas.tags" :key="index">{{tag}}</demo-tag>
+          </div>
         </div>
         <div v-if="showButton">
           <div class="show" @click="handleFold" v-show="fold==2">展开更多</div>
@@ -90,7 +87,7 @@
       <div class="atlas-item-footer">
         <div
           style="font-size:12px;width:100%;margin-top:4px;margin-right:3px;text-align:left;"
-        >&nbsp;{{atlas.pageview|view}}浏览</div>
+        >&nbsp;{{atlas.pageview|view}}浏览 &nbsp;<span v-show="atlas.personal" style="color:#ff0000"><mu-icon value="lock" size="12" color="red" style="vertical-align: text-top;"></mu-icon>仅自己可见</span> </div>
         <div style="width:100%;text-align:right;">
           <mu-icon
             :value="isLiked?'favorite':'favorite_border'"
@@ -104,7 +101,7 @@
             size="25"
             @click="toggleKeep"
           ></mu-icon>&nbsp;
-          <mu-icon value="dvr" size="25"></mu-icon>&nbsp;
+          <!-- <mu-icon value="dvr" size="25"></mu-icon>&nbsp; -->
           <mu-icon value="open_in_new" size="25"></mu-icon>
         </div>
       </div>
@@ -263,7 +260,7 @@ export default {
         });
         this.$http.user
           .userRemoveCollection({
-            collectionType: "ATLAS_LIKE",
+            collectionType: 1,
             collectionId: this.atlas.writingId
           })
           .then(response => {
@@ -292,7 +289,7 @@ export default {
         });
         this.$http.user
           .userAddCollection({
-            collectionType: "ATLAS_LIKE",
+            collectionType: 1,
             collectionId: this.atlas.writingId
           })
           .then(response => {
@@ -329,7 +326,7 @@ export default {
         });
         this.$http.user
           .userRemoveCollection({
-            collectionType: "ATLAS_KEEP",
+            collectionType: 2,
             collectionId: this.atlas.writingId
           })
           .then(response => {
@@ -358,7 +355,7 @@ export default {
         });
         this.$http.user
           .userAddCollection({
-            collectionType: "ATLAS_KEEP",
+            collectionType: 2,
             collectionId: this.atlas.writingId
           })
           .then(response => {
@@ -416,8 +413,7 @@ export default {
     deleteAtlas() {
       console.log("调用了父组件");
       this.$emit("remove", this.arrayIndex);
-      this.$http.atlas
-        .deleteAtlasById(this.atlas.writingId)
+      this.$http.writing.remove_writing(this.atlas.writingId)
         .then(response => {
           if (response.data.code == "2000") {
             this.$toast("已删除");

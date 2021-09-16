@@ -7,8 +7,8 @@ import router from '../router'
 //不判断的话会将null上送成'null'
 // let sessionId = ()
 const instance = axios.create({
-  // baseURL: 'http://192.168.149.115:9092', //api 的 base_url
-  baseURL: 'http://106.15.120.224:9092', // api 的 base_url
+  baseURL: 'http://192.168.0.109:9092/demooo/api', //本地的 base_url
+  // baseURL: 'http://192.168.15.112:9092', // api 的 base_url
   timeout: 18000, // request timeout,3分钟，因为有图片上传
   // headers: { 'Authorization-Sessionid': sessionId },//请求头
   // withCredentials: true //跨域时携带cookie

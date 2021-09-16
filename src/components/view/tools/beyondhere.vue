@@ -12,10 +12,15 @@
     <div>{{appName}}</div>
     <div>{{userAgent}}</div>
     <mu-button color="info" @click="showNotify">点我</mu-button>
+    <br />
+    <br />
+    <mu-button color="info" @click="iziToast1">Toast</mu-button>
   </div>
 </template>
 
 <script>
+// import iziToast from 'vue-izitoast';//toast
+// import 'izitoast/dist/css/iziToast.min.css';
 
 export default {
   name: "BeyondHere",
@@ -28,11 +33,20 @@ export default {
   },
   computed: {
     appName() {
-      var parser = require('ua-parser-js');
+      var parser = require("ua-parser-js");
       var ua = parser(navigator.userAgent);
-      return 'browser:'+ua.browser.name+',version:'+ua.browser.version+",os"+ua.os.name+",os.version"+ua.os.version
+      return (
+        "browser:" +
+        ua.browser.name +
+        ",version:" +
+        ua.browser.version +
+        ",os" +
+        ua.os.name +
+        ",os.version" +
+        ua.os.version
+      );
     },
-    userAgent(){
+    userAgent() {
       return navigator.userAgent;
     }
   },
@@ -41,7 +55,21 @@ export default {
       this.text = content;
     },
     showNotify() {
-      this.$demo_notify( "操作成功");
+      this.$demo_notify("操作成功");
+    },
+    iziToast1() {
+      this.$izitoast.info("Welcome Hey ChunyangWang", "TIP:", {
+        backgroundColor: "#000000",
+        // titleColor: '#ffffff',
+        // messageColor: '#ffffff',
+        theme: 'dark',
+        position: "bottomRight",
+        transitionIn: "fadeInLeft"
+      });
+      //     iziToast.show({
+      //     title: 'Hey',
+      //     message: 'What would you like to add?'
+      // });
     }
   }
 };

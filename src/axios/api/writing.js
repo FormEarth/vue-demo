@@ -3,7 +3,7 @@ const writing = {
     // 根据Id查询指定的图集
     queryWritingById(writingId, type) {
         return request.get(
-            "/demo/api/writing",
+            "/writing",
             {
                 params: {
                     writingId: writingId,
@@ -12,6 +12,10 @@ const writing = {
             }
         )
     },
+    //删除作品
+    remove_writing(writing_id){
+        return request.delete("/writing/" + writing_id)
+    }
 
 }
 export default writing

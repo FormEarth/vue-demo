@@ -19,6 +19,11 @@ import '@vant/touch-emulator';//vant适配PC端
 import App from './App'
 import router from './router'
 import DemoNotify from '@/components/public/notify'
+// import VueIziToast from 'vue-izitoast';//toast
+// import 'izitoast/dist/css/iziToast.min.css';
+import '@/assets/css/demo_index.css'
+// import VConsole from 'vconsole'
+// var vConsole = new VConsole();
 
 Vue.use(VueLazyload, {
   error: require('@/assets/broken_image.jpg'),
@@ -31,6 +36,8 @@ Vue.use(Loading);
 Vue.use(Vant);
 //全局提示组件
 Vue.use(DemoNotify)
+// Vue.use(VueIziToast);
+
 
 Vue.prototype.$http = api
 Vue.config.productionTip = false
