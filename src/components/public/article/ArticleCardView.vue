@@ -32,7 +32,6 @@
             <demo-tag
               v-for="(tag,index) in article.tags"
               :key="index"
-              color="green"
             >{{tag}}</demo-tag>
           </span>
         </div>

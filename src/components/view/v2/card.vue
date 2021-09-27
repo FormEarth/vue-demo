@@ -1,12 +1,14 @@
 <template>
-    <div class="card-container base-back" @click="to_writing">
-        <div v-if="object.title" class="title">{{object.title}}</div>
+    <div class="card-container base-back">
         <div class="time">
-            <span class="link" @click="$router.push(`/v2/${object.user.userId}/homepage`)" @click.stop="">{{object.user.userName}}</span>
+            <span class="link" @click="$router.push(`/v2/${object.user.userId}/homepage`)">{{object.user.userName}}</span>
             {{object.sendTime}}
-            <div v-if="object.type==1" class="tag">长文</div>
         </div>
-        <div v-if="object.atlasPictures&&object.atlasPictures.length>0" style="padding: 0 15px;position: relative;">
+        <div v-if="object.type == 1 && object.frontCover" style="padding: 0 15px;">
+            <img :src="object.frontCover" class="picture">
+        </div>
+        <div v-if="object.title" class="title">{{object.title}}</div>
+        <div v-if="object.atlasPictures&&object.atlasPictures.length>0" style="padding: 0 15px;position: relative;"  @click="to_writing">
             <div v-if="object.atlasPictures.length!=2" style="font-size: 0;">
                 <img :src="object.atlasPictures[0]" class="picture" @load="image_loaded">
             </div>
@@ -22,12 +24,14 @@
                 {{object.atlasPictures.length}} img
             </div>
         </div>
-        <div>
+        <div @click="to_writing">
             <div v-if="object.content" class="content-text vetical-center">{{object.type==1?object.summary:object.content}}
                 <!-- <div v-for="(tag,index) in object.tags" class="tag" :key="index">{{tag}}</div> -->
             </div>
-            <div v-if="object.tags && object.tags.length>0" style="padding: 0 15px;">
-                <div v-for="(tag,index) in object.tags" class="tag" :key="index">{{tag}}</div>
+           
+            <div style="padding: 0 15px;">
+                <demo-tag v-if="object.type==1">长文</demo-tag>
+                <demo-tag v-for="(tag,index) in object.tags" :key="index" @click.native="$router.push('/v2/tag/'+tag)">{{tag}}</demo-tag>
             </div>
         </div>
         <div class="operate-box">
@@ -90,11 +94,11 @@
         position: relative;
         cursor: pointer;
         transition: all .5s;
-        padding: 8px 0;
+        /* padding: 8px 0; */
     }
 
     .card-container .time {
-        padding: 6px 15px;
+        padding: 10px 15px 6px;
         color: gray;
         font-size: small;
         font-weight: bold;
@@ -140,7 +144,7 @@
     .operate-box {
         display: flex;
         justify-content: flex-end;
-        padding: 6px 15px 0;
+        padding: 6px 15px;
         color: gray;
         font-size: small;
     }

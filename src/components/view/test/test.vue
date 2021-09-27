@@ -154,6 +154,17 @@
         </mu-list-item>
       </mu-list>
     </mu-drawer>
+
+    <br>
+    <br>
+    <br>
+    <div style="height: 21px;overflow: hidden;font-size: 21px;">
+      <mu-icon value="tag" color="#12a182" class="icon" size="22"></mu-icon>
+      日记
+    </div>
+    <br>
+    <br>
+    <br>
   </div>
 </template>
 <script>

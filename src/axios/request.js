@@ -7,7 +7,7 @@ import router from '../router'
 //不判断的话会将null上送成'null'
 // let sessionId = ()
 const instance = axios.create({
-  baseURL: 'http://192.168.0.109:9092/demooo/api', //本地的 base_url
+  baseURL: 'http://127.0.0.1:9092/demooo/api', //本地的 base_url
   // baseURL: 'http://192.168.15.112:9092', // api 的 base_url
   timeout: 18000, // request timeout,3分钟，因为有图片上传
   // headers: { 'Authorization-Sessionid': sessionId },//请求头
@@ -69,13 +69,17 @@ instance.interceptors.response.use(
   },
   error => {
     console.log("响应error" + error.toString()) // for debug
+    let message
     if (typeof (error.response) == "undefined") {
-      Toast({
-        message: "网络连接错误",
-        duration: 2000,
-        forbidClick: true
-      });
+      message = "网络连接错误"
+    }else{
+      message = "请求异常"
     }
+    Toast({
+      message: message,
+      duration: 4000,
+      // forbidClick: true
+    });
     return Promise.reject(error)
   }
 )

@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index';
-import api from '@/axios/api'
 
 import login from '@/components/view/login'
 import register from '@/components/view/register'
 
-import writings from '@/components/view/home/Writing'
 import article from '@/components/view/home/article/article'
 import articleAdd from '@/components/view/home/article/create'
 import articleEdit from '@/components/view/home/article/edit'
@@ -48,9 +46,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: writingList },
-    { path: '/v2', name: 'home2', meta: { title: "首页",right:false, keepAlive: true }, component: ()=> import("@/components/view/v2/index") },
-    { path: '/v2/:user_id/homepage', name: 'homepage2', meta: { title: "个人主页",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/homepage") },
-    { path: '/writing/:writingId', name: 'writing', meta: { title: "动态详情", requireLogin: false, nav: "atlas" }, component: writing },
+   { path: '/writing/:writingId', name: 'writing', meta: { title: "动态详情", requireLogin: false, nav: "atlas" }, component: writing },
     { path: '/search', name: 'search', meta: { title: "搜索", requireLogin: false }, component: search },
     // { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: info },
     // { path: '/:userId/articles/:currentPage', name: 'articleswithpageno', meta: { title: "个人主页", requireLogin: false,nav:"mine" }, component: articles },
@@ -82,6 +78,11 @@ const router = new Router({
     { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
     { path: '/lab/videos', name: 'videos', meta: { title: "Videos", requireLogin: false, nav: "mine",right:false }, component: videos },
 
+    { path: '/v2', name: 'home_v2', meta: { title: "首页",right:false, keepAlive: true }, component: ()=> import("@/components/view/v2/index") },
+    { path: '/v2/:user_id/homepage', name: 'homepage_v2', meta: { title: "个人主页",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/homepage") },
+    { path: '/v2/mine', name: 'mine_v2', meta: { title: "我的",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/mine") },
+    { path: '/v2/tag/:tag', name: 'tag_v2', meta: { title: "标签",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/tag") },
+ 
     // 404页面在最下面
     { path: '*', name: 'notfound', meta: { title: "页面找不到啦~~", requireLogin: false, nav: "none" ,right:false}, component: notfound }
   ],

@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <div class="main-container">
         <div class="top-box">
             <div style="display: flex;">
                 <img src="http://127.0.0.1:9090/static/thumbnail/writing/IMG202108220022.jpg" title="头像" class="avatar">
@@ -92,7 +92,7 @@
                 登录
             </div>
         </div>
-    </main>
+    </div>
 </template>
 <script>
     import timeline from './timeline'
@@ -109,12 +109,6 @@
     }
 </script>
 <style scoped>
-    main {
-        overflow: hidden;
-        margin: 0 auto;
-        max-width: 800px;
-        /* padding: 0 12px; */
-    }
 
     .top-box {
         margin-top: 10px;

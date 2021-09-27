@@ -44,21 +44,13 @@ const user = {
             {}
         );
     },
-    //用户添加关注、喜欢、收藏
+    //用户添加关注
     userAddCollection(data) {
-        return request.post(
-            '/user/collection',
-            data
-        )
+        return request.post('/user/collection',data)
     },
-    //用户移除关注、喜欢、收藏
+    //用户移除关注
     userRemoveCollection(data) {
-        return request.delete(
-            '/user/collection',
-            {
-                params: data
-            }
-        )
+        return request.delete('/user/collection',{data: data})
     },
     //修改密码
     modifyOwnPassword(data) {

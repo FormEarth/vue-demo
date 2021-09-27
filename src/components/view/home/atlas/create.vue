@@ -121,7 +121,6 @@ export default {
         comment: true, //允许评论
         tags: [],
         personal: false, //仅自己可见
-        type: 2
       },
       initTags: [], //初始化加载的推荐tags数组，即在输入框为空时显示的列表
       tags: ["日记", "原创", "123", "2333"],
@@ -225,6 +224,7 @@ export default {
       formData.append("content", this.atlas.content);
       formData.append("comment", this.atlas.comment);
       formData.append("personal", this.atlas.personal);
+      formData.append("type", 2);
       for (let i = 0; i < this.atlas.tags.length; i++) {
         // formData.append("tags", this.atlas.tags[i]);
         formData.append("tags[" + i + "]",this.atlas.tags[i])

@@ -106,25 +106,21 @@ export default {
       //重新组装数组数据
       formData.delete("tags");
       for (let i = 0; i < this.form.tags.length; i++) {
-        formData.append("tags[" + i + "].tagId", this.form.tags[i].tagId);
-        formData.append("tags[" + i + "].tagText", this.form.tags[i].tagText);
+        formData.append("tags[" + i + "]", this.form.tags[i])
       }
       if (this.form.frontCoverBlob != "") {
         formData.delete("frontCoverBlob");
-        formData.append("image", this.form.frontCoverBlob, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
+        formData.append("file", this.form.frontCoverBlob, "front-cover.jpg"); //这里直接给个名字，因为服务端用不到
       }
       let parser = require('ua-parser-js');
       let ua = parser(navigator.userAgent);
       let source = ua.os.name+ua.os.version+" "+ua.browser.name+ua.browser.version;
       formData.append("source", source);
-      this.$http.article
-        .releaseArticle(formData)
-        .then(response => {
+      this.$http.writing.release_writing(formData).then(response => {
           if (response.data.code == "2000") {
-            this.newArticleId = response.data.data.articleId;
+            this.newArticleId = response.data.data.id;
             this.releaseSucessDialog = true;
             this.$refs.editor.clearValue();
-          } else {
           }
         })
         .catch(error => {});

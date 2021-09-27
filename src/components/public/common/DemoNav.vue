@@ -39,20 +39,22 @@
           <mu-menu placement="bottom-start" :open="select_open" open-on-hover style="margin-right:40px;">
             <div class="base-color bold-font">Home Version</div>
             <mu-list slot="content">
-              <mu-list-item button to="/">
+              <mu-list-item button to="/" @click="$store.commit('change_version', 'v1')">
                 <mu-list-item-title>v1.0.0</mu-list-item-title>
               </mu-list-item>
-              <mu-list-item button to="/v2">
+              <mu-list-item button to="/v2" @click="$store.commit('change_version', 'v2')">
                 <mu-list-item-title>v2.0.0</mu-list-item-title>
               </mu-list-item>
             </mu-list>
           </mu-menu>
-          <mu-menu placement="bottom-start" :open="menu_open" open-on-hover style="margin-right:40px;">
+          <!-- <mu-menu placement="bottom-start" :open="menu_open" open-on-hover style="margin-right:40px;">
             <div class="base-color bold-font">Application</div>
-            <!-- <div slot="content">frgnorfnbg</div> -->
             <menu-item slot="content"></menu-item>
-          </mu-menu>
-
+          </mu-menu> -->
+          <div class="base-color bold-font" style="margin-right:40px;">Language</div>
+          <div class="base-color bold-font pointer" @click="go_mine" style="margin-right:40px;">
+            Application
+          </div>
         </div>
       </div>
       <!-- <div class="nothing-box"></div> -->
@@ -126,6 +128,14 @@
         this.search_txt
           ? this.$router.push("/search")
           : this.$demo_notify("请输入搜索内容");
+      },
+      go_mine(){
+        if(this.$store.getters.is_v1){
+          this.$router.push('/mine')
+        } else if(this.$store.getters.is_v2){
+          this.$router.push('/v2/mine')
+        }
+
       }
     },
     computed: {

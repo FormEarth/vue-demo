@@ -10,6 +10,7 @@ const store = new Vuex.Store({
         current_theme: "light",
         //当前用户主题颜色，默认为primary
         current_theme_color: "primary",
+        app_version: "v1"
     },
     //通过提交 mutation 的方式更改state中的值，而非直接改变
     mutations: {
@@ -67,6 +68,10 @@ const store = new Vuex.Store({
         //切换主题色
         theme_color_toggle(state, theme_color) {
             state.current_theme_color = theme_color;
+        },
+        //修改版本
+        change_version(state, version){
+            state.version = version
         }
     },
     //Action可以进行一些异步的操作，然后再去触发mutation，所以与后端的一些接口都必须放在action里面
@@ -90,6 +95,12 @@ const store = new Vuex.Store({
         isLogin(state) {
             //判空
             return typeof (state.current_user.userId) == "undefined" ? false : true;
+        },
+        is_v1(state){
+            return state.version==="v1"
+        },
+        is_v2(state){
+            return state.version==="v2"
         }
     }
 })

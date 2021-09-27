@@ -2,10 +2,12 @@ import request from '@/axios/request.js';//导入axios实例文件中方法
 
 const article = {
     //首页数据加载
-    getHomePageArticles(currentPage, userId) {
+    getHomePageArticles(currentPage, userId, tag) {
+        let object = arguments
+        
         return request.get(
             '/writings',
-            { params: { page: currentPage, userId: userId } }
+            { params: { page: currentPage, userId: userId,tag: tag } }
         );
     },
     //发布文章

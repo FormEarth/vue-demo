@@ -1,5 +1,5 @@
 <template>
-  <div :class="['demooo-tag',editable?'editable':'']">
+  <div :class="['demooo-tag',editable?'editable':'']" :style="{backgroundColor:editable?'#fff':color,color:editable?'#000':font_color}">
     <div v-if="editable">
       <!-- input和icon不要换行 -->
       <input ref="tag_input" type="text" v-model.trim="tag_text" class="tag-input" placeholder="new tag" 
@@ -23,6 +23,14 @@
       editable: {
         type: Boolean,
         default: false
+      },
+      color:{
+        type: String,
+        default: '#12a182' 
+      },
+      font_color:{
+        type: String,
+        default: '#fff' 
       }
     },
     data() {
@@ -63,14 +71,13 @@
 </script>
 <style scoped>
   .demooo-tag {
-    background-color: #55af7b;
     color: #fff;
     font-size: 12px;
     padding: 2.8px 8px;
     line-height: normal;
     border-radius: 0.2em;
     display: inline-block;
-    margin: 4.2px;
+    margin: 4.2px 4.2px 4.2px 0;
   }
 
   .editable {

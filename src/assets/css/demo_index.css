@@ -11,3 +11,16 @@
 .bold-font {
     font-weight: bold;
 }
+.pointer {
+    cursor: pointer;
+}
+.main-container {
+    margin: 0 auto;
+    max-width: 800px;
+}
+.base-shadow {
+    box-shadow: 0 4px 8px rgba(179, 173, 173, 0.3);
+}
+.icon{
+    vertical-align: middle;
+}

@@ -66,8 +66,7 @@
               <label>&nbsp;收藏</label>
             </div>
           </div>
-          <demo-tag color="white" ellipse small></demo-tag>
-          <demo-tag color="white" ellipse small>一个 绅士</demo-tag>
+          <demo-tag color="white" font_color="#000">一个 绅士</demo-tag>
         </div>
       </div>
     </div>
