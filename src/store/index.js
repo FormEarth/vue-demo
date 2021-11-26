@@ -71,7 +71,7 @@ const store = new Vuex.Store({
         },
         //修改版本
         change_version(state, version){
-            state.version = version
+            state.app_version = version
         }
     },
     //Action可以进行一些异步的操作，然后再去触发mutation，所以与后端的一些接口都必须放在action里面
@@ -97,10 +97,10 @@ const store = new Vuex.Store({
             return typeof (state.current_user.userId) == "undefined" ? false : true;
         },
         is_v1(state){
-            return state.version==="v1"
+            return state.app_version==="v1"
         },
         is_v2(state){
-            return state.version==="v2"
+            return state.app_version==="v2"
         }
     }
 })

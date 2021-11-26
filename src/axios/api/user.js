@@ -38,11 +38,13 @@ const user = {
         )
     },
     //获取用户的一般性信息
-    getCommonInfoByUserId(userId) {
-        return request.get(
-            "/user/common/" + userId,
-            {}
-        );
+    getCommonInfoByUserId(user_id) {
+        return request.get('/user/common/',{
+            params: {
+                userId: user_id,
+                page: page
+            }
+        });
     },
     //用户添加关注
     userAddCollection(data) {
@@ -60,8 +62,9 @@ const user = {
         )
     },
     get_timeline(user_id,page){
-        return request.get(user_id + '/timeline',                {
+        return request.get('/timeline',{
             params: {
+                userId: user_id,
                 page: page
             }
         });

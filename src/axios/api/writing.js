@@ -14,7 +14,7 @@ const writing = {
     },
     //删除作品
     remove_writing(writing_id){
-        return request.delete("/writing/" + writing_id)
+        return request.delete("/writing",{params:{writingId:writing_id}})
     },
     //发布作品
     release_writing(data) {

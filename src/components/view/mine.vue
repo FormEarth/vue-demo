@@ -48,11 +48,11 @@
           </mu-button>
         </mu-list-item-action>
       </mu-list-item>
-      <mu-list-item button :ripple="false">
+      <mu-list-item button :ripple="false" to="/system/manager">
         <mu-list-item-action>
           <mu-icon value="dashboard" color="primary"></mu-icon>
         </mu-list-item-action>
-        <mu-list-item-title>动态</mu-list-item-title>
+        <mu-list-item-title>系统管理</mu-list-item-title>
         <mu-list-item-action>
           <mu-button icon>
             <mu-icon value="arrow_forward_ios"></mu-icon>

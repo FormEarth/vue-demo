@@ -37,6 +37,9 @@ import album from '@/components/view/test/album'
 import beyondhere from '@/components/view/tools/beyondhere'
 
 import notfound from '@/components/view/error/404'
+import home_v2 from "@/components/view/v2/index"
+import manager from "@/components/view/system/manager"
+import bookmark from "@/components/view/v2/mine/bookmark"
 
 Vue.use(Router)
 
@@ -77,11 +80,13 @@ const router = new Router({
     { path: '/leftnav', name: 'leftnav', meta: { title: "LEFT", requireLogin: false, nav: "none" }, component: leftnav },
     { path: '/beyondhere', name: 'beyondhere', meta: { title: "BeyondHere", requireLogin: false, nav: "mine" }, component: beyondhere },
     { path: '/lab/videos', name: 'videos', meta: { title: "Videos", requireLogin: false, nav: "mine",right:false }, component: videos },
+    { path: '/system/manager', name: 'manager', meta: { title: "系统管理", requireLogin: true, right:false }, component: manager },
 
-    { path: '/v2', name: 'home_v2', meta: { title: "首页",right:false, keepAlive: true }, component: ()=> import("@/components/view/v2/index") },
+    { path: '/v2', name: 'home_v2', meta: { title: "首页",right:false, keepAlive: true }, component: home_v2 },
     { path: '/v2/:user_id/homepage', name: 'homepage_v2', meta: { title: "个人主页",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/homepage") },
     { path: '/v2/mine', name: 'mine_v2', meta: { title: "我的",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/mine") },
     { path: '/v2/tag/:tag', name: 'tag_v2', meta: { title: "标签",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/tag") },
+    { path: '/v2/mine/bookmark', name: 'bookmark', meta: { title: "书签",right:false, keepAlive: false }, component:bookmark },
  
     // 404页面在最下面
     { path: '*', name: 'notfound', meta: { title: "页面找不到啦~~", requireLogin: false, nav: "none" ,right:false}, component: notfound }

@@ -130,6 +130,7 @@
           : this.$demo_notify("请输入搜索内容");
       },
       go_mine(){
+        console.log(this.$store.getters.is_v1+'-------'+this.$store.getters.is_v2)
         if(this.$store.getters.is_v1){
           this.$router.push('/mine')
         } else if(this.$store.getters.is_v2){
@@ -174,7 +175,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 9;
     /* transition: all .5s ease-in; */
   }
 

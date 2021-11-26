@@ -11,6 +11,7 @@ import tag from '@/axios/api/tag';
 // 图集模块接口
 import atlas from '@/axios/api/atlas';
 import writing from '@/axios/api/writing';
+import manager from '@/axios/api/manager';
 // 其他模块的接口……
  
 // 导出接口
@@ -19,6 +20,7 @@ export default {
     article,
     tag,
     atlas,
-    writing
+    writing,
+    manager
     // ……
 }

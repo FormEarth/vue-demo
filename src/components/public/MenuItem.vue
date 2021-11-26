@@ -1,14 +1,13 @@
 <template>
     <div class="menu-box base-back"  style="background-color: rgba(255, 255, 255, 0.7);">
         <div v-for="item in nav_array" :key="item.id" class="operate-item" @click="$router.push(item.to)">
-            <mu-icon :value="item.type"></mu-icon>
+            <mu-icon :value="item.type" color="#12a182"></mu-icon>
             <br>
             {{item.app}}
         </div>
-        <div style="margin: 5px 25px 0;width: 100%;">
+        <!-- <div style="margin: 5px 25px 0;width: 100%;">
             <mu-button color="#12a182" :ripple="false" full-width>sign in</mu-button>
-        </div>
-
+        </div> -->
     </div>
     
 
@@ -43,11 +42,11 @@
         display: flex;
         /* justify-content: space-between; */
         flex-wrap: wrap;
-        width: 260px;
+        /* width: 260px; */
     }
 
     .operate-item {
-        width: 80px;
+        width: 25%;
         margin: 8px 0;
         text-align: center;
         line-height: normal;

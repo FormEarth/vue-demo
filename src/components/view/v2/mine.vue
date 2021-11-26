@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <div class="card-container" style="position: relative;cursor:auto;">
-            <div class="float-card base-back base-shadow">
+            <div class="float-card white-back base-shadow" :style="backgroundDiv">
                 <img class="avatar" src="http://127.0.0.1:9090/static/49578911_p0.jpg">
                 <div class="name">raining_heavily</div>
                 <div class="desc">Java C&V Engineer</div>
@@ -18,12 +18,13 @@
             </div>
         </div>
 
-        <div class="content-box" style="margin-top: 138px;">
-            <!-- <menu-item></menu-item> -->
+        <div class="content-box" :style="leafBack">
+            <menu-item></menu-item>
         </div>
         <div class="content-box">
-            <div class="list-item base-back base-shadow" v-for="(nav,index) in navs" :key="index" @click="$router.push(nav.page)">
-                <div style="flex: 1;line-height: 34px;">
+            <div class="list-item base-back base-shadow" v-for="(nav,index) in navs" :key="index"
+                @click="$router.push(nav.page)">
+                <div style="flex: 1;line-height: 34px;margin-left: 12px;">
                     <span>{{nav.title}}</span>
                 </div>
                 <div style="width: 30px;">
@@ -41,7 +42,17 @@
         data() {
             return {
                 nums: [{ title: "Followers", total: 123 }, { title: "Following", total: 223 }, { title: "Writing", total: 2333 }],
-                navs: [{ title: "设置", page: "/app/home" }, { title: "空间 [123/1000]", page: "ert" }, { title: "使用指北", page: "ert" }, { title: "关于我们", page: "ert" }]
+                navs: [{ title: "设置", page: "/app/home" },{ title: "实验室", page: "/lab" }, { title: "空间 [123/1000]", page: "/v2/mine/bookmark" }, { title: "使用指北", page: "ert" }, { title: "关于我们", page: "ert" }], 
+                backgroundDiv: {
+                    backgroundImage: "url(" + require("@/assets/svg/leaf.svg") + ")",
+                    backgroundRepeat: "no-repeat",
+                    // backgroundSize: "cover"
+                },
+                leafBack:{
+                    marginTop: "120px",
+                    background: "url(" + require("@/assets/svg/flower.svg") + ") right 10px bottom 10px",
+                    backgroundRepeat: "no-repeat"
+                }
             }
         },
         components: {
@@ -59,7 +70,7 @@
 
     .content-box {
         margin: 0 auto;
-        padding: 10px 0;
+        /* padding: 10px 0; */
         border-radius: 8px;
         position: relative;
         margin: 0 10%;

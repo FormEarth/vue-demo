@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container base-back">
+    <div class="card-container white-back">
         <div class="time">
             <span class="link" @click="$router.push(`/v2/${object.user.userId}/homepage`)">{{object.user.userName}}</span>
             {{object.sendTime}}
@@ -30,7 +30,7 @@
             </div>
            
             <div style="padding: 0 15px;">
-                <demo-tag v-if="object.type==1">长文</demo-tag>
+                <demo-tag color="#4286f3" v-if="object.type==1" >长文</demo-tag>
                 <demo-tag v-for="(tag,index) in object.tags" :key="index" @click.native="$router.push('/v2/tag/'+tag)">{{tag}}</demo-tag>
             </div>
         </div>
@@ -119,7 +119,7 @@
         padding: 0 15px;
         font-weight: lighter;
         white-space: pre-line;
-        word-break: break-all;
+        /* word-break: break-all; */
     }
 
     /* 垂直居中 */
@@ -144,7 +144,7 @@
     .operate-box {
         display: flex;
         justify-content: flex-end;
-        padding: 6px 15px;
+        padding: 6px 15px 10px;
         color: gray;
         font-size: small;
     }

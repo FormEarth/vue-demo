@@ -6,15 +6,19 @@
         </div>
     </div>
     <div v-show="!loading_finished" style="margin-top: 10px;text-align: center;">
-        <div class="button base-green-back" @click="load_more">加载更多</div>
+        <!-- <div class="button base-green-back" @click="load_more">加载更多</div> -->
+        <mu-button @click="load_more">
+            <mu-icon left value="data_usage" ></mu-icon>加载更多
+          </mu-button>
     </div>
+    <flat-button></flat-button>
 </div>
 </template>
 
 <script>
     import Bricks from 'bricks.js'
     import Card from './card'
-
+    import FlatButton from "@/components/public/FlatButton.vue";
     export default {
         name: "card_list",
         props:{
@@ -39,11 +43,16 @@
             }
         },
         components: {
-            Card
+            Card,
+            FlatButton
         },
         async created() {
             await this.get_writings(true)
             this.instance.resize(true).update()
+        },
+        //解决keep alive此组件时在其它页面调整页面宽度再回来时Bricks不会再排版的问题
+        activated(){
+            this.instance.pack()
         },
         mounted() {
             const sizes = [{
@@ -99,9 +108,9 @@
                                 this.total = res.data.data.total
                             } else {
                                 this.array = this.array.concat(writings)
-                                this.loading_finished = (this.array.length >= this.total)
                                 this.$nextTick(() => {this.instance.update()})
                             }
+                            this.loading_finished = (this.array.length >= this.total)
                             this.page++
                             
                         }

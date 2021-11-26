@@ -162,6 +162,10 @@
       <mu-icon value="tag" color="#12a182" class="icon" size="22"></mu-icon>
       日记
     </div>
+
+    <br>
+    <br>
+    <demo-tag color="#4286f3">长文</demo-tag>
     <br>
     <br>
     <br>
