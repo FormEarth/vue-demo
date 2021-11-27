@@ -23,7 +23,7 @@
     "muse-ui-loading": "^0.2.0",
     "muse-ui-toast": "^0.3.0",
     "ua-parser-js": "^0.7.21",
-    "vant": "^1.6.13",
+    "vant": "^2.1.8",
     "vconsole": "^3.9.1",
     "vditor": "^3.0.8",
     "vue": "^2.5.2",
