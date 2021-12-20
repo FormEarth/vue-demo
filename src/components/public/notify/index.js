@@ -20,6 +20,7 @@ DemoNotify.install = function (options, type) {
   let instance = new messageBox({
     data: options
   }).$mount()
+  let timer = null
 
   document.body.appendChild(instance.$el)
 
@@ -28,12 +29,15 @@ DemoNotify.install = function (options, type) {
   // })
   // 通过Vue的原型注册一个方法
   // 让所有实例共享这个方法 
-  Vue.prototype.$demo_notify = (content, duration = 3000) => {
+  Vue.prototype.$demo_notify = (content) => {
     instance.content = content;
     instance.visible = true;
-    setTimeout(() => {
+    if(timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
       instance.visible = false;
-    }, duration);
+    }, 3000);
   }
 }
 

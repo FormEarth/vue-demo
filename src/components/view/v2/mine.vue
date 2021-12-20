@@ -1,11 +1,11 @@
 <template>
     <div class="main-container">
-        <div class="card-container" style="position: relative;cursor:auto;">
-            <div class="float-card white-back base-shadow" :style="backgroundDiv">
-                <img class="avatar" src="http://127.0.0.1:9090/static/49578911_p0.jpg">
-                <div class="name">raining_heavily</div>
-                <div class="desc">Java C&V Engineer</div>
-                <div class="content-box" style="border-radius: 5px;display: flex;text-align: center;">
+        <div v-if="isLogin" class="card-container" style="position: relative;cursor:auto;">
+            <div class="float-card white-back" :style="background">
+                <img class="avatar pointer" :src="user.avatar" @click="$router.push(`/${user.userId}/homepage`)">
+                <div class="name">{{user.userName}}</div>
+                <div class="desc">{{user.sign}}</div>
+                <div class="content-box" style="margin-top: 6px; border-radius: 5px;display: flex;text-align: center;">
                     <div class="data-item" v-for="(num,index) in nums" :key="index">
                         <span style="font-weight: bold;">{{num.total}}</span>
                         <br>
@@ -13,17 +13,19 @@
                     </div>
                 </div>
             </div>
-            <div class="card-header"
-                style="height:140px;background-image: url(http://127.0.0.1:9090/static/thumbnail/front_cover/8c9b7e3930154e4399f7031b603ddb31.jpg);">
+            <div class="card-header" :style="{backgroundImage: 'url(' + user.frontCover+')'}">
             </div>
         </div>
-
-        <div class="content-box" :style="leafBack">
+        <div class="card-container" style="margin:0 10% 10px;">
+            <mu-alert color="info" delete v-if="login_tip" @delete="login_tip=false">
+                {{$t("not_login")}}
+            </mu-alert>
+        </div>
+        <div class="content-box " :style="leaf_back">
             <menu-item></menu-item>
         </div>
         <div class="content-box">
-            <div class="list-item base-back base-shadow" v-for="(nav,index) in navs" :key="index"
-                @click="$router.push(nav.page)">
+            <div class="list-item base-back" v-for="(nav,index) in navs" :key="index" @click="$router.push(nav.page)">
                 <div style="flex: 1;line-height: 34px;margin-left: 12px;">
                     <span>{{nav.title}}</span>
                 </div>
@@ -42,17 +44,34 @@
         data() {
             return {
                 nums: [{ title: "Followers", total: 123 }, { title: "Following", total: 223 }, { title: "Writing", total: 2333 }],
-                navs: [{ title: "设置", page: "/app/home" },{ title: "实验室", page: "/lab" }, { title: "空间 [123/1000]", page: "/v2/mine/bookmark" }, { title: "使用指北", page: "ert" }, { title: "关于我们", page: "ert" }], 
-                backgroundDiv: {
+                navs: [{ title: "设置", page: "/app/home" },
+                { title: "实验室", page: "/lab" },
+                { title: "空间 [123/1000]", page: "/v2/mine/bookmark" },
+                { title: "使用指北", page: "ert" },
+                { title: "关于我们", page: "ert" },
+                ],
+                background: {
                     backgroundImage: "url(" + require("@/assets/svg/leaf.svg") + ")",
-                    backgroundRepeat: "no-repeat",
-                    // backgroundSize: "cover"
+                    backgroundRepeat: "no-repeat"
                 },
-                leafBack:{
-                    marginTop: "120px",
+                default_back: {
+                    backgroundImage: "url(" + require("@/assets/images/wallhaven-2el1mg.jpg") + ")",
+                    backgroundRepeat: "no-repeat"
+                },
+                leaf_back: {
+                    marginTop: "26px",
                     background: "url(" + require("@/assets/svg/flower.svg") + ") right 10px bottom 10px",
                     backgroundRepeat: "no-repeat"
-                }
+                },
+                login_tip: true
+            }
+        },
+        computed: {
+            isLogin: function () {
+                return this.$store.getters.isLogin;
+            },
+            user: function () {
+                return this.$store.state.current_user;
             }
         },
         components: {
@@ -135,6 +154,7 @@
         min-height: 120px;
         padding: 6px;
         color: #ffffff;
+        height: 140px;
     }
 
     .card-title {

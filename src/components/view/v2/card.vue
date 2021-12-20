@@ -1,14 +1,16 @@
 <template>
     <div class="card-container white-back">
         <div class="time">
-            <span class="link" @click="$router.push(`/v2/${object.user.userId}/homepage`)">{{object.user.userName}}</span>
-            {{object.sendTime}}
+            <span class="link"
+                @click="$router.push(`/v2/${object.user.userId}/homepage`)">{{object.user.userName}}</span>
+            {{object.sendTime | time}}
         </div>
         <div v-if="object.type == 1 && object.frontCover" style="padding: 0 15px;">
             <img :src="object.frontCover" class="picture">
         </div>
         <div v-if="object.title" class="title">{{object.title}}</div>
-        <div v-if="object.atlasPictures&&object.atlasPictures.length>0" style="padding: 0 15px;position: relative;"  @click="to_writing">
+        <div v-if="object.atlasPictures&&object.atlasPictures.length>0" style="padding: 0 15px;position: relative;"
+            @click="to_writing">
             <div v-if="object.atlasPictures.length!=2" style="font-size: 0;">
                 <img :src="object.atlasPictures[0]" class="picture" @load="image_loaded">
             </div>
@@ -25,13 +27,15 @@
             </div>
         </div>
         <div @click="to_writing">
+            <!-- 这里不要换行 -->
             <div v-if="object.content" class="content-text vetical-center">{{object.type==1?object.summary:object.content}}
                 <!-- <div v-for="(tag,index) in object.tags" class="tag" :key="index">{{tag}}</div> -->
             </div>
-           
+
             <div style="padding: 0 15px;">
-                <demo-tag color="#4286f3" v-if="object.type==1" >长文</demo-tag>
-                <demo-tag v-for="(tag,index) in object.tags" :key="index" @click.native="$router.push('/v2/tag/'+tag)">{{tag}}</demo-tag>
+                <demo-tag color="#4286f3" v-if="object.type==1">长文</demo-tag>
+                <demo-tag v-for="(tag,index) in object.tags" :key="index" @click.native="$router.push('/v2/tag/'+tag)">
+                    {{tag}}</demo-tag>
             </div>
         </div>
         <div class="operate-box">
@@ -47,6 +51,7 @@
     </div>
 </template>
 <script>
+    import util from "@/util/util"
     export default {
         name: "card",
         props: {
@@ -73,11 +78,16 @@
                     this.$emit("loaded")
                 }
             },
-            to_writing(){
-                if(this.object.type == 1 || (this.object.atlasPictures && this.object.atlasPictures.length > 0)){
+            to_writing() {
+                if (this.object.type == 1 || (this.object.atlasPictures && this.object.atlasPictures.length > 0)) {
                     this.$router.push('/writing/' + this.object.writingId)
                 }
-                
+
+            }
+        },
+        filters: {
+            time: function (value) {
+                return util.dateSubtract(value);
             }
         },
     }
@@ -90,7 +100,7 @@
         border-radius: 5px;
         /* width: 243px; */
         box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15);
-        margin-bottom: 13px;
+        /* margin-bottom: 13px; */
         position: relative;
         cursor: pointer;
         transition: all .5s;
@@ -119,6 +129,7 @@
         padding: 0 15px;
         font-weight: lighter;
         white-space: pre-line;
+        overflow: hidden;
         /* word-break: break-all; */
     }
 

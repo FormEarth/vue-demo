@@ -105,8 +105,8 @@ export default {
         }
       ],
       validateForm: {
-        account: "raining",
-        password: "123456",
+        account: "",
+        password: "",
         rememberMe: false
       },
       wechat_png: require("@/assets/images/wechat.png"),
@@ -163,7 +163,7 @@ export default {
                   let redirect = _that.$route.query.redirect;
                   _that.$router.replace(redirect); //则跳转至进入登录页前的路由，这里使用了replace，因为不希望返回时到登录页
                 } else {
-                  _that.$router.replace("/mine");
+                  _that.$router.replace("/v2/mine");
                 }
               }, 1000);
               //取值的时候也要注意字符串转对象

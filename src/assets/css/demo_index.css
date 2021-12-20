@@ -33,3 +33,12 @@
 .icon{
     vertical-align: middle;
 }
+.mt-10{
+    margin-top: 10px;
+}
+.test{
+    border: 1px solid black;
+}
+.flex-1{
+    flex: 1;
+}

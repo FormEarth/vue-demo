@@ -96,7 +96,7 @@ export default {
   transition: all 0.4s ease-in;
 }
 .main-content{
-  padding-top: 55px;
+  /* padding-top: 55px; */
 }
 .left-panel {
   /* position: sticky;

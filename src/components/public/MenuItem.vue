@@ -1,5 +1,5 @@
 <template>
-    <div class="menu-box base-back"  style="background-color: rgba(255, 255, 255, 0.7);">
+    <div class="menu-box base-back">
         <div v-for="item in nav_array" :key="item.id" class="operate-item" @click="$router.push(item.to)">
             <mu-icon :value="item.type" color="#12a182"></mu-icon>
             <br>
@@ -36,7 +36,7 @@
         /* background-color: #fff; */
         /* border-radius: 5px; */
         /* width: 243px; */
-        box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15);
+        /* box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15); */
         padding: 10px;
         text-align: center;
         display: flex;

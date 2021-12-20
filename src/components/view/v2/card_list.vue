@@ -7,7 +7,7 @@
     </div>
     <div v-show="!loading_finished" style="margin-top: 10px;text-align: center;">
         <!-- <div class="button base-green-back" @click="load_more">加载更多</div> -->
-        <mu-button @click="load_more">
+        <mu-button @click="load_more" v-loading="data_loading" data-mu-loading-size="24">
             <mu-icon left value="data_usage" ></mu-icon>加载更多
           </mu-button>
     </div>
@@ -39,7 +39,8 @@
                 //数据是否已加载完毕
                 loading_finished: false,
                 //数据总数
-                total: 0
+                total: 0,
+                data_loading: false
             }
         },
         components: {
@@ -81,9 +82,9 @@
                 position: true
             })
             this.instance
-                .on('pack', () => console.log('pack()'))
-                .on('update', () => console.log('update()'))
-                .on('resize', () => console.log('resize()'));
+                .on('pack', () => {})
+                .on('update', () => {})
+                .on('resize', () => {});
             // setTimeout(()=>{this.instance.resize(true).pack()},300)
             this.instance.resize(true).pack()
             // document.addEventListener('DOMContentLoaded', event => {
@@ -98,6 +99,7 @@
             async get_writings(first) {
                 // let params = new URLSearchParams()
                 // params.append("page",this.page)
+                this.data_loading = true
                 await this.$http.article.getHomePageArticles(this.page, this.$route.params.user_id, this.$route.params.tag)
                     .then(res => {
                         if (res.data.code == '2000') {
@@ -114,6 +116,8 @@
                             this.page++
                             
                         }
+                    }).finally(()=>{
+                        this.data_loading = false
                     });
             },
             async load_more(){

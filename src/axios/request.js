@@ -3,11 +3,12 @@ import axios from 'axios';
 import { Toast } from 'vant';
 import store from '../store/index';
 import router from '../router'
+import Message from 'muse-ui-message';
 
 //不判断的话会将null上送成'null'
 // let sessionId = ()
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:9092/demooo/api', //本地的 base_url
+  baseURL: 'http://106.55.197.10:9092/demooo/api', //本地的 base_url
   // baseURL: 'http://192.168.15.112:9092', // api 的 base_url
   timeout: 18000, // request timeout,3分钟，因为有图片上传
   // headers: { 'Authorization-Sessionid': sessionId },//请求头
@@ -20,11 +21,11 @@ const instance = axios.create({
 //请求拦截器
 instance.interceptors.request.use(
   config => {
-    
+
     // const token = getCookie('名称');可以从cookie中获取token，加到请求头中
     // config.baseURL = 'http://192.168.0.110:8080'
     // config.data = JSON.stringify(config.data)
-    config.headers = {'Authorization-Sessionid':sessionStorage.getItem("Authorization-Sessionid")||''}
+    config.headers = { 'Authorization-Sessionid': sessionStorage.getItem("Authorization-Sessionid") || '' }
     // config.timeout = 30000
     return config
   },
@@ -45,17 +46,25 @@ instance.interceptors.response.use(
         //移除localStorage中的sessionId
         sessionStorage.removeItem("Authorization-Sessionid");
         localStorage.removeItem("Authorization-Sessionid")
-        //因为无法获取route.path，在这截取下,需要跳过http://
-        let currentPath = window.location.href
-        // let currentPath = router.path
-        currentPath = currentPath.substring(currentPath.indexOf('demooo')+6)
-        console.log("currentPath:" + currentPath)
-        router.push({
-          path: '/login',
-          query: { redirect: currentPath }  // 获取该路由名，登录成功后跳转到该路由
+        Message.confirm('该操作需要登录，您尚未登录或已超时', '验证未通过', {
+          okLabel: '立刻登录'
+        }).then(({ result }) => {
+          console.log(result)
+          if (result) {
+            //因为无法获取route.path，在这截取下,需要跳过http://
+            let currentPath = window.location.href
+            // let currentPath = router.path
+            currentPath = currentPath.substring(currentPath.indexOf('demooo') + 6)
+            console.log("currentPath:" + currentPath)
+            router.push({
+              path: '/login',
+              query: { redirect: currentPath }  // 获取该路由名，登录成功后跳转到该路由
+            });
+          } else {
+            //什么都不做
+            console.log(response.data.code)
+          }
         });
-        // router.go(0)
-        console.log("store.getters.isLogin:" + store.getters.isLogin)
       } else {
         // 轻提示弹框        
         Toast({
@@ -64,6 +73,7 @@ instance.interceptors.response.use(
           forbidClick: true
         });
       }
+      
     }
     return response
   },
@@ -72,7 +82,7 @@ instance.interceptors.response.use(
     let message
     if (typeof (error.response) == "undefined") {
       message = "网络连接错误"
-    }else{
+    } else {
       message = "请求异常"
     }
     Toast({

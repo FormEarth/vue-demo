@@ -24,6 +24,7 @@ import DemoNotify from '@/components/public/notify'
 import '@/assets/css/demo_index.css'
 // import VConsole from 'vconsole'
 // var vConsole = new VConsole();
+import i18n from './i18n';
 
 Vue.use(VueLazyload, {
   error: require('@/assets/broken_image.jpg'),
@@ -55,6 +56,7 @@ componentsContext.keys().forEach(component => {
 
 new Vue({
   el: '#app',
+  i18n,
   router,
   store,
   components: { App },

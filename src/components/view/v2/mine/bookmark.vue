@@ -58,7 +58,7 @@
                     <!-- <mu-icon value="more_horiz"></mu-icon> -->
                     <mu-menu cover placement="bottom-end">
                         <mu-icon value="more_horiz"></mu-icon>
-                        <mu-list slot="content" dense style="padding: 0 10px;">
+                        <mu-list slot="content" dense>
                             <mu-list-item button>
                                 <mu-list-item-title>编辑</mu-list-item-title>
                             </mu-list-item>

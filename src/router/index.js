@@ -48,7 +48,7 @@ const router = new Router({
   //使用history模式在部署时会有除根路径外的页面不能刷新，因为router页面跳转的并不是真实路径
   mode: 'history',
   routes: [
-    { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: writingList },
+    // { path: '/', name: 'homePage', meta: { title: "首页", requireLogin: false, keepAlive: true, nav: "article" }, component: writingList },
    { path: '/writing/:writingId', name: 'writing', meta: { title: "动态详情", requireLogin: false, nav: "atlas" }, component: writing },
     { path: '/search', name: 'search', meta: { title: "搜索", requireLogin: false }, component: search },
     // { path: '/:userId/articles', name: 'articles', meta: { title: "个人主页", requireLogin: false, nav: "mine" }, component: info },
@@ -82,7 +82,7 @@ const router = new Router({
     { path: '/lab/videos', name: 'videos', meta: { title: "Videos", requireLogin: false, nav: "mine",right:false }, component: videos },
     { path: '/system/manager', name: 'manager', meta: { title: "系统管理", requireLogin: true, right:false }, component: manager },
 
-    { path: '/v2', name: 'home_v2', meta: { title: "首页",right:false, keepAlive: true }, component: home_v2 },
+    { path: '/', name: 'home_v2', meta: { title: "首页",right:false, keepAlive: true }, component: home_v2 },
     { path: '/v2/:user_id/homepage', name: 'homepage_v2', meta: { title: "个人主页",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/homepage") },
     { path: '/v2/mine', name: 'mine_v2', meta: { title: "我的",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/mine") },
     { path: '/v2/tag/:tag', name: 'tag_v2', meta: { title: "标签",right:false, keepAlive: false }, component: ()=> import("@/components/view/v2/tag") },

@@ -10,7 +10,7 @@ const store = new Vuex.Store({
         current_theme: "light",
         //当前用户主题颜色，默认为primary
         current_theme_color: "primary",
-        app_version: "v1"
+        app_version: "v2"
     },
     //通过提交 mutation 的方式更改state中的值，而非直接改变
     mutations: {

@@ -39,20 +39,19 @@ const user = {
     },
     //获取用户的一般性信息
     getCommonInfoByUserId(user_id) {
-        return request.get('/user/common/',{
+        return request.get('/user/common', {
             params: {
-                userId: user_id,
-                page: page
+                userId: user_id
             }
         });
     },
     //用户添加关注
     userAddCollection(data) {
-        return request.post('/user/collection',data)
+        return request.post('/user/collection', data)
     },
     //用户移除关注
     userRemoveCollection(data) {
-        return request.delete('/user/collection',{data: data})
+        return request.delete('/user/collection', { data: data })
     },
     //修改密码
     modifyOwnPassword(data) {
@@ -61,13 +60,25 @@ const user = {
             data
         )
     },
-    get_timeline(user_id,page){
-        return request.get('/timeline',{
+    get_timeline(user_id, page) {
+        return request.get('/timeline', {
             params: {
                 userId: user_id,
                 page: page
             }
         });
+    },
+    query_bookmark() {
+        return request.get('/bookmark')
+    },
+    add_bookmark(data) {
+        return request.post('/bookmark',data)
+    },
+    edit_bookmark(data) {
+        return request.put('/bookmark',data)
+    },
+    remove_bookmark(id) {
+        return request.delete('/bookmark?id='+id)
     }
 }
 
